@@ -6,7 +6,7 @@ Creates activity detector images for the Rasberry pi to monitor diel activity of
 2. Run `python3 run_diel-light.py --time` to update time if required.  
 3. Run `python3 run_diel-light.py --setup` to display output parameters for project.   
 4. If the project parameters require updating. Modify the `configs/project.conf`  
-5. Run `python3 run_diel-light.py --run`
+5. Run `python3 run_diel-light.py --run --out output_dir_path`
 
 # Modify config files 
 Project config files : configs/project.conf.  
