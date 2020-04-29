@@ -7,7 +7,7 @@ import argparse
 import yaml
 import sys
 from datetime import date
-
+import pdb
 #trial number = Trial_number a string value for the trial number this currently is 
 
 def get_args():
@@ -36,23 +36,20 @@ def get_args():
 def main():
     """Main function of the script"""
     args=get_args()
-    # Parameters to control the workflow
-    
+    # Input project metadata
     with open(args.projectconf) as yamlfile:
         config = yaml.load(yamlfile, Loader=yaml.FullLoader)
-        
-    # Project
+    # Input project name
     if args.project:
         project = args.project
     else:
         project = config["PROJECT"]
-    
     print("Start activity detector on project: " + project)
+    #Write data to project run log
     file_log_time = open(args.logfile, "a+")
     file_log_time.write("\nProject name: " + project + "\n")
     file_log_time.write("Start time: " + time.ctime() + "\n")
-    
-    
+    #Check and update time
     if args.time:
         get_time()
         update_time()
@@ -75,24 +72,60 @@ def main():
         print("Project configuration file at :%s"%args.projectconf)
         sys.exit("Please modify project.conf file and restart workflow with -r flag")
     
-    
+    #Set the output directory
     if args.out:
         out_path=args.out
     else:
         out_path=config["OUTPATH"]
     if args.run:
         log=args.logfile
-        #gets current 
+        #gets current date and time NEED TO ADD TO FILE
         today = date.today()
-        current_path=os.getcwd()
+        base_path=os.getcwd()
         print("Output will be written to: ",out_path)
-        os.chdir(out_path)
+        if os.path.isdir(out_path):
+            os.chdir(out_path)
+            out_path=os.getcwd()
+        else:
+            print("Creating output directory")
+            os.mkdir(out_path)
+            os.chdir(out_path)
+            out_path=os.getcwd()
+            
         out_config = open("out.yml","w+") #re-writes old output but saves a config file 
         yaml.dump(config,out_config) ##Write to file with new parameter
         out_config.close() ## close the file
-        ###NEED TO UNCOMMENT ON PI
+        #NEED TO UNCOMMENT ON PI
         #run motion commands script uncomment out if not running on pi
-        #command="python3 ./scripts/motion_commands.py"
+        #os.chdir(base_path)
+        
+        ####Create trial direcotry
+        trial_number= input("Enter a Trial number ")
+        # create directory, before checking if it already exists
+        trial_dir=out_path+"/trial"+trial_number
+        if os.path.isdir(trial_dir):
+            print("Directory exists, input a new trial number")
+            trial_number= input("Enter another Trial number ")
+        else:
+            os.mkdir(trial_dir)
+        
+        os.chdir(trial_dir)
+        #Absoloute motion conf path
+        motion_path_abs=base_path+"/"+args.motionconf
+        
+        if os.path.exists(args.motionconf):
+            command="motion -c "+args.motionconf+" -l "+trial_dir+"/"+trial_number+"_log.txt"
+        elif os.path.exists(motion_path_abs):
+            command="motion -c "+motion_path_abs+" -l "+trial_dir+"/"+trial_number+"log.txt"
+        else :
+            print("Cannot find motion.conf file running from motion.conf installed in bash")
+            command="motion "+" -l trial"+trial_number 
+        print("Following command will be executed",command)
+        print("Location at",os.getcwd())
+        os.system(command)
+        ##Create folder for directory and run the config file or 
+        #command="python3 "+current_path+"/scripts/motion_commands.py --motionconf "+args.motionconf
+        os.chdir(base_path)
         #os.system(command)
 
     file_log_time.write("Finish time: " + time.ctime() + "\n")
@@ -101,17 +134,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-""" TO be deleted use only as code guide
-if os.path.isdir("trial"+trial_number):
-    print("Directory exists, input a new trial number")
-    trial_number= input("Enter a Trial number ")
-else:
-    os.system("mkdir trial"+trial_number)
-os.chdir("trial"+trial_number)
-command="motion -c ../motion.conf -l trial"+trial_number+"_log.txt"
-print(command)
-os.system(command)
-os.chdir("..")
-"""
