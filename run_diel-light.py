@@ -6,7 +6,7 @@ import os
 import argparse
 import yaml
 import sys
-from datetime import date
+from datetime import datetime as dt
 import pdb
 #trial number = Trial_number a string value for the trial number this currently is 
 
@@ -31,7 +31,20 @@ def get_args():
 #To be implenent check if directory exists, if it does throw and error
 
 #Create a directory with filen name trial no
-
+def get_time():
+    today= dt.now()
+    date_string =dt.strftime(today, '%d %B %Y')
+    time_string= dt.strftime(today, '%H:%M:%S')
+    print("date is %s"% date_string)
+    print("time is %s"% time_string)
+    
+def update_time():
+    string_date=input("Input current date in YYYY-MM-DD HH:MM, for example 2020-04-28 13:35 ")
+    #sets time
+    command_time="sudo date -s \""+string_date+"\""
+    #command_time = "sudo date -s \"2020-04-28 13:35\""
+    os.system(command_time)
+    print("time updated")
 
 def main():
     """Main function of the script"""
@@ -77,10 +90,12 @@ def main():
         out_path=args.out
     else:
         out_path=config["OUTPATH"]
+    #Run time
     if args.run:
         log=args.logfile
         #gets current date and time NEED TO ADD TO FILE
-        today = date.today()
+        today = dt.today()
+        #Gets base path
         base_path=os.getcwd()
         print("Output will be written to: ",out_path)
         if os.path.isdir(out_path):
