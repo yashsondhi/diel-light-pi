@@ -83,7 +83,7 @@ def main():
         #outputs current setup parameters
         print(" Name: {0} \n Initials: {1} \n Project: {2} \n Location: {3}".format(name,ins,project,loc))
         print("Project configuration file at :%s"%args.projectconf)
-        sys.exit("Please modify project.conf file and restart workflow with -r flag")
+        sys.exit("Please modify project.conf file and restart workflow with --run flag")
     
     #Set the output directory
     if args.out:
