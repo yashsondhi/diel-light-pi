@@ -12,3 +12,13 @@ Creates activity detector images for the Rasberry pi to monitor diel activity of
 Project config files : configs/project.conf.  
 Motion tracking config files : configs/motion.conf  
 For a more detailed guide on modifying motion tracking parameters, refer to https://motion-project.github.io/
+
+# Other scripts
+Bootable scripts
+1. Control Neopixel LED light strips. Sript: smooth_light_control.py
+2. Custom temperature and humidity readings and control. Incubator_control.py
+3. Save Light readings from TSL2691 light sensor: save_light_data.py
+
+## Instructions: 
+Load these files in /etc/rc.local to boot from startup
+
