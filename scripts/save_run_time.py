@@ -3,7 +3,7 @@ import adafruit_tsl2591
 import time
 import os
 # creates a script to save pi running time for each trial
-path="/home/pi/Desktop/diel-light-pi/logs/"
+path="logs/"
 
 frequency = 60
     
