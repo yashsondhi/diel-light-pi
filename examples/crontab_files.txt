@@ -1,2 +1,4 @@
+#email ip address on start up
 @reboot sleep 60 && python2.7 home/pi/diel-light-pi/scripts/boot_email.py
+#resume on boot if autostart is true in the config file
 @reboot sleep 60 && cd diel-light-pi && python3 run_diel-light_2.py --run
