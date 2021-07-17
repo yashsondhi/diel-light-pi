@@ -10,11 +10,10 @@ import os
 import pandas as pd
 import seaborn as sns
 import matplotlib.dates as mdates
-import lightplots as lp
+#import lightplots as lp
 from pandas.plotting import register_matplotlib_converters
 import matplotlib
 from scipy.interpolate import interp1d
-
 
 register_matplotlib_converters() # converts pandas datetime from matplotlib datetime
 matplotlib.rcParams['pdf.fonttype'] = 42 # ensures pdf fonts are illustratrot worthy
