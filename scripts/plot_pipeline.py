@@ -162,7 +162,11 @@ class Plot:
         tticks = np.linspace(0,spd, 5)
         tlabs = ['midnight', '6:00', 'noon', '18:00', 'midnight'] # Sets tick labels
         tlabs = ['midnight', '', 'noon', '', 'midnight']
-        dinterp = interp1d([0,spd*5/24,spd*7/24,spd*17/24,spd*19/24,spd], [0.1, 0.1, 0.95, 0.95, 0.1, 0.1]) # sets up gradient for Title
+        breakpoint()
+        interp_x=[0,spd*5/24,spd*7/24,spd*17/24,spd*19/24,spd]
+        interp_fx=[0.1, 0.1, 0.95, 0.95, 0.1, 0.1]
+        #dinterp = interp1d([0,spd*5/24,spd*7/24,spd*17/24,spd*19/24,spd], [0.1, 0.1, 0.95, 0.95, 0.1, 0.1]) # sets up gradient for Title
+        #dinterp=np.interp([0,spd*5/24,spd*7/24,spd*17/24,spd*19/24,spd], [0.1, 0.1, 0.95, 0.95, 0.1, 0.1]))
         stripres=60
         date_strings_dark = list(df["timestamp"].values)
         act_strings_dark = list(df["pix_dif"].values)
@@ -202,7 +206,9 @@ class Plot:
         dax.spines['bottom'].set_visible(False)
 
         for t in np.arange(0,spd, stripres):
-            cd = str(dinterp(t))
+            #cd = str(dinterp(t))
+            #breakpoint()
+            cd =str(np.interp(t,interp_x,interp_fx))
             dax.fill([t,t,t+stripres,t+stripres], [1,2,2,1], color=cd)
         dax.text(spd/2, 1.5,name, color='k', ha='center', va='center')
         ddax = plt.subplot(3,1,3)
