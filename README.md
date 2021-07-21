@@ -15,7 +15,7 @@ For a more detailed guide on modifying motion tracking parameters, refer to http
 
 # Other scripts
 Bootable scripts
-1. Control Neopixel LED light strips. Sript: smooth_light_control.py
+1. Control Neopixel LED light strips. Script: smooth_light_control.py
 2. Custom temperature and humidity readings and control. Incubator_control.py
 3. Save Light readings from TSL2691 light sensor: save_light_data.py
 4. Save time every minute to the pi : save_run_time.py
