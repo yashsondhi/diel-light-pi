@@ -25,7 +25,7 @@ def run_mode_first(folder,treatment,out):
     df=log.extractCsv(output,conf_type="first")
     output_path=log.save_df(data_frame=df,output_file_name=out,output_to_folder=True)
     return output_path
-def first_plotter_pd(folder,infile,param="pix_dif",min_val=100,max_val=1000):
+def first_plotter_pd(folder,infile,param="pix_dif",min_val=100,max_val=1000,plot_title="",outfile_descriptor=""):
     """ Plots dataframe for parameter pixel diference over all days : TODO: make other functions for different plotters
         -- 
         Input:
@@ -34,6 +34,8 @@ def first_plotter_pd(folder,infile,param="pix_dif",min_val=100,max_val=1000):
         param: parameter to be plotted
         min_val: type : int filter pixel difference min val
         max_val : type : int filter pixel difference max value
+        plot_title: type: str, Plot title string
+        outfile_descriptor: type: str, Output plot inclutes descriptor in file name
         Output
         Plots required dataframes
         """
@@ -49,13 +51,13 @@ def first_plotter_pd(folder,infile,param="pix_dif",min_val=100,max_val=1000):
         filtered_df=PP.filter_dataframe(data_frame=cleaned_df,plot_parameter=param,filter_parameter="min",min_val=100)
         filtered_df=PP.filter_dataframe(data_frame=filtered_df,plot_parameter=param,filter_parameter="max",max_val=1000)
         if(no_of_plots<=1):
-            PP.plot_pixel_dif(data_frame=filtered_df,ax=ax,graph_title="test")
+            PP.plot_pixel_dif(data_frame=filtered_df,ax=ax,graph_title=plot_title)
         elif(no_of_plots>1):
-            PP.plot_pixel_dif(data_frame=filtered_df,ax=ax[i],graph_title="test")
+            PP.plot_pixel_dif(data_frame=filtered_df,ax=ax[i],graph_title=plot_title)
             i=i+1     
-    plt.savefig((param+".pdf"))
+    plt.savefig((param+"_"+outfile_descriptor+".pdf"))
 
-def first_plotter_pd_hist(folder,infile,param="pix_dif",min_val=100,max_val=1000,no_of_plots=1):
+def first_plotter_pd_hist(folder,infile,param="pix_dif",min_val=100,max_val=1000,no_of_plots=1,outfile_descriptor="",plot_title=""):
     """ Plots dataframe for parameter pixel difference with histogram and averaged by hour
         Input:
         folder: type : str, path to folder with csv files
@@ -64,6 +66,8 @@ def first_plotter_pd_hist(folder,infile,param="pix_dif",min_val=100,max_val=1000
         min_val: type : int filter pixel difference min val
         max_val : type : int filter pixel difference max value
         no_of_plots: type : int , 1: Only hist, 2 hist + daily counts TODO: Add more options
+        plot_title: type: str, Plot title string
+        outfile_descriptor: type: str, Output plot inclutes descriptor in file name
         Output
         Plots required dataframes
         """
@@ -81,19 +85,19 @@ def first_plotter_pd_hist(folder,infile,param="pix_dif",min_val=100,max_val=1000
         filtered_hour=PP.filter_dataframe(cleaned_df,plot_parameter="pix_dif",filter_parameter="average_hour")
         #standard deviation takes over all values.
         if(no_of_plots==1):
-            PP.plot_count_hist(filtered_hour,ax=ax,graph_title="")
+            PP.plot_count_hist(filtered_hour,ax=ax,graph_title=plot_title)
         elif(no_of_plots==2):
-            PP.plot_count_hist(filtered_hour,ax=ax[i],graph_title="",plot_param="pix_dif")
+            PP.plot_count_hist(filtered_hour,ax=ax[i],graph_title=plot_title,plot_param="pix_dif")
             i=i+1
             PP.plot_pixel_dif(data_frame=filtered_df,ax=ax[i],graph_title="")
 
-    plt.savefig((param+"_"+name+".pdf"))
+    plt.savefig((param+"_hist_"+outfile_descriptor+".pdf"))
 #plt.show()
 #plt.show()
         
 
-def first_plotter_mi(folder,infile,param="motion_int",graph_title="test"):
-    """ Plots dataframe for parameter motion_int over all days : 
+def first_plotter_mi(folder,infile,param="motion_int",plot_title="",outfile_descriptor=""):
+    """ Plots dataframe for parameter motion_int frequency distribution over all days : 
         -- 
         Input:
         folder: type : str, path to folder with csv files
@@ -101,6 +105,9 @@ def first_plotter_mi(folder,infile,param="motion_int",graph_title="test"):
         param: parameter to be plotted
         min_val: type : int filter pixel difference min val
         max_val : type : int filter pixel difference max value
+        graph_title: type: str, Plot title string
+        outfile_descriptor: type: str, Output plot inclutes descriptor in file name
+        
         Output
         Plots required dataframes
         """
@@ -114,11 +121,12 @@ def first_plotter_mi(folder,infile,param="motion_int",graph_title="test"):
         ## Specially for pix_dif all put this in a different function
         cleaned_df=LP.clean_dataframe(data_frame=df,plot_parameter=param)
         if(no_of_plots<=1):
-            LP.plot_interval_hist(cleaned_df,ax=ax,graph_title=graph_title)
+            LP.plot_interval_hist(cleaned_df,ax=ax,graph_title=plot_title)
         elif(no_of_plots>1):
-            LP.plot_interval_hist(cleaned_df,ax=ax[i],graph_title=graph_title)
+            LP.plot_interval_hist(cleaned_df,ax=ax[i],graph_title=plot_title)
             i=i+1
-    plt.savefig((param+"_"+name+".pdf"))
+    plt.savefig((param+"_dist_"+outfile_descriptor+".pdf"))
+    
 def benchmark(folder,infile,param="motion_int",graph_title="benchmark"):
     """ Plots dataframe for parameter motion_int over list of benchmark csv files : 
         -- 
@@ -228,14 +236,15 @@ def get_args():
     parser.add_argument('--extract',default=False,action='store_true', help="extracts csv")
     parser.add_argument('--outpath',default=False, help="output file path")
     parser.add_argument('--out',default=False,help="output file name")
-    parser.add_argument('--plot',default=False,action='store_true',help="calls plotter for respective outfile, change code of plot for various plots")
-    parser.add_argument('--daily_plot',default=False,action='store_true',help="calls daily_ plotter for respective outfile with plots for each day and sumarry of counts")
+    parser.add_argument('--plot_test',default=False,action='store_true',help="calls plotter for respective outfile, change code of plot for various plots")
+    parser.add_argument('--plot_all',default=False,action='store_true',help="calls daily_ plotter for respective outfile with plots for each day and sumarry of counts using parameters in configuration file")
     parser.add_argument('--conf', default='../diel-light-pi/configs/analysis.conf', help='Path to config file to open for analysis parameteers')
     parser.add_argument('--logfile', default='log_analysis.txt', help='Log file to write analysis logs to')
     
     args = parser.parse_args()
     return (args)
 #Create config file
+
 
 def main():
     """Main function of the script"""
@@ -258,48 +267,75 @@ def main():
         treatment = args.treatment
     else:
         treatment=config["TREATMENT"]
+    #sets output path for plots 
     if args.outpath:
         out_path=args.outpath
     else:
         out_path=config["OUTPATH"]
+    # sets output file name
     if args.out:
         outfile=args.out
     else:
         outfile=config["OUTFILENAME"]
-    if args.treatment:
-        outfile =args.treatment
+
+    #Set csv file to use
+
+    if args.usecsv:  
+        csv_path = [config["CSVFILE"]]
     else:
-        treatment = config["TREATMENT"]
-    
-    if args.usecsv:
-        csv_path = [config["csv_list"]]
-    else:
+        #defaults output path
         csv_path=[outfile+".csv"]
     
-        
-
+    if config["USE_FILTER"]:
+        use_filter_val=config["USE_FILTER"]
+        filter_max_val=config["FILTER_MAX"]
+        filter_min_val=config["FILTER_MIN"]
+    else:
+        use_filter_val=False
+        filter_max_val=10000
+        filter_min_val=100
+    
     # reads csv list in a txt file
     extract=args.extract
     analysis_log=args.logfile
-    daily_plot=args.daily_plot
-    plot=args.plot
+    plot_test = args.plot_test
+    plot_all = args.plot_all
+
     #... other args ... #
     if mode == 'first':
         if extract:
             #Add logging
             csv_path=run_mode_first(folder,treatment,outfile) 
-        if plot:
+        if plot_test:
             folder=folder+"/"+out_path
-            #PLOTS pixel difference for  all days
-            first_plotter_pd(folder,csv_path,"pix_dif")
+        
+            if(len(csv_path)==1): # if only one file in list
+                file_name=csv_path[0]
+                file_name=file_name[:-4] # name of file without .csv
+            else:
+                file_name="" #keeps infile name
+
+            first_plotter_pd(folder,csv_path,"pix_dif",min_val=filter_min_val,max_val=filter_max_val,outfile_descriptor=file_name,plot_title=file_name)
             # PLOTS motion interval for  all days
-            first_plotter_mi(folder,csv_path,"motion_int")
+            first_plotter_mi(folder,csv_path,"motion_int",outfile_descriptor=file_name,plot_title=file_name)
             # PLOTS pixel difference with average historgram for all days
-            first_plotter_pd_hist(folder,csv_path,"pix_dif")
+            first_plotter_pd_hist(folder,csv_path,"pix_dif",outfile_descriptor=file_name,plot_title=file_name)
             #benchmark(folder,csv_path,"motion_int")
-        if daily_plot :
-            folder=folder+"/"+out_path
-            daily_plotter(folder,csv_path,use_filter=True,descriptor=outfile,filter_max=10000,ylm=200)
+        if plot_all :
+            if(not plot_test):
+                folder=folder+"/"+out_path
+            #reads plot title from config file othersiwe sets default plot title
+            if config["PLOT_TITLE"]:
+                plot_title_val=config["PLOT_TITLE"]
+            else:
+                plot_title_val=outfile #default
+            #reads ylim for summary plot from config file otherwise sets default  ylim
+            if config["YLIM"]:
+                ylim_val=config["YLIM"]
+            else:
+                ylim_val=600 #default
+    
+            daily_plotter(folder,csv_path,use_filter=use_filter_val,descriptor=plot_title_val,filter_max=filter_max_val,filter_min=filter_min_val,ylm=ylim_val)
             #benchmark(folder,csv_path,"motion_int")
 
     elif mode == "all-field":
