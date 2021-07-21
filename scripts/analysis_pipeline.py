@@ -236,7 +236,7 @@ def get_args():
     parser.add_argument('--extract',default=False,action='store_true', help="extracts csv")
     parser.add_argument('--outpath',default=False, help="output file path")
     parser.add_argument('--out',default=False,help="output file name")
-    parser.add_argument('--plot_test',default=False,action='store_true',help="calls plotter for respective outfile, change code of plot for various plots")
+    #parser.add_argument('--plot_test',default=False,action='store_true',help="calls plotter for respective outfile, change code of plot for various plots")
     parser.add_argument('--plot_all',default=False,action='store_true',help="calls daily_ plotter for respective outfile with plots for each day and sumarry of counts using parameters in configuration file")
     parser.add_argument('--conf', default='../diel-light-pi/configs/analysis.conf', help='Path to config file to open for analysis parameteers')
     parser.add_argument('--logfile', default='log_analysis.txt', help='Log file to write analysis logs to')
@@ -298,7 +298,7 @@ def main():
     # reads csv list in a txt file
     extract=args.extract
     analysis_log=args.logfile
-    plot_test = args.plot_test
+    #plot_test = args.plot_test
     plot_all = args.plot_all
 
     #... other args ... #
@@ -306,24 +306,8 @@ def main():
         if extract:
             #Add logging
             csv_path=run_mode_first(folder,treatment,outfile) 
-        if plot_test:
-            folder=folder+"/"+out_path
-        
-            if(len(csv_path)==1): # if only one file in list
-                file_name=csv_path[0]
-                file_name=file_name[:-4] # name of file without .csv
-            else:
-                file_name="" #keeps infile name
-
-            first_plotter_pd(folder,csv_path,"pix_dif",min_val=filter_min_val,max_val=filter_max_val,outfile_descriptor=file_name,plot_title=file_name)
-            # PLOTS motion interval for  all days
-            first_plotter_mi(folder,csv_path,"motion_int",outfile_descriptor=file_name,plot_title=file_name)
-            # PLOTS pixel difference with average historgram for all days
-            first_plotter_pd_hist(folder,csv_path,"pix_dif",outfile_descriptor=file_name,plot_title=file_name)
-            #benchmark(folder,csv_path,"motion_int")
         if plot_all :
-            if(not plot_test):
-                folder=folder+"/"+out_path
+            folder=folder+"/"+out_path
             #reads plot title from config file othersiwe sets default plot title
             if config["PLOT_TITLE"]:
                 plot_title_val=config["PLOT_TITLE"]
