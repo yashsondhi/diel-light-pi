@@ -1,5 +1,4 @@
 #runs the motion.conf file present in the  folder with the settings  in the motion.conf file
-
 import csv
 import time
 import os
@@ -24,9 +23,7 @@ def get_args():
     parser.add_argument('--projectconf',default='configs/project.conf', help='Input project config parameters')
     parser.add_argument('--project',help="Input name of project")
     parser.add_argument('--autorun',default=False, action="store_true",help ="starts automatically on reboot")
-    #parser.add_argument('--size', choices=["t", "genome"], help='Reference to use')
-    #parser.add_argument('--dea', default=False, action="store_true", help='Perform dea')
-    #parser.add_argument('--visualize', action="store_true", help='Perform visualization')
+    parser.add_argument('--silent',default=False, action="store_true",help ="starts in non interactive mode")
     args = parser.parse_args()
     return (args)
 
@@ -54,8 +51,6 @@ def get_last_trial(path):
         for directories in dirs:
             totalDir += 1
     return totalDir
-
-    return info_to_return
 def main():
     """Main function of the script"""
     args=get_args()
@@ -82,8 +77,27 @@ def main():
         if flag=="n":
             update_time()
         sys.exit("Time updated restart workflow")
+   
+    #turns on silent mode
+    if args.silent:
+        silent_mode = True
+        print("silent mode: ",silent_mode)
+    elif "INTERACTIVE" in config:
+        silent_mode = not config["INTERACTIVE"]
+        print("silent mode: ",silent_mode)
+    else:
+        silent_mode = False
+        
+    run_setup=args.setup
 
-    if args.setup:
+    exit_flag=True
+    if not silent_mode:
+    	run_setup=True
+    	exit_flag=False
+
+        #forces setup ,but skips exit setup
+
+    if run_setup:
         # modify using https://myopswork.com/parsing-yaml-files-with-python-5aa0d4e2613f
         #Store config variable
         name=config["USER"]
@@ -96,8 +110,14 @@ def main():
         #outputs current setup parameters
         print(" Name: {0} \n Initials: {1} \n Project: {2} \n Location: {3} \n Organism: {4} \n Motion configuration file: {5} ".format(name,ins,project,loc,org,motionconf))
         print("Project configuration file at :%s"%args.projectconf)
-        sys.exit("Please modify project.conf file and restart workflow with --run flag")
-    
+        get_time()
+        if exit_flag: # interactive mode on by default
+            sys.exit("Please modify project.conf file and restart workflow with --run flag")
+        else:
+            flag=input("Are details correct, press y to continue and n to exit : ")
+            if(flag=="n"):
+                sys.exit("Modify config file configs/project.conf and restart")
+
     #Set the output directory
     if args.out:
         out_path=args.out
