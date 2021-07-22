@@ -8,10 +8,13 @@ import numpy as np
 import glob
 import os
 import pandas as pd
+import seaborn as sns
 import matplotlib.dates as mdates
 #import lightplots as lp
 from pandas.plotting import register_matplotlib_converters
 import matplotlib
+from scipy.interpolate import interp1d
+
 
 register_matplotlib_converters() # converts pandas datetime from matplotlib datetime
 matplotlib.rcParams['pdf.fonttype'] = 42 # ensures pdf fonts are illustratrot worthy
@@ -75,8 +78,6 @@ class Plot:
                 max_val: type=float, Maximummum value
             average_hour
                 averages over an hour
-            median_hour
-                takes hourly median
             std_hour
                 returns standard deviance over an hour
 
@@ -102,16 +103,12 @@ class Plot:
         elif(filter_parameter=="max"):
             filtered=dfObj[dfObj[plot_parameter]<=max_val] # filter by some minimum value
             return  filtered.copy(deep=True)
-        elif(filter_parameter=="average_hour"):
-            dfHour=dfObj.groupby("Hour").mean() # Average
-            dfHour['Hour'] = dfHour.index
-            return dfHour.copy(deep=True)
-        
-        elif(filter_parameter=="median_hour"):
-            dfHour=dfObj.groupby("Hour").median() # Median
-            dfHour['Hour'] = dfHour.index
-            return dfHour.copy(deep=True)
 
+        elif(filter_parameter=="average_hour"):
+            dfHour=dfObj.groupby("Hour").mean() # Standard deviation
+            dfHour['Hour'] = dfHour.index
+            #dfHour=dfObj.groupby(dfObj.index.hour).mean() # Average over hour
+            return dfHour.copy(deep=True)
         elif(filter_parameter=="std_hour"):
             dfHour=dfObj.groupby("Hour").std() # Standard deviation
             dfHour['Hour'] = dfHour.index
@@ -137,24 +134,22 @@ class Plot:
         ax.set_xlabel(horiz_label)
         ax.set_ylabel(plot_param)
         #ax.xaxis.set_major_formatter(date_form)
-    
-    def plot_count_hist(self,data_frame,ax,graph_title="Density by hour", horiz_label="avg_count frequency",plot_param="avg_count"):
-        "Plots count data histogram averaged by hour"
-        dfObj=data_frame.copy()
-        ax.bar(x=dfObj["Hour"],height=dfObj[plot_param]) #plot day 1
-        # sns.barplot(data=dfObj,x ='Hour',y=plot_param,ax=ax,palette="Blues")
-        ax.set_title(graph_title)
-        ax.set_ylabel("frequency")
-        ax.set_xlabel("Hour")
-    def plot_interval_hist(self,data_frame,ax,graph_title="Motion time interval", y_label="event frequency",plot_param="motion_int",x_label="event interval (s)"):
+    def plot_interval_hist(self,data_frame,ax,graph_title="Time interval", y_label="density",plot_param="motion_int",x_label="event interval (s)"):
         "Plots event interval histogram"
         plot_param="motion_int"
         dfObj=data_frame.copy()
-        ax.hist(dfObj[plot_param])
-        #sns.kdeplot(data=dfObj,x=plot_param, bw_adjust=.25,ax=ax)
+        sns.kdeplot(data=dfObj,x=plot_param, bw_adjust=.25,ax=ax)
         ax.set_title(graph_title)
         ax.set_ylabel(y_label)
         ax.set_xlabel(x_label)
+
+    def plot_count_hist(self,data_frame,ax,graph_title="Density by hour", horiz_label="avg_count frequency",plot_param="avg_count"):
+        "Plots count data histogram averaged by hour"
+        dfObj=data_frame.copy()
+        sns.barplot(data=dfObj,x ='Hour',y=plot_param,ax=ax,palette="Blues")
+        ax.set_title(graph_title)
+        ax.set_ylabel("frequency")
+        ax.set_xlabel("Hour")
     def daily(self,df,name,ylm=600):
         """Plots individual day plots traces and total count from each day
         
@@ -168,8 +163,7 @@ class Plot:
         tticks = np.linspace(0,spd, 5)
         tlabs = ['midnight', '6:00', 'noon', '18:00', 'midnight'] # Sets tick labels
         tlabs = ['midnight', '', 'noon', '', 'midnight']
-        interp_x=[0,spd*5/24,spd*7/24,spd*17/24,spd*19/24,spd]
-        interp_fx=[0.1, 0.1, 0.95, 0.95, 0.1, 0.1]
+        dinterp = interp1d([0,spd*5/24,spd*7/24,spd*17/24,spd*19/24,spd], [0.1, 0.1, 0.95, 0.95, 0.1, 0.1]) # sets up gradient for Title
         stripres=60
         date_strings_dark = list(df["timestamp"].values)
         act_strings_dark = list(df["pix_dif"].values)
@@ -209,7 +203,7 @@ class Plot:
         dax.spines['bottom'].set_visible(False)
 
         for t in np.arange(0,spd, stripres):
-            cd =str(np.interp(t,interp_x,interp_fx)) # makes gradient pattern
+            cd = str(dinterp(t))
             dax.fill([t,t,t+stripres,t+stripres], [1,2,2,1], color=cd)
         dax.text(spd/2, 1.5,name, color='k', ha='center', va='center')
         ddax = plt.subplot(3,1,3)

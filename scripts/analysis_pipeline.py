@@ -314,10 +314,11 @@ def main():
                 file_name=file_name[:-4] # name of file without .csv
             else:
                 file_name="" #keeps infile name
+
             first_plotter_pd(folder,csv_path,"pix_dif",min_val=filter_min_val,max_val=filter_max_val,outfile_descriptor=file_name,plot_title=file_name)
             # PLOTS motion interval for  all days
             first_plotter_mi(folder,csv_path,"motion_int",outfile_descriptor=file_name,plot_title=file_name)
-            # PLOTS pixel difference with average historgram for all days NOT MEANINGFUL
+            # PLOTS pixel difference with average historgram for all days
             first_plotter_pd_hist(folder,csv_path,"pix_dif",outfile_descriptor=file_name,plot_title=file_name)
             #benchmark(folder,csv_path,"motion_int")
         if plot_all :
