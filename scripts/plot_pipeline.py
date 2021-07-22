@@ -75,6 +75,8 @@ class Plot:
                 max_val: type=float, Maximummum value
             average_hour
                 averages over an hour
+            median_hour
+                takes hourly median
             std_hour
                 returns standard deviance over an hour
 
@@ -100,12 +102,16 @@ class Plot:
         elif(filter_parameter=="max"):
             filtered=dfObj[dfObj[plot_parameter]<=max_val] # filter by some minimum value
             return  filtered.copy(deep=True)
-
         elif(filter_parameter=="average_hour"):
-            dfHour=dfObj.groupby("Hour").mean() # Standard deviation
+            dfHour=dfObj.groupby("Hour").mean() # Average
             dfHour['Hour'] = dfHour.index
-            #dfHour=dfObj.groupby(dfObj.index.hour).mean() # Average over hour
             return dfHour.copy(deep=True)
+        
+        elif(filter_parameter=="median_hour"):
+            dfHour=dfObj.groupby("Hour").median() # Median
+            dfHour['Hour'] = dfHour.index
+            return dfHour.copy(deep=True)
+
         elif(filter_parameter=="std_hour"):
             dfHour=dfObj.groupby("Hour").std() # Standard deviation
             dfHour['Hour'] = dfHour.index
@@ -132,7 +138,23 @@ class Plot:
         ax.set_ylabel(plot_param)
         #ax.xaxis.set_major_formatter(date_form)
     
-
+    def plot_count_hist(self,data_frame,ax,graph_title="Density by hour", horiz_label="avg_count frequency",plot_param="avg_count"):
+        "Plots count data histogram averaged by hour"
+        dfObj=data_frame.copy()
+        ax.bar(x=dfObj["Hour"],height=dfObj[plot_param]) #plot day 1
+        # sns.barplot(data=dfObj,x ='Hour',y=plot_param,ax=ax,palette="Blues")
+        ax.set_title(graph_title)
+        ax.set_ylabel("frequency")
+        ax.set_xlabel("Hour")
+    def plot_interval_hist(self,data_frame,ax,graph_title="Motion time interval", y_label="event frequency",plot_param="motion_int",x_label="event interval (s)"):
+        "Plots event interval histogram"
+        plot_param="motion_int"
+        dfObj=data_frame.copy()
+        ax.hist(dfObj[plot_param])
+        #sns.kdeplot(data=dfObj,x=plot_param, bw_adjust=.25,ax=ax)
+        ax.set_title(graph_title)
+        ax.set_ylabel(y_label)
+        ax.set_xlabel(x_label)
     def daily(self,df,name,ylm=600):
         """Plots individual day plots traces and total count from each day
         
