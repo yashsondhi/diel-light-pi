@@ -30,10 +30,10 @@ Bootable scripts
 5. Send IP address on boot : boot_email.py
 
 ## Auto booting Instructions: 
-Load these commands in /etc/rc.local to boot from startup : python3.8 PATH_TO:smooth_light_control.py
+Load these commands in /etc/rc.local to boot from startup : python3.8 PATH_TO/smooth_light_control.py
  
 For boot_email.py and auto start put the commands in example/crontab_files.files.txt in your own cronfile.
 Use crontab -e and add the lines of code, taking care to use the directory where your files are loaded. 
-If you have not installed diel-light-pi in the home directory, then change the cd command in @reboot sleep 60 && cd diel-light-pi && python3 run_diel-light_2.py --run
+If you have not installed diel-light-pi in the home directory, then change the cd command in @reboot sleep 60 && cd diel-light-pi && python3 run_diel-light.py --run
 
 
