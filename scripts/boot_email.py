@@ -6,9 +6,9 @@ from email.mime.text import MIMEText
 import datetime
 import subprocess
 # Change to your own account information
-to = 'yashsondhi@gmail.com'
-gmail_user = 'hawkmothfinder@gmail.com'
-gmail_password = 'raspberrypi123'
+to = 'your email'
+gmail_user = 'gmail_account'
+gmail_password = 'gmail_password'
 tries =0
 while True:
     if (tries >60):
