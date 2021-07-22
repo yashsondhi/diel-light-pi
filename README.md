@@ -2,7 +2,7 @@
 # Diel-light activity detector
 Creates activity detector images for the Rasberry pi to monitor diel activity of small objects
 # Setup
-1. Clone the git repository to your rasberry pi using git clone or download the files.  
+1. Clone the git repository to your rasberry pi using git clone or download the files.  Navigate to the folder diel-light-pi
 2. Run `python3 run_diel-light.py --time` to update time if required.  
 3. Run `python3 run_diel-light.py --setup` to display output parameters for project.   
 4. If the project parameters require updating. Modify the `configs/project.conf`  
@@ -17,7 +17,7 @@ For a more detailed guide on modifying motion tracking parameters, refer to http
 To analyse data modify config/analysis.conf to match the input path of the folder you want to analyse log files
 Ensure you are in the folder scripts/
 1. Extract data run python3.5 analysis_pipeline.py --conf "path_to_analysis.conf" --extract
-2. Plot data quickly python3.5 analysis_pipeline --conf "path_to_analysis.conf" --plot_test
+2. Plot data quickly python3.5 analysis_pipeline.py --conf "path_to_analysis.conf" --plot_test
 3. Plot complete data (slow) python3.5 analysis_pipeline --conf "path_to_analysis.conf" --plot_all
 
 
