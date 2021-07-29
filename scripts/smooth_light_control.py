@@ -4,6 +4,7 @@ import neopixel
 import time
 import numpy as np
 import pdb
+import argparse
 
 class Light():
     def __init__(self, pin=board.D18, num_lights=60):
@@ -53,29 +54,45 @@ class Light():
             self.pixels.show()
     def abs_val(self):
         return self.curr_val[0]*60 + self.curr_val[1]
+    def test(self):
+        vals = np.sin(np.linspace(0, 5*np.pi, 1000))
+        vals += 1
+        vals /= 2
+        vals /= 1
+        for val in vals:
+            light.set_val(val)
+            time.sleep(.01)
+        light.set_val()
+    def getargs(self):
+        parser = argparse.ArgumentParser(usage='%(prog)s [options]', description="Run light control")
+        mode = parser.add_mutually_exclusive_group()
+        mode.add_argument('--test', default=False, action="store_true", help='Force system time update')
+        mode.add_argument('--setup', default=False, action="store_true",help='describe light cycle parameters project update')
+        args = parser.parse_args()
+        return (args)
+    
 
 if __name__ == '__main__':
     light = Light()
-    light.set_val(1)
-    import pdb; pdb.set_trace()
-    vals = np.sin(np.linspace(0, 5*np.pi, 1000))
-    vals += 1
-    vals /= 2
-    vals /= 1
-    for val in vals:
-        light.set_val(val)
-        time.sleep(.01)
-    light.set_val()
     start_sunrise = 6
     start_sunset = 18
-#    for testing the lights:
-#   now = datetime.now()
-    now = now.hour + now.minute/60 + now.second/3600 + now.microsecond/(3600*1000000)
-    start_sunrise = now
-    start_sunset = now + 20/3600
     twilight_duration = 2
     min_val = 0
     max_val = 0.2
+    args=light.getargs()
+    if(args.test==True):
+         light.test()
+    if(args.setup==True):
+        print(f"start sunrise:{start_sunrise}")
+        print(f"start sunset:{start_sunset}")
+        print(f"twilight duration:{twilight_duration}")
+        print(f"mininmum light value:{min_val}")
+        print(f"maximum light value:{max_val}")
+        flag=input("Are these values correct (y/n): ")
+        if(flag=="n"):
+            sys.exit("Update correct parameters in script")            
+        
+    #To test uncomment and run light.test() in pdb mode
 ##    setup brightness as a function of time given the above values
     while True:
         now = datetime.now()
