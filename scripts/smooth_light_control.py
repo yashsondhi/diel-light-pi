@@ -15,18 +15,20 @@ class Light():
         self.max_val = num_lights * 255
         self.curr_val = (0, 0)
     def set_val(self, prop_val=0, abs_val=None):
+        update = False
         if abs_val is None:
             abs_val = round(prop_val * self.max_val)
         else:
             assert isinstance(abs_val, int), print("type(abs_val) must be int")
             assert abs_val in range(self.max_val), print("abs_val must be in range(self.max_val)")
+            update= True # forces update
         base_val = int(abs_val / self.num_lights)
         row_val = int(abs_val % self.num_lights)
         row_change = row_val - self.curr_val[1]
         base_change = base_val - self.curr_val[0]
         change_val = 1
         change_inds = np.random.choice(range(self.num_lights), row_val, replace=False)
-        if abs_val != self.abs_val():
+        if abs_val != self.abs_val() or update:
             if base_change == 0 and self.curr_val[1] != 0:
                 if row_change > 0:
                     free_inds = np.where(np.mean(self.pixels, 1) - base_val == 0)[0]
@@ -68,6 +70,8 @@ class Light():
         mode = parser.add_mutually_exclusive_group()
         mode.add_argument('--test', default=False, action="store_true", help='Force system time update')
         mode.add_argument('--setup', default=False, action="store_true",help='describe light cycle parameters project update')
+        mode.add_argument('--logger', default=False, action="store_true",help='describe light cycle parameters project update')
+        
         args = parser.parse_args()
         return (args)
     
@@ -109,7 +113,6 @@ if __name__ == '__main__':
             val = (1 - prop) * max_val
         else:
             val = min_val
-        #pdb.set_trace()
         light.set_val(val)
         time.sleep(.5)
     light.set_val()
