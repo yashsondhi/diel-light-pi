@@ -1,5 +1,5 @@
 
-# Portable Locomotion Activit monitor (pLAM)
+# Portable Locomotion Activity monitor (pLAM)
 Creates activity detector images for the Rasberry pi to monitor diel activity of small objects
 # Setup
 1. Clone the git repository to your rasberry pi using git clone or download the files.  Navigate to the folder diel-light-pi
