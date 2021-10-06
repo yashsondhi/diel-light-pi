@@ -36,4 +36,4 @@ For boot_email.py and auto start put the commands in example/crontab_files.files
 Use crontab -e and add the lines of code, taking care to use the directory where your files are loaded. 
 If you have not installed diel-light-pi in the home directory, then change the cd command in @reboot sleep 60 && cd diel-light-pi && python3 run_diel-light_2.py --run
 
-
+Preprint available at : https://doi.org/10.1101/2021.08.21.457197
