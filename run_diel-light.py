@@ -232,25 +232,28 @@ def main():
         motion_path_abs=base_path+"/"+motion_path_rel
         
         if version and int(version) >= 11:
-        # Commands for Bullseye and above
-        print("Running commands for Bullseye and above...")
-        # Add your commands here for Bullseye and above
-
+            # Commands for Bullseye and above
+            print("Running commands for Bullseye and above...")
+            if os.path.exists(motion_path_rel):
+                command="libcamerify motion -c "+motion_path_rel+" -l "+trial_name+"_log.txt"
+            elif os.path.exists(motion_path_abs):
+                command="libcamerify motion -c "+motion_path_abs+" -l "+trial_name+"_log.txt"
+            else:
+                print("Cannot find motion.conf file running from motion.conf installed in bash")
+                command="libcamerify motion "+" -l trial"+trial_number 
+        
+            # Add your commands here for Bullseye and above
         else:
             # Commands for versions below Bullseye
             print("Running commands for versions below Bullseye...")
-            # Add your commands here for versions below Bullseye
-
+            if os.path.exists(motion_path_rel):
+                command="motion -c "+motion_path_rel+" -l "+trial_name+"_log.txt"
+            elif os.path.exists(motion_path_abs):
+                command="motion -c "+motion_path_abs+" -l "+trial_name+"_log.txt"
+            else:
+                print("Cannot find motion.conf file running from motion.conf installed in bash")
+                command="motion "+" -l trial"+trial_number 
         
-        
-        if os.path.exists(motion_path_rel):
-            command="libcamerify motion -c "+motion_path_rel+" -l "+trial_name+"_log.txt"
-        elif os.path.exists(motion_path_abs):
-            command="libcamerify motion -c "+motion_path_abs+" -l "+trial_name+"_log.txt"
-        else :
-            print("Cannot find motion.conf file running from motion.conf installed in bash")
-            command="libcamerify motion "+" -l trial"+trial_number 
-        print("Following command will be executed",command)
         
         print("Location at",os.getcwd())
         os.system(command)
