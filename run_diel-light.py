@@ -10,6 +10,20 @@ from datetime import datetime as dt
 import pdb
 #trial number = Trial_number a string value for the trial number this currently is 
 
+# Read the contents of the /etc/os-release file
+with open('/etc/os-release', 'r') as file:
+    os_release = file.read()
+
+# Extract the version information from the file
+version = None
+for line in os_release.splitlines():
+    if line.startswith('VERSION_ID='):
+        version = line.split('=')[1].strip('"\'')
+
+# Check if the version is Bullseye or above (assuming version numbers like "11", "12", etc.)
+
+
+
 def get_args():
     """Parse command-line arguments"""
     parser = argparse.ArgumentParser(usage='%(prog)s [options]', description="Run an diel activity monitoring experiment")
@@ -216,15 +230,30 @@ def main():
             motion_path_rel=config["MOTIONPATH"]
             
         motion_path_abs=base_path+"/"+motion_path_rel
-
-        if os.path.exists(motion_path_rel):
-            command="motion -c "+motion_path_rel+" -l "+trial_name+"_log.txt"
-        elif os.path.exists(motion_path_abs):
-            command="motion -c "+motion_path_abs+" -l "+trial_name+"_log.txt"
-        else :
-            print("Cannot find motion.conf file running from motion.conf installed in bash")
-            command="motion "+" -l trial"+trial_number 
-        print("Following command will be executed",command)
+        
+        if version and int(version) >= 11:
+            # Commands for Bullseye and above
+            print("Running commands for Bullseye and above...")
+            if os.path.exists(motion_path_rel):
+                command="libcamerify motion -c "+motion_path_rel+" -l "+trial_name+"_log.txt"
+            elif os.path.exists(motion_path_abs):
+                command="libcamerify motion -c "+motion_path_abs+" -l "+trial_name+"_log.txt"
+            else:
+                print("Cannot find motion.conf file running from motion.conf installed in bash")
+                command="libcamerify motion "+" -l trial"+trial_number 
+        
+            # Add your commands here for Bullseye and above
+        else:
+            # Commands for versions below Bullseye
+            print("Running commands for versions below Bullseye...")
+            if os.path.exists(motion_path_rel):
+                command="motion -c "+motion_path_rel+" -l "+trial_name+"_log.txt"
+            elif os.path.exists(motion_path_abs):
+                command="motion -c "+motion_path_abs+" -l "+trial_name+"_log.txt"
+            else:
+                print("Cannot find motion.conf file running from motion.conf installed in bash")
+                command="motion "+" -l trial"+trial_number 
+        
         
         print("Location at",os.getcwd())
         os.system(command)
