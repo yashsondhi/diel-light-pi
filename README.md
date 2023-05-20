@@ -8,9 +8,16 @@ Creates activity detector images for the Rasberry pi to monitor diel activity of
 4. If the project parameters require updating. Modify the `configs/project.conf`  
 5. Run `python3 run_diel-light.py --run`
 
+# Run the GUI to modify the config files
+1. Open a terminal 
+2. Navigate to diel-light-py
+3. Run 'python gui_diel-light.py' to open the interface that sets up the experiment
+4. Load an example config file from configs/project.conf
+5. Modify the parameters and save
+6. Run the experiment
+
+
 # Modify config files 
-Use the gui-plam.html in the browser.
-Load diel-light-pi/configs/project.conf
 Project config files : configs/project.conf
 Motion tracking config files : configs/motion.conf  
 For a more detailed guide on modifying motion tracking parameters, refer to https://motion-project.github.io/
