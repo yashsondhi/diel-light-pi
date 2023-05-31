@@ -200,7 +200,7 @@ class Plot:
             y1 = y0 + lact_dark[i]
             dax.plot([x, x], [y0, y1], 'k-')
             dax.set_xticks([])
-        dax.set_yticks(range(-day, 1))
+        dax.set_yticks(range(-day-1, 1))
         dax.set_yticklabels(range(day+1,-1,-1))
         dax.set_ylabel('day')
         dax.spines['right'].set_visible(False)
