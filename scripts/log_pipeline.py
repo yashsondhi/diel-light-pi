@@ -77,7 +77,7 @@ class Log:
             start_index = version_string.find("Motion") + len("Motion")
             end_index = version_string.find("Started", start_index)
             version = version_string[start_index:end_index].strip()
-            return version    
+            return version
     def extractCsv(self,infile,conf_type="first"):
         """takes a log file and extracts parameters to csv file.
         ___
@@ -95,6 +95,7 @@ class Log:
         os.chdir(path)
         mv=self.extract_motion_version(infile) # extracts motion version
         dfObj = pd.DataFrame(columns=['timestamp', 'pix_dif'])
+        mv=self.extract_motion_version(infile) # extracts motion version
         with open (infile, 'rt') as myfile:
             if(conf_type=="all"):
                 #takes all frames and gives pixel difference and timestamps 
@@ -149,8 +150,12 @@ class Log:
                     motion_start=str(jpg[0])[21:36]
                     FMT = '%b %d %H:%M:%S' # Format for motion, start and end
                     tdelta = dt.datetime.strptime(motion_end, FMT) - dt.datetime.strptime(motion_start, FMT) #calculates length of motion bout
-                    date_time_str = string[80:94]
-                    pix_dif = string[98:]
+                    if(float(mv[:-2])>=4.5):
+                        date_time_str = string[78:92]
+                        pix_dif = string[96:]
+                    elif(float(mv[:-2])<=4.5):
+                        date_time_str = string[80:94]
+                        pix_dif = string[98:]
                     date_time_obj = dt.datetime.strptime(date_time_str, '%Y%m%d%H%M%S')
                     time_stamp_arr[counter]=date_time_obj # saves time stamp
                     pix_diff_arr[counter]=float(pix_dif) # casts pixel difference as a float
@@ -158,7 +163,6 @@ class Log:
                 dfObj["timestamp"]=time_stamp_arr # appends numpy arrays into the dataframe
                 dfObj["pix_dif"]=pix_diff_arr
                 dfObj["motion_int"]=motion_int_arr
-                
             elif (conf_type=="all-field"):
             #takes all frames and gives image num
                 pattern = re.compile(".jpg", re.IGNORECASE)
