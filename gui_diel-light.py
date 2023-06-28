@@ -33,8 +33,8 @@ def save_config_file():
             "LOCATION": location_entry.get(),
             "ORGANISM": organism_entry.get(),
             "OUTPATH": output_entry.get(),
-            "TRIALNAME": trial_num_entry.get(),
-            "TRIALNUM": trial_name_entry.get(),
+            "TRIALNAME": trial_name_entry.get(),
+            "TRIALNUM": trial_num_entry.get(),
             "INTERACTIVE": interactive_var.get(),
             "AUTOSTART": auto_start_var.get(),
             "MOTIONPATH": config.get("MOTIONPATH", "configs/motion_best.conf"),  # Save the motion path to the config file
