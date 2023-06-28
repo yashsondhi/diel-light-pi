@@ -97,7 +97,7 @@ def update_gui_elements():
     output_entry.insert(tk.END, config.get("OUTPATH", ""))
 
     interactive_var.set(config.get("INTERACTIVE", True)) # by defult is set to True, turn off to enable auto start
-    auto_start_var.set(config.get("AUTOSTART", False))
+    auto_start_var.set(config.get("AUTOSTART", True))
 
     motion_file_label.config(text=config.get("MOTIONPATH", "configs/motion_best.conf"))
 
