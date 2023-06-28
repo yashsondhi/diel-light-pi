@@ -33,6 +33,8 @@ def save_config_file():
             "LOCATION": location_entry.get(),
             "ORGANISM": organism_entry.get(),
             "OUTPATH": output_entry.get(),
+            "TRIALNAME": trial_num_entry.get(),
+            "TRIALNUM": trial_name_entry.get(),
             "INTERACTIVE": interactive_var.get(),
             "AUTOSTART": auto_start_var.get(),
             "MOTIONPATH": config.get("MOTIONPATH", "configs/motion_best.conf"),  # Save the motion path to the config file
@@ -50,6 +52,8 @@ def run_experiment():
     project_name = project_entry.get()
     location = location_entry.get()
     organism = organism_entry.get()
+    trial_name = trial_name_entry.get()
+    trial_num =trial_num_entry.get()
     output_path = output_entry.get()
     interactive_mode = interactive_var.get()
     auto_start = auto_start_var.get()
@@ -81,7 +85,14 @@ def update_gui_elements():
 
     organism_entry.delete(0, tk.END)
     organism_entry.insert(tk.END, config.get("ORGANISM", ""))
-
+    
+    trial_name_entry.delete(0, tk.END)
+    trial_name_entry.insert(tk.END, config.get("TRIALNAME", ""))
+    
+    trial_num_entry.delete(0, tk.END)
+    trial_num_entry.insert(tk.END, config.get("TRIALNUM", ""))
+    
+    
     output_entry.delete(0, tk.END)
     output_entry.insert(tk.END, config.get("OUTPATH", ""))
 
@@ -154,7 +165,22 @@ output_label.pack()
 output_entry = tk.Entry(window)
 output_entry.pack()
 
-# Create Interactive Mode checkbox
+# Create Trial Name entry
+trial_name_label = tk.Label(window, text="Trial Name:")
+trial_name_label.pack()
+
+trial_name_entry = tk.Entry(window)
+trial_name_entry.pack()
+
+
+trial_num_label = tk.Label(window, text="Trial Num:")
+trial_num_label.pack()
+
+trial_num_entry = tk.Entry(window)
+trial_num_entry.pack()
+
+
+#Create Trial number entry
 
 # Create Interactive Mode checkbox
 interactive_var = tk.BooleanVar()
