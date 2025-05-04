@@ -3,10 +3,12 @@
 Creates activity detector images for the Rasberry pi to monitor diel activity of small objects
 # Setup
 1. Clone the git repository to your rasberry pi using git clone or download the files.  Navigate to the folder diel-light-pi
-2. Run `python3 run_diel-light.py --time` to update time if required.  
-3. Run `python3 run_diel-light.py --setup` to display output parameters for project.   
-4. If the project parameters require updating. Modify the `configs/project.conf`  
-5. Run `python3 run_diel-light.py --run`
+2. Install YAML dependencies for python (pip install PyYAML or sudo apt install python3-yaml)k
+3. Run `python run_diel-light.py --time` to update time if required.  
+4. Run `python run_diel-light.py --setup` to display output parameters for project.   
+5. If the project parameters require updating. Modify the `configs/project.conf`  
+6. Run `python run_diel-light.py --run`
+(Older versions of raspberry pi OS , may explicity need to call python3)
 
 # Run the GUI to modify the config files
 1. Open a terminal 
@@ -39,11 +41,12 @@ Bootable scripts
 5. Send IP address on boot : boot_email.py
 
 ## Auto booting Instructions: 
-Load these commands in /etc/rc.local to boot from startup : python3.8 PATH_TO:smooth_light_control.py
+Load these commands in /etc/rc.local to boot from startup : python PATH_TO:smooth_light_control.py
  
 For boot_email.py and auto start put the commands in example/crontab_files.files.txt in your own cronfile.
 Use crontab -e and add the lines of code, taking care to use the directory where your files are loaded. 
 If you have not installed diel-light-pi in the home directory, then change the cd command in @reboot sleep 60 && cd diel-light-pi && python3 run_diel-light_2.py --run
 
 ## Citation: 
-Preprint available at : https://doi.org/10.1101/2021.08.21.457197
+Sondhi, Y., Jo, N. J., Alpizar, B., Markee, A., Dansby, H. E., Currea, J. P., Fabian, S. T., Ruiz, C., Barredo, E., Allen, P., DeGennaro, M., Kawahara, A. Y. & Theobald, J. C. (2022). Portable locomotion activity monitor (pLAM): A cost-effective setup for robust activity tracking in small animals. Methods in Ecology and Evolution, 13, 805–812. https://doi.org/10.1111/2041-210X.13809
+
