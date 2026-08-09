@@ -1,0 +1,51 @@
+name: Update Last Updated Date (Changed Files Only)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-date:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Update last_modified_date in changed .md files only
+        run: |
+          DATE=$(date +"%Y-%m-%d")
+
+          # Get only the .md files that changed in this push
+          CHANGED_MD=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep '\.md$' || true)
+
+          if [ -z "$CHANGED_MD" ]; then
+            echo "No markdown files changed. Skipping."
+            exit 0
+          fi
+
+          for file in $CHANGED_MD; do
+            if [ -f "$file" ]; then
+              echo "Updating: $file"
+              if grep -q "last_modified_date:" "$file"; then
+                # Update existing field
+                sed -i "s/last_modified_date:.*/last_modified_date: ${DATE}/" "$file"
+              else
+                # Insert after the first `---` front matter opening
+                sed -i "0,/^---$/!{0,/^---$/s/^---$/---\nlast_modified_date: ${DATE}/}" "$file"
+              fi
+            fi
+          done
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add -A
+          git diff --staged --quiet || git commit -m "chore: auto update last_modified_date"
+          git push

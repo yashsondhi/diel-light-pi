@@ -5,34 +5,79 @@ nav_order: 1
 description: "The portable locomotion activity monitor is a low cost DIY activity monitor using Raspberry Pi's motion library and an Arducam."
 permalink: /
 ---
+_Last updated: August 9, 2026_ 
+{: .fs-2 .text-grey-dk-000 }
 
-This is a *bare-minimum* template to create a Jekyll site that uses the [Just the Docs] theme. You can easily set the created site to be published on [GitHub Pages] – the [README] file explains how to do that, along with other details.
+# diel-light-pi
+diel-light-pi is a low-cost, open-source [portable locomotion activity monitor (pLAM)](docs/about/specs/) for tracking the diel activity of small animals using a Raspberry Pi, using camera-based motion detection and programmable LED light control to automatically record when and how much your study animals are moving — under any light condition, in the lab or the field.
 
-If [Jekyll] is installed on your computer, you can also build and preview the created site *locally*. This lets you test changes before committing them, and avoids waiting for GitHub Pages.[^1] And you will be able to deploy your local build to a different platform than GitHub Pages.
+All the Pi scripts, configuration files, and analysis pipeline are **provided free and open source**, so you can build, share, and improve on these designs yourself!
 
-More specifically, the created site:
+We believe **studying the daily activity rhythms of small animals is fundamental to understanding life on earth**, and simply want this technology in the hands of as many researchers as possible.
 
-- uses a gem-based approach, i.e. uses a `Gemfile` and loads the `just-the-docs` gem
-- uses the [GitHub Pages / Actions workflow] to build and publish the site on GitHub Pages
 
-Other than that, you're free to customize sites that you create with this template, however you like. You can easily change the versions of `just-the-docs` and Jekyll it uses, as well as adding further plugins.
+{: .important-title }
+> Stay in Touch
+>
+> Are you using diel-light-pi in your research? Building your own setup? Please reach out and let us know! **Email us at Y A S H S O N D H I [ a t ] gmail.com** with subject "diel-light-pi."
 
-[Browse our documentation][Just the Docs] to learn more about how to use this theme.
 
-To get started with creating a site, simply:
+{: .important-title }
+> Cite This Work
+>
+> If you use diel-light-pi in your research, please cite our paper: Sondhi et al. (2022). Portable locomotion activity monitor (pLAM): A cost-effective setup for robust activity tracking in small animals. *Methods in Ecology and Evolution*, 13, 805–812. [https://doi.org/10.1111/2041-210X.13809](https://doi.org/10.1111/2041-210X.13809)
 
-1. click "[use this template]" to create a GitHub repository
-2. go to Settings > Pages > Build and deployment > Source, and select GitHub Actions
 
-If you want to maintain your docs in the `docs` directory of an existing project repo, see [Hosting your docs from an existing project repo](https://github.com/just-the-docs/just-the-docs-template/blob/main/README.md#hosting-your-docs-from-an-existing-project-repo) in the template README.
+See the [full specifications of what it can do here.](docs/about/specs/)
+Read [the blog post about how and why pLAM was built.](https://methodsblog.com/2022/03/03/how-do-you-measure-the-movement-of-tiny-insects/)
+Or [read the scientific paper](https://doi.org/10.1111/2041-210X.13809) describing the system and its validation!
 
-----
+![A Raspberry Pi camera-based pLAM setup monitoring a moth in a cage](#)
 
-[^1]: [It can take up to 10 minutes for changes to your site to publish after you push the changes to GitHub](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/creating-a-github-pages-site-with-jekyll#creating-your-site).
 
-[Just the Docs]: https://just-the-docs.github.io/just-the-docs/
-[GitHub Pages]: https://docs.github.com/en/pages
-[README]: https://github.com/just-the-docs/just-the-docs-template/blob/main/README.md
-[Jekyll]: https://jekyllrb.com
-[GitHub Pages / Actions workflow]: https://github.blog/changelog/2022-07-27-github-pages-custom-github-actions-workflows-beta/
-[use this template]: https://github.com/just-the-docs/just-the-docs-template/generate
+## Why Study Diel Activity?
+
+An animal's diel activity pattern — whether it is diurnal, nocturnal, crepuscular, or cathemeral — is one of the most fundamental windows into its biology, and tracking these patterns with a pLAM can reveal how animals respond to their environment in real time.
+
+### Activity Patterns Vary Enormously, Even Within a Single Group
+
+We often think of butterflies as day-flying and moths as night-flying, but there is a whole spectrum of variation — some butterflies fly at night, some moths fly during the day, and many species are only active at dusk or dawn — and understanding **why** this variation exists requires measuring the exact times and light conditions when each species is active, which is precisely what diel-light-pi was designed to do.
+
+### Small Animals Are Difficult to Track With Existing Tools
+
+Commercial camera traps and existing motion-capture systems are optimised for larger animals and fail to reliably detect the small, subtle movements of insects or spiders, while the few commercial solutions that do handle small animals are expensive, closed-source, and designed only for lab use — diel-light-pi fills this gap as an open-source, portable, low-cost system that works under any light condition, including complete darkness using infrared illumination invisible to most insects.
+
+### Diel Data Unlocks Ecological Insights
+
+Because insects tend to have short lives and limited ranges, their activity patterns provide super-localised data about environmental conditions, and combining activity data from dozens of species with climate, acoustic, or soil data can provide deep insights into how environments are changing — with a single pLAM running overnight capturing data that would otherwise require a researcher to sit up all night manually logging observations.
+
+
+## What it Does
+
+diel-light-pi runs on a Raspberry Pi and uses the open-source [Motion](https://motion-project.github.io/) library to continuously compare camera frames, logging a motion event and saving a photo or video clip whenever two consecutive images differ enough to indicate an animal has moved.
+
+![A pLAM activity plot showing motion events over a 24-hour period](#)
+
+For experiments that require controlled light environments, diel-light-pi also drives NeoPixel LED strips via `smooth_light_control.py`, letting you program gradual light/dark cycles that mimic natural dawn and dusk — or add artificial light pollution to study its effects on behaviour.
+
+Once your experiment is complete, the built-in analysis pipeline extracts all motion events from the logs, bins them into activity counts, and generates actogram-style plots so you can immediately visualise your animal's diel rhythm.
+
+![Example actogram output from the diel-light-pi analysis pipeline](#)
+
+
+# Set it Up Yourself!
+
+This documentation will walk you through everything you need to source, install, configure, and run your own pLAM setup on a Raspberry Pi.
+
+[Get started setting up diel-light-pi!](docs/building)
+
+After following these guides, you should be able to deploy your own activity monitors and begin collecting diel data for your study animals!
+
+
+# pLAM in the Field
+
+The pLAM was field-tested in Monteverde, Costa Rica, where six units ran simultaneously over two weeks at a biological station, collecting activity data for approximately 15 species over 10 nights despite fluctuating power, wind, and an abundance of moths.
+
+The system has also been validated against a commercial $4,000 infrared beam-based activity detector — and in some cases the pLAM was found to be *more* sensitive.
+
+![The research team deploying pLAMs at CIEE Monteverde](#)
