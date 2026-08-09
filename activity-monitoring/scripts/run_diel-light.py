@@ -106,8 +106,8 @@ def main():
 
     exit_flag=True
     if not silent_mode:
-    	run_setup=True
-    	exit_flag=False
+        run_setup=True
+        exit_flag=False
 
         #forces setup ,but skips exit setup
 
