@@ -1,6 +1,6 @@
 ---
-layout: default
-title: Setup
+title: Raspberry Pi Setup
+has_children: true
 last_modified_date: 
 nav_order: 3
 ---

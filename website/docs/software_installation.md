@@ -1,6 +1,9 @@
-_Last updated: August 9, 2026_ 
-{: .fs-2 .text-grey-dk-000 }
-
+---
+title: Installing Software
+parent: Setup
+last_modified_date: 
+nav_order: 4
+---
 # Motion & diel-light-pi Setup on Debian (ARM64 Bookworm)
 
 This guide walks you through setting up **Motion** and the **diel-light-pi** repository on a Debian-based ARM64 system (e.g., Raspberry Pi running Bookworm) and is recommended for Pi5 and up. 
