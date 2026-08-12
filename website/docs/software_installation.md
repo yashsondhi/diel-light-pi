@@ -1,6 +1,6 @@
 ---
 title: Installing Software
-last_modified_date: 2026-08-12 02:35:08 +0000
+last_modified_date: 2026-08-12 02:37:10 +0000
 nav_order: 4
 ---
 # Motion & diel-light-pi Setup on Debian (ARM64 Bookworm)
