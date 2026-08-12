@@ -1,7 +1,7 @@
 ---
 title: Software Requirements
 parent: Requirements
-last_modified_date: 2026-08-12 02:22:26 +0000
+last_modified_date: 2026-08-12 02:29:57 +0000
 nav_order: 2
 ---
 # Software Requirements
