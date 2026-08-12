@@ -4,7 +4,7 @@ layout: home
 nav_order: 1
 description: "The portable locomotion activity monitor is a low cost DIY activity monitor using Raspberry Pi's motion library and an Arducam."
 permalink: /
-last_modified_date: 2026-08-12 02:37:10 +0000
+last_modified_date: 2026-08-12 02:38:05 +0000
 ---
 # diel-light-pi
 diel-light-pi is a low-cost, open-source portable locomotion activity monitor (pLAM) for tracking the diel activity of small animals using a Raspberry Pi, using camera-based motion detection and programmable LED light control to automatically record when and how much your study animals are moving — under any light condition, in the lab or the field.
