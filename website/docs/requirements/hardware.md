@@ -1,7 +1,7 @@
 ---
 title: Hardware Requirements
 parent: Requirements
-last_modified_date: 2026-08-12 02:17:26 +0000
+last_modified_date: 2026-08-12 02:22:26 +0000
 nav_order: 1
 ---
 # Hardware Requirements
