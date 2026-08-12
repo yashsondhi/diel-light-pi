@@ -1,7 +1,7 @@
 ---
 title: Hardware Setup
 parent: Raspberry Pi Setup
-last_modified_date: 2026-08-12 02:35:08 +0000
+last_modified_date: 2026-08-12 02:37:10 +0000
 nav_order: 1
 ---
 # Raspberry Pi Hardware Setup
