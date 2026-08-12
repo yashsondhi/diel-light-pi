@@ -133,7 +133,8 @@ liquid:
 back_to_top: true
 back_to_top_text: "Back to top"
 
-footer_content: ''
+footer_content: "Copyright &copy; 2026 Yash Sondhi. Distributed under the <a href='https://github.com/yashsondhi/diel-light-pi/LICENSE'>GPL-3.0 license.</a>"
+
 
 # Footer last edited timestamp
 last_edit_timestamp: true # show or hide edit time - page must have `last_modified_date` defined in the frontmatter

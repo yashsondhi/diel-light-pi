@@ -1,6 +1,5 @@
 ---
 title: Installing Software
-parent: Setup
 last_modified_date: 
 nav_order: 4
 ---

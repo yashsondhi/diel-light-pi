@@ -1,0 +1,131 @@
+name: Update last_modified_date
+
+on:
+  push:
+    branches:
+      - website-documentation
+
+jobs:
+  update-last-modified:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # full history so first-commit edge case is handled
+
+      - name: Get changed markdown files
+        id: changed_files
+        run: |
+          # Check if there is a prior commit at all
+          COMMIT_COUNT=$(git rev-list --count HEAD)
+          echo "Total commits: $COMMIT_COUNT"
+
+          if [ "$COMMIT_COUNT" -le 1 ]; then
+            # First commit — diff against empty tree
+            CHANGED=$(git diff --name-only --diff-filter=AM 4b825dc642cb6eb9a060e54bf8d69288fbee4904 HEAD -- '*.md')
+          else
+            # Normal case — diff against parent(s), handles merge commits too
+            CHANGED=$(git diff --name-only --diff-filter=AM HEAD~1 HEAD -- '*.md')
+          fi
+
+          # Check if anything actually changed
+          if [ -z "$CHANGED" ]; then
+            echo "No markdown files changed, skipping."
+            echo "files=" >> $GITHUB_OUTPUT
+          else
+            echo "Changed markdown files:"
+            echo "$CHANGED"
+            echo "files<<EOF" >> $GITHUB_OUTPUT
+            echo "$CHANGED" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update last_modified_date in changed files
+        if: steps.changed_files.outputs.files != ''
+        run: |
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S +0000")
+          echo "Timestamp: $TIMESTAMP"
+
+          update_front_matter() {
+            local file="$1"
+
+            # Normalize Windows line endings
+            sed -i 's/\r//' "$file"
+
+            # Confirm file has front matter (starts with ---)
+            FIRST_LINE=$(head -n 1 "$file")
+            if [ "$FIRST_LINE" != "---" ]; then
+              echo "Skipping $file (no front matter)"
+              return
+            fi
+
+            # Find the line number of the closing ---
+            # Only look for the second --- (closing front matter)
+            CLOSING_LINE=$(awk 'NR>1 && /^---$/ {print NR; exit}' "$file")
+
+            if [ -z "$CLOSING_LINE" ]; then
+              echo "Skipping $file (front matter never closes)"
+              return
+            fi
+
+            if grep -q "^last_modified_date:" "$file"; then
+              # Update existing field only within front matter bounds
+              awk -v timestamp="$TIMESTAMP" -v closing="$CLOSING_LINE" '
+                NR <= closing && /^last_modified_date:/ {
+                  print "last_modified_date: " timestamp
+                  next
+                }
+                { print }
+              ' "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+              echo "Updated last_modified_date in $file"
+            else
+              # Insert before the closing --- of the front matter
+              awk -v timestamp="$TIMESTAMP" -v closing="$CLOSING_LINE" '
+                NR == closing {
+                  print "last_modified_date: " timestamp
+                }
+                { print }
+              ' "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+              echo "Inserted last_modified_date into $file"
+            fi
+          }
+
+          while IFS= read -r file; do
+            # Skip empty lines
+            if [ -z "$file" ]; then
+              continue
+            fi
+
+            # Skip files that don't exist (e.g. deleted in this push)
+            if [ ! -f "$file" ]; then
+              echo "Skipping $file (file not found, may have been deleted)"
+              continue
+            fi
+
+            # Skip empty files
+            if [ ! -s "$file" ]; then
+              echo "Skipping $file (file is empty)"
+              continue
+            fi
+
+            update_front_matter "$file"
+
+          done <<< "${{ steps.changed_files.outputs.files }}"
+
+      - name: Commit updated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit, all files may have been skipped."
+          else
+            git commit -m "chore: update last_modified_date [skip ci]"
+            git push
+          fi

@@ -1,4 +1,8 @@
-
+---
+title: Using the Repository
+last_modified_date: 
+nav_order: 5
+---
 # **Motion** and **diel-light-pi** repository usage
 ---
 ### Ensure that the terminal is in the diel-light-pi folder

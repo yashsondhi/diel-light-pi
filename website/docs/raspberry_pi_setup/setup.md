@@ -4,6 +4,5 @@ has_children: true
 last_modified_date: 
 nav_order: 3
 ---
-_Last updated: August 9, 2026_ 
-{: .fs-2 .text-grey-dk-000 }
-
+# Setup
+To set up your Raspberry Pi for Motion and begin measuring diel activity in your specimens, follow the pages below.

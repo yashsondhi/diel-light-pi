@@ -1,0 +1,70 @@
+.img-small   { 
+  width: 25%; 
+}
+.img-medium  { 
+  width: 50%; 
+}
+.img-large   { 
+  width: 75%; 
+}
+.img-full    { 
+  width: 100%; 
+}
+
+// Side-by-side image row
+.image-row {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  align-items: flex-start;
+
+  div {
+    flex: 1;               // each image takes equal width
+    text-align: center;
+  }
+
+  img {
+    width: 100%;           // fill the column
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  figcaption {
+    font-size: 0.8rem;
+    font-style: italic;
+    color: #666;
+    margin-top: 0.3rem;
+  }
+
+  // Responsive: stack on small screens
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: center;
+    
+    div{
+        width: 80%;
+    }
+  }
+}
+
+figure {
+  margin: 1rem 0;
+  text-align: center;
+}
+
+figcaption {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #666;
+  margin-top: 0.4rem;
+}
+
+figure img {
+  max-width: 100%;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+img {
+  width: 85%;
+}
