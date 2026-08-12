@@ -1,7 +1,7 @@
 ---
 title: Software Setup
 parent: Raspberry Pi Setup
-last_modified_date: 2026-08-12 02:29:57 +0000
+last_modified_date: 2026-08-12 02:31:14 +0000
 nav_order: 2
 ---
 # Installing Raspberry Pi Operating System
