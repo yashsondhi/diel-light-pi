@@ -35,7 +35,7 @@ Or [read the scientific paper][paper] describing the system and its validation!
 
 If you want a guide to using Raspberry Pi's to measure diel activity, just follow this website from top to bottom. 
 
-[Requirements for Raspberry Pi diel measuring system](docs/Requirements/requirements)
+[Requirements for Raspberry Pi diel measuring system](docs/requirements/requirements)
 
 ## Why Study Diel Activity?
 

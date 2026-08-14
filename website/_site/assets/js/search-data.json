@@ -2,217 +2,238 @@
     "doc": "About Us",
     "title": "About Us",
     "content": "About the developers . ",
-    "url": "/docs/about/about/",
+    "url": "/diel-light-pi/docs/about/about/",
     
     "relUrl": "/docs/about/about/"
   },"1": {
-    "doc": "Hardware Requirements",
-    "title": "Hardware Requirements",
-    "content": ". | Any desktop environment (ex. laptop running MacOS, Linux, or Windows) | Raspberry Pi 4/5, 2/4/8GB versions (note that this guide is for the Pi 5 and there may be some discrepancies if using Pi 4) | USB C charger | 64GB micro-sd card or greater | Any Micro SD card to USB adapter (to connect to the desktop environment) | HDMI cable + Monitor . | HDMI to Micro HDMI adapter if the cable is only HDMI to HDMI | . | USB Keyboard | USB mouse | Some version of Arducam (NOIR cut filter is recommended) | . Wireless keyboards and mouse may require additional setup. ",
-    "url": "/docs/requirements/hardware/",
+    "doc": "Booting Up",
+    "title": "Booting Up the Raspberry Pi 5",
+    "content": " ",
+    "url": "/diel-light-pi/docs/raspberry_pi_setup/boot/#booting-up-the-raspberry-pi-5",
     
-    "relUrl": "/docs/requirements/hardware/"
+    "relUrl": "/docs/raspberry_pi_setup/boot/#booting-up-the-raspberry-pi-5"
   },"2": {
-    "doc": "Hardware Requirements",
-    "title": "Required Parts",
-    "content": "(Prices are of July 2026) . The links below are just the ones that this lab has used. You can source your parts from your preferred vendors. | Part | Link | . | Arducam IR and Visible Light Camera | (Amazon) Arducam OV5647 with IR Cut ~$24 | . | Raspberry Pi 5 | (CanaKit) Raspberry Pi 5 2GB ~$65 | . | Raspberry Pi 5 Charger1 | (CanaKit) Raspberry Pi 27W Charger ~$13 | . | Micro SD Card2 | (B&amp;H Photo Video) Sandisk High Endurance 128 GB SD Card ~$35 | . | HDMI to Micro HDMI3 | (Amazon) HDMI to Micro HDMI Cable ~$6 | . | Micro SD Card to USB A Adapter | (Amazon) SD to USB A/USB C ~$8 | . ",
-    "url": "/docs/requirements/hardware/#required-parts",
+    "doc": "Booting Up",
+    "title": "Plugging in the Hardware",
+    "content": " ",
+    "url": "/diel-light-pi/docs/raspberry_pi_setup/boot/#plugging-in-the-hardware",
     
-    "relUrl": "/docs/requirements/hardware/#required-parts"
+    "relUrl": "/docs/raspberry_pi_setup/boot/#plugging-in-the-hardware"
   },"3": {
-    "doc": "Hardware Requirements",
-    "title": "Optional Parts (July 2026):",
-    "content": "Raspberry Pi 5 Kits . You can get kits to simplify the ordering process, but they typically come with a markup of ~$20. Here are two potential ones: . | (CanaKit) Raspberry Pi 5 2GB Kit (Missing Arducam) ~$160 | (Virilos) Raspberry Pi 5 2GB Kit (Missing Arducam) ~$110 . | We found that the Virilos case doesn’t really work with the Arducam cable as the hole is not centered on the connector, which means you have to bend the camera cable in an awkward direction and put some stress on it. | . | . IR Floodlight . The Arducam IR lights are dim, so using an IR floodlight usually makes dark environment images clearer. However, it’s also important to not get one that’s too bright since it can completely saturate the camera. The first one seems to be a good brightness from our testing. | (Amazon) IR Floodlight ~$28 | (Amazon) IR LED Ring 2x ~$13 | . Heatsinks . The Raspberry Pi heats up significantly with prolonged use, which can reduce performance in hot environments. Attaching heat sinks to critical areas can greatly improve heat dissapation. | (Amazon) Heatsinks 100x ~$12 | . | Any USB C charger should work, but Raspberry Pi recommends using a 27W one to not damage the Pi &#8617; . | Any card that can withstand many read/write operations is best for this, like SD cards made for dashcams &#8617; . | An HDMI to Micro HDMI adapter works as well if you already have an HDMI to HDMI cable &#8617; . | . ",
-    "url": "/docs/requirements/hardware/#optional-parts-july-2026",
+    "doc": "Booting Up",
+    "title": "Booting Up",
+    "content": " ",
+    "url": "/diel-light-pi/docs/raspberry_pi_setup/boot/",
     
-    "relUrl": "/docs/requirements/hardware/#optional-parts-july-2026"
+    "relUrl": "/docs/raspberry_pi_setup/boot/"
   },"4": {
     "doc": "Hardware Setup",
     "title": "Raspberry Pi Hardware Setup",
     "content": " ",
-    "url": "/docs/raspberry_pi_setup/hardware/#raspberry-pi-hardware-setup",
+    "url": "/diel-light-pi/docs/raspberry_pi_setup/hardware/#raspberry-pi-hardware-setup",
     
     "relUrl": "/docs/raspberry_pi_setup/hardware/#raspberry-pi-hardware-setup"
   },"5": {
     "doc": "Hardware Setup",
     "title": "Parts list",
-    "content": ". | Raspberry Pi . | Entire Arducam package . | OV5647 Arducam NOIR cut filter with white ribbon cable attached . | Orange ribbon cable with two different width ends . | 2x heatsinks . | . | . ",
-    "url": "/docs/raspberry_pi_setup/hardware/#parts-list",
+    "content": ". | Raspberry Pi An unopened Raspberry Pi 5 package. The Raspberry Pi 5 computer. | Entire Arducam package An unopened Arducam OV5647 package. | OV5647 Arducam NOIR cut filter with white ribbon cable attached The Arducam OV5647 camera. | Orange ribbon cable with two different width ends The included orange ribbon cable. | 2x heatsinks The included heatsinks. | . | . ",
+    "url": "/diel-light-pi/docs/raspberry_pi_setup/hardware/#parts-list",
     
     "relUrl": "/docs/raspberry_pi_setup/hardware/#parts-list"
   },"6": {
     "doc": "Hardware Setup",
     "title": "Connecting the Arducam",
     "content": "Make sure nothing is connected to power when working with electronics. If the Raspberry Pi is on and you modify the electrical connections, it could fry the components. | Take the Raspberry Pi and Arducam out of their packaging. | Take out the heatsinks in the Arducam packaging. | Take of the sticky protector on the heatsinks, and attach them to the backside of the Arducam IR Lights on the bronze circles. Heatsinks attached to the Arducam IR light pads. | With the Arducam now facing you, pull the black connection point connecting the white ribbon cable in the direction of the paper strip until the black connection point extends slightly. Black tab before lifting. Black tab after lifting. | Take out the white ribbon cable from the connector, and grab the orange ribbon cable in the Arducam packaging. | With the Arducam facing you, insert the rectangular side (wider side) of the orange ribbon cable into the black connection point, so that the gold connectors and the logo are facing towards you. Correct orientation of the orange ribbon cable. Cable fully inserted into the connector. | Close the black connection point and test the mechanical connection with a few light tugs. The orange ribbon cable should not move. Orange ribbon cable correctly installed in the Arducam. | Now orient the Raspberry Pi so that it is sitting flat on a surface and the USB ports are facing left. | Locate the leftmost tan and brown connector (should look like the white and black one on the camera), and lift up the brown connection tab. Location of ribbon cable connector on Raspberry Pi 5. | With the gold contacts facing left, insert the other end of the orange connector into the tan connector until it hits the bottom. It is okay if you can still see the gold connectors on the orange strip. Correct orientation of orange ribbon cable in Raspberry Pi. Orange ribbon cable fully inserted into Raspberry Pi. | Push down on the brownish tab to close. Test the mechanical connection again with a few tugs. Once again, the orange paper strip should not move. | . Arducam attached to Raspberry Pi. ",
-    "url": "/docs/raspberry_pi_setup/hardware/#connecting-the-arducam",
+    "url": "/diel-light-pi/docs/raspberry_pi_setup/hardware/#connecting-the-arducam",
     
     "relUrl": "/docs/raspberry_pi_setup/hardware/#connecting-the-arducam"
   },"7": {
     "doc": "Hardware Setup",
     "title": "Hardware Setup",
     "content": " ",
-    "url": "/docs/raspberry_pi_setup/hardware/",
+    "url": "/diel-light-pi/docs/raspberry_pi_setup/hardware/",
     
     "relUrl": "/docs/raspberry_pi_setup/hardware/"
   },"8": {
+    "doc": "Hardware Requirements",
+    "title": "Hardware Requirements",
+    "content": ". | Any desktop environment (ex. laptop running MacOS, Linux, or Windows) | Raspberry Pi 4/5, 2/4/8GB versions (note that this guide is for the Pi 5 and there may be some discrepancies if using Pi 4) | USB C charger | 64GB micro-sd card or greater | Any Micro SD card to USB adapter (to connect to the desktop environment) | HDMI cable + Monitor . | HDMI to Micro HDMI adapter if the cable is only HDMI to HDMI | . | USB Keyboard | USB mouse | Some version of Arducam (NOIR cut filter is recommended) | . Wireless keyboards and mouse may require additional setup. ",
+    "url": "/diel-light-pi/docs/requirements/hardware/",
+    
+    "relUrl": "/docs/requirements/hardware/"
+  },"9": {
+    "doc": "Hardware Requirements",
+    "title": "Required Parts",
+    "content": "(Prices are of July 2026) . The links below are just the ones that this lab has used. You can source your parts from your preferred vendors. | Part | Link | . | Arducam IR and Visible Light Camera | (Amazon) Arducam OV5647 with IR Cut ~$24 | . | Raspberry Pi 5 | (CanaKit) Raspberry Pi 5 2GB ~$65 | . | Raspberry Pi 5 Charger1 | (CanaKit) Raspberry Pi 27W Charger ~$13 | . | Micro SD Card2 | (B&amp;H Photo Video) Sandisk High Endurance 128 GB SD Card ~$35 | . | HDMI to Micro HDMI3 | (Amazon) HDMI to Micro HDMI Cable ~$6 | . | Micro SD Card to USB A Adapter | (Amazon) SD to USB A/USB C ~$8 | . ",
+    "url": "/diel-light-pi/docs/requirements/hardware/#required-parts",
+    
+    "relUrl": "/docs/requirements/hardware/#required-parts"
+  },"10": {
+    "doc": "Hardware Requirements",
+    "title": "Optional Parts (July 2026):",
+    "content": "Raspberry Pi 5 Kits . You can get kits to simplify the ordering process, but they typically come with a markup of ~$20. Here are two potential ones: . | (CanaKit) Raspberry Pi 5 2GB Kit (Missing Arducam) ~$160 | (Virilos) Raspberry Pi 5 2GB Kit (Missing Arducam) ~$110 . | We found that the Virilos case doesn’t really work with the Arducam cable as the hole is not centered on the connector, which means you have to bend the camera cable in an awkward direction and put some stress on it. | . | . IR Floodlight . The Arducam IR lights are dim, so using an IR floodlight usually makes dark environment images clearer. However, it’s also important to not get one that’s too bright since it can completely saturate the camera. The first one seems to be a good brightness from our testing. | (Amazon) IR Floodlight ~$28 | (Amazon) IR LED Ring 2x ~$13 | . Heatsinks . The Raspberry Pi heats up significantly with prolonged use, which can reduce performance in hot environments. Attaching heat sinks to critical areas can greatly improve heat dissapation. | (Amazon) Heatsinks 100x ~$12 | . | Any USB C charger should work, but Raspberry Pi recommends using a 27W one to not damage the Pi &#8617; . | Any card that can withstand many read/write operations is best for this, like SD cards made for dashcams &#8617; . | An HDMI to Micro HDMI adapter works as well if you already have an HDMI to HDMI cable &#8617; . | . ",
+    "url": "/diel-light-pi/docs/requirements/hardware/#optional-parts-july-2026",
+    
+    "relUrl": "/docs/requirements/hardware/#optional-parts-july-2026"
+  },"11": {
     "doc": "Home",
     "title": "diel-light-pi",
     "content": "diel-light-pi is a low-cost, open-source portable locomotion activity monitor (pLAM) for tracking the diel activity of small animals using a Raspberry Pi, using camera-based motion detection and programmable LED light control to automatically record when and how much your study animals are moving — under any light condition, in the lab or the field. All the Pi scripts, configuration files, and analysis pipeline are provided free and open source, so you can build, share, and improve on these designs yourself! . We believe studying the daily activity rhythms of small animals is fundamental to understanding life on earth, and simply want this technology in the hands of as many researchers as possible. Stay in Touch . Are you using diel-light-pi in your research? Building your own setup? Please reach out and let us know! Email us at yxs1621@case.edu with subject “diel-light-pi.” . Cite This Work . If you use diel-light-pi in your research, please cite our paper: Sondhi et al. (2022). Portable locomotion activity monitor (pLAM): A cost-effective setup for robust activity tracking in small animals. Methods in Ecology and Evolution, 13, 805–812. https://doi.org/10.1111/2041-210X.13809 . Read the blog post about how and why pLAM was built. Or read the scientific paper describing the system and its validation! . ",
-    "url": "/#diel-light-pi",
+    "url": "/diel-light-pi/#diel-light-pi",
     
     "relUrl": "/#diel-light-pi"
-  },"9": {
+  },"12": {
     "doc": "Home",
     "title": "Usage",
     "content": "If you want a guide to using Raspberry Pi’s to measure diel activity, just follow this website from top to bottom. Requirements for Raspberry Pi diel measuring system . ",
-    "url": "/#usage",
+    "url": "/diel-light-pi/#usage",
     
     "relUrl": "/#usage"
-  },"10": {
+  },"13": {
     "doc": "Home",
     "title": "Why Study Diel Activity?",
     "content": "An animal’s diel activity pattern — whether it is diurnal, nocturnal, crepuscular, or cathemeral — is one of the most fundamental windows into its biology, and tracking these patterns with a pLAM can reveal how animals respond to their environment in real time. Activity Patterns Vary Enormously, Even Within a Single Group . We often think of butterflies as day-flying and moths as night-flying, but there is a whole spectrum of variation — some butterflies fly at night, some moths fly during the day, and many species are only active at dusk or dawn — and understanding why this variation exists requires measuring the exact times and light conditions when each species is active, which is precisely what diel-light-pi was designed to do. Small Animals Are Difficult to Track With Existing Tools . Commercial camera traps and existing motion-capture systems are optimised for larger animals and fail to reliably detect the small, subtle movements of insects or spiders, while the few commercial solutions that do handle small animals are expensive, closed-source, and designed only for lab use — diel-light-pi fills this gap as an open-source, portable, low-cost system that works under any light condition, including complete darkness using infrared illumination invisible to most insects. Diel Data Unlocks Ecological Insights . Because insects tend to have short lives and limited ranges, their activity patterns provide super-localised data about environmental conditions, and combining activity data from dozens of species with climate, acoustic, or soil data can provide deep insights into how environments are changing — with a single pLAM running overnight capturing data that would otherwise require a researcher to sit up all night manually logging observations. ",
-    "url": "/#why-study-diel-activity",
+    "url": "/diel-light-pi/#why-study-diel-activity",
     
     "relUrl": "/#why-study-diel-activity"
-  },"11": {
+  },"14": {
     "doc": "Home",
     "title": "What it Does",
     "content": "diel-light-pi runs on a Raspberry Pi and uses the open-source Motion library to continuously compare camera frames, logging a motion event and saving a photo or video clip whenever two consecutive images differ enough to indicate an animal has moved. For experiments that require controlled light environments, diel-light-pi also drives NeoPixel LED strips via smooth_light_control.py, letting you program gradual light/dark cycles that mimic natural dawn and dusk — or add artificial light pollution to study its effects on behaviour. Once your experiment is complete, the built-in analysis pipeline extracts all motion events from the logs, bins them into activity counts, and generates actogram-style plots so you can immediately visualise your animal’s diel rhythm. ",
-    "url": "/#what-it-does",
+    "url": "/diel-light-pi/#what-it-does",
     
     "relUrl": "/#what-it-does"
-  },"12": {
+  },"15": {
     "doc": "Home",
     "title": "Set it Up Yourself!",
     "content": "This documentation will walk you through everything you need to source, install, configure, and run your own pLAM setup on a Raspberry Pi. Get started setting up diel-light-pi! . After following these guides, you should be able to deploy your own activity monitors and begin collecting diel data for your study animals! . ",
-    "url": "/#set-it-up-yourself",
+    "url": "/diel-light-pi/#set-it-up-yourself",
     
     "relUrl": "/#set-it-up-yourself"
-  },"13": {
+  },"16": {
     "doc": "Home",
     "title": "pLAM in the Field",
     "content": "The pLAM was field-tested in Monteverde, Costa Rica, where six units ran simultaneously over two weeks at a biological station, collecting activity data for approximately 15 species over 10 nights despite fluctuating power, wind, and an abundance of moths. The system has also been validated against a commercial $4,000 infrared beam-based activity detector — and in some cases the pLAM was found to be more sensitive. ",
-    "url": "/#plam-in-the-field",
+    "url": "/diel-light-pi/#plam-in-the-field",
     
     "relUrl": "/#plam-in-the-field"
-  },"14": {
+  },"17": {
     "doc": "Home",
     "title": "Home",
     "content": " ",
-    "url": "/",
+    "url": "/diel-light-pi/",
     
     "relUrl": "/"
-  },"15": {
+  },"18": {
     "doc": "Requirements",
     "title": "Requirements",
     "content": "To ensure that your pLAM setup runs smoothly, we recommend getting at least the specs listed in the following pages. ",
-    "url": "/docs/requirements/requirements/",
+    "url": "/diel-light-pi/docs/requirements/requirements/",
     
     "relUrl": "/docs/requirements/requirements/"
-  },"16": {
+  },"19": {
     "doc": "Raspberry Pi Setup",
     "title": "Setup",
     "content": "To set up your Raspberry Pi for Motion and begin measuring diel activity in your specimens, follow the pages below. ",
-    "url": "/docs/raspberry_pi_setup/setup/#setup",
+    "url": "/diel-light-pi/docs/raspberry_pi_setup/setup/#setup",
     
     "relUrl": "/docs/raspberry_pi_setup/setup/#setup"
-  },"17": {
+  },"20": {
     "doc": "Raspberry Pi Setup",
     "title": "Raspberry Pi Setup",
     "content": " ",
-    "url": "/docs/raspberry_pi_setup/setup/",
+    "url": "/diel-light-pi/docs/raspberry_pi_setup/setup/",
     
     "relUrl": "/docs/raspberry_pi_setup/setup/"
-  },"18": {
+  },"21": {
     "doc": "Software Requirements",
     "title": "Software Requirements",
     "content": ". | A laptop that can install and run the Raspberry Pi Imager | . | OS | Requirement | . | Windows | Windows 10 or above | . | Mac | Any modern macOS | . | Linux | None, can be installed in terminal | . | A stable internet connection for both the laptop and the Raspberry Pi | . ",
-    "url": "/docs/requirements/software/",
+    "url": "/diel-light-pi/docs/requirements/software/",
     
     "relUrl": "/docs/requirements/software/"
-  },"19": {
+  },"22": {
     "doc": "Software Setup",
     "title": "Installing Raspberry Pi Operating System",
     "content": " ",
-    "url": "/docs/raspberry_pi_setup/software/#installing-raspberry-pi-operating-system",
+    "url": "/diel-light-pi/docs/raspberry_pi_setup/software/#installing-raspberry-pi-operating-system",
     
     "relUrl": "/docs/raspberry_pi_setup/software/#installing-raspberry-pi-operating-system"
-  },"20": {
+  },"23": {
     "doc": "Software Setup",
     "title": "Parts List",
-    "content": ". | a desktop environment | a micro SD card Heatsinks attached to the Arducam IR light pads. | a micro SD to usb adapter Heatsinks attached to the Arducam IR light pads. | . Download the Imager . | Go to Raspberry Pi Imager Download and download the suggested version. | Install the downloaded software (follow the instructions and say yes/accept agreement) and press next for each step. You can choose to make a desktop shortcut, but it isn’t necessary. It just creates an icon on your homescreen. Click \"I accept the agreement\" to continue the installation. | After installing check the “Launch Raspberry Pi Imager” box after installing and press finish. Make sure to launch the Raspberry Pi imager after installation. | . Setting Up Download in Imager . Make sure the Raspberry Pi is turned off when plugging in and out the micro SD card. Taking out the SD card while the Raspberry Pi is still on could corrupt the SD card and damage the system. | Double click Raspberry Pi 5. Select the option at the top of the menu. | Scroll down and click on “Raspberry Pi OS (other)” Scroll down to find this option. | Scroll down and click on Raspberry Pi OS (Legacy, 64-bit) with a description that says “A port of Debian Bookworm…” and press next. You might have to scroll a little to find this. | Make sure your SD card is inserted, click on it, and press next. It’s okay if it has a little less storage than the stated amount on the micro SD card. Make sure to select the correct SD card. It can help to rename the micro SD card in your preferred file system. | Enter the Pi number with three digits. (Ex: Pi 1 would be 001) . | Choose Washington, D.C. as the capital and make sure that the time zone is America/New_York and the keyboard layout is “us”. | Enter your preferred username and password. If working in a lab, consult your PI. | Press skip customization and then “write”, and then “I understand, Erase and Write”. | Wait for the download to finish, and press Finish. | Take out the SD card. | . ",
-    "url": "/docs/raspberry_pi_setup/software/#parts-list",
+    "content": ". | a desktop environment | a micro SD card Heatsinks attached to the Arducam IR light pads. | a micro SD to usb adapter Heatsinks attached to the Arducam IR light pads. | . Download the Imager . | Go to Raspberry Pi Imager Download and download the suggested version. | Install the downloaded software (follow the instructions and say yes/accept agreement) and press next for each step. You can choose to make a desktop shortcut, but it isn’t necessary. It just creates an icon on your homescreen. Click \"I accept the agreement\" to continue the installation. | After installing check the “Launch Raspberry Pi Imager” box after installing and press finish. Make sure to launch the Raspberry Pi imager after installation. | . Setting Up Download in Imager . Make sure the Raspberry Pi is turned off when plugging in and out the micro SD card. Taking out the SD card while the Raspberry Pi is still on could corrupt the SD card and damage the system. | Double click Raspberry Pi 5. Select the option at the top of the menu. | Scroll down and click on “Raspberry Pi OS (other)” Scroll down to find this option. | Scroll down and click on Raspberry Pi OS (Legacy, 64-bit) with a description that says “A port of Debian Bookworm…” and press next. You might have to scroll a little to find this. | Make sure your SD card is inserted, click on it, and press next. It’s okay if it has a little less storage than the stated amount on the micro SD card. Make sure to select the correct SD card. It can help to rename the micro SD card in your preferred file system. | Enter the preferred name for the Raspberry Pi. Make sure to select the correct SD card. It can help to rename the micro SD card in your preferred file system. | Choose your country’s capital city and your timezone, and ensure the keyboard layout is “us”. Make sure to select the correct SD card. It can help to rename the micro SD card in your preferred file system. | Enter a username and password if needed. Make sure to select the correct SD card. It can help to rename the micro SD card in your preferred file system. | Press next on the WiFi screen, and enable SSH if you want to remote access the Raspberry Pi. Leave the checkbox on “Use Password Authentication”. An unopened Raspberry Pi 5 package. The Raspberry Pi 5 computer. | An unopened Raspberry Pi 5 package. The Raspberry Pi 5 computer. | Wait for the download to finish, and press Finish. Make sure to select the correct SD card. It can help to rename the micro SD card in your preferred file system. | Take out the SD card. If you can't pull out the micro SD card, you need to push it in and release. The micro SD card will then pop out for you to grab. Otherwise, just pull it out. | . ",
+    "url": "/diel-light-pi/docs/raspberry_pi_setup/software/#parts-list",
     
     "relUrl": "/docs/raspberry_pi_setup/software/#parts-list"
-  },"21": {
+  },"24": {
     "doc": "Software Setup",
     "title": "Setting Up the Raspberry Pi Imaging System",
     "content": "BEFORE YOU DO ANYTHING WITH THE CAMERA WIRING, MAKE SURE THE RASPBERRY PI IS TURNED OFF AND UNPLUGGED . | Put the SD card into the SD card reader of the Raspberry Pi (with the Pi logo facing toward you, you should see the black side of the SD card). | Plug the HDMI and power cable into the Pi. | After plugging the Pi in, it should automatically turn on. | Change the country to United States, langauge to American English, and timezone to Eastern. Check the “Use English language” and “Use US keyboard” boxes and press next. | If not already created, create a user for the Pi, and enter your preferred username and password. If working in a lab, consult your PI. And press OK if there is a popup. | Skip the WiFi network selection and software update, and press restart. | After the Pi boots up again, in the top right click on the wifi symbol (The two red x’s with grey lines coming vertically from them) and click on your desired wifi connection. | For univeristy networks that require a username and password, . | change the Authentication to “Protected EAP (PEAP)” | check the “No CA certificate is required” box | enter your username and password | press enter . | To confirm: a grey box should pop up in the top right saying that you’ve connected to (insert WiFi name). If not, repeat this step and ensure that you’ve entered your credentials correctly. | . | . | . Continue to the software installation page to continue setting up diel-light-pi. ",
-    "url": "/docs/raspberry_pi_setup/software/#setting-up-the-raspberry-pi-imaging-system",
+    "url": "/diel-light-pi/docs/raspberry_pi_setup/software/#setting-up-the-raspberry-pi-imaging-system",
     
     "relUrl": "/docs/raspberry_pi_setup/software/#setting-up-the-raspberry-pi-imaging-system"
-  },"22": {
+  },"25": {
     "doc": "Software Setup",
     "title": "Software Setup",
     "content": " ",
-    "url": "/docs/raspberry_pi_setup/software/",
+    "url": "/diel-light-pi/docs/raspberry_pi_setup/software/",
     
     "relUrl": "/docs/raspberry_pi_setup/software/"
-  },"23": {
+  },"26": {
     "doc": "Installing Software",
     "title": "Motion &amp; diel-light-pi Setup on Debian (ARM64 Bookworm)",
     "content": "This guide walks you through setting up Motion and the diel-light-pi repository on a Debian-based ARM64 system (e.g., Raspberry Pi running Bookworm) and is recommended for Pi5 and up. ",
-    "url": "/docs/software_installation/#motion--diel-light-pi-setup-on-debian-arm64-bookworm",
+    "url": "/diel-light-pi/docs/software_installation/#motion--diel-light-pi-setup-on-debian-arm64-bookworm",
     
     "relUrl": "/docs/software_installation/#motion--diel-light-pi-setup-on-debian-arm64-bookworm"
-  },"24": {
+  },"27": {
     "doc": "Installing Software",
     "title": "Update the System",
     "content": "Update and upgrade all installed packages: . sudo apt update &amp;&amp; sudo apt upgrade -y . ",
-    "url": "/docs/software_installation/#update-the-system",
+    "url": "/diel-light-pi/docs/software_installation/#update-the-system",
     
     "relUrl": "/docs/software_installation/#update-the-system"
-  },"25": {
+  },"28": {
     "doc": "Installing Software",
     "title": "Install Motion",
     "content": "Install Motion Package . sudo apt install motion -y . If this does not work, follow the steps below. Otherwise, continue to the next section. 1. Download the Motion Package . Download the motion package for ARM64 Bookworm from the official or trusted source. 2. Install the Package with gdebi . sudo gdebi &lt;motion-package&gt;.deb . Replace &lt;motion-package&gt;.deb with the actual filename. You may need to download gedbi with apt and make sure you use the correct build. For Pi5’s it is usually bookworm arm64 . 3. Install Build Dependencies (Optional, for source builds) . sudo apt-get install autoconf automake autopoint build-essential pkgconf libtool libzip-dev libjpeg-dev git libavformat-dev libavcodec-dev libavutil-dev libswscale-dev libavdevice-dev libwebp-dev gettext libmicrohttpd-dev libcamera-tools libcamera-dev libcamera-v4l2 Double check the motion page (https://motion-project.github.io/motion_build.html) . Adjust the list based on your build requirements. ",
-    "url": "/docs/software_installation/#install-motion",
+    "url": "/diel-light-pi/docs/software_installation/#install-motion",
     
     "relUrl": "/docs/software_installation/#install-motion"
-  },"26": {
+  },"29": {
     "doc": "Installing Software",
     "title": "🔍 Verify the Camera",
     "content": "Ensure the USB or CSI camera is connected. rpicam-still --list-camera . | If no camera is detected, unplug and reconnect it. | MAKE SURE TO TURN OFF THE PI BEFORE DISCONNECTING AND RECONNECTING | . Test camera with rpicam . rpicam-still -t 0 . | Confirm the camera feed is visible. | To stop, go back to the terminal and press CTRL+C to quit | . Take an image with a 5 second preview . rpicam-still -t 5000 -o test.jpg . ",
-    "url": "/docs/software_installation/#-verify-the-camera",
+    "url": "/diel-light-pi/docs/software_installation/#-verify-the-camera",
     
     "relUrl": "/docs/software_installation/#-verify-the-camera"
-  },"27": {
+  },"30": {
     "doc": "Installing Software",
     "title": "Set Up diel-light-pi",
     "content": "1. Clone the Repository . git clone https://github.com/yashsondhi/diel-light-pi.git cd diel-light-pi . 2. Install YAML Support . sudo apt-get install python3-yaml . pip install pyyaml may not work on this platform, so use apt. 3. Verify installation . Go back to the terminal and make sure that you’re in the “diel-light-pi” folder. If not, type . cd .. until the text before the cursor is . pi@raspberrypi:/ . Then type . cd home cd pi cd diel-light-pi ls . If nothing shows up underneath the command, try to redownload the library. You’re Done! . | Motion is installed and tested. | diel-light-pi is cloned. | YAML dependencies are in place. | . You can now begin configuring and using the diel-light-pi scripts for light tracking and automation. 🛠 Need help? Open an issue on the GitHub repository or post to the relevant community forums. ",
-    "url": "/docs/software_installation/#set-up-diel-light-pi",
+    "url": "/diel-light-pi/docs/software_installation/#set-up-diel-light-pi",
     
     "relUrl": "/docs/software_installation/#set-up-diel-light-pi"
-  },"28": {
+  },"31": {
     "doc": "Installing Software",
     "title": "Installing Software",
     "content": " ",
-    "url": "/docs/software_installation/",
+    "url": "/diel-light-pi/docs/software_installation/",
     
     "relUrl": "/docs/software_installation/"
-  },"29": {
+  },"32": {
     "doc": "Using the Repository",
     "title": "Motion and diel-light-pi repository usage",
     "content": ". Ensure that the terminal is in the diel-light-pi folder . Go back to the terminal and make sure that you’re in the “diel-light-pi” folder. The command line should say something like . pi@raspberrypi:~/diel-light-pi/ . If not, type . cd .. until the text before the cursor is . pi@raspberrypi:/ . Then type . cd home cd pi cd diel-light-pi ls . If nothing shows up underneath the command, try to redownload the library. — . Run diel-light-pi program . To run the diel-light-pi program, type . python gui_diel-light.py --run . | In the box that pops up, click “Open Config File”, double click configs, and then double click “project.conf”. | Click “Open Motion File” and double click “motion_best.conf”. | Change the filled in boxes to match your experiment. For the output folder name, create a descriptive name so that you can easily find where the photos are stored. For the trial name, enter a descriptive name for your trial (constants and changes). You can leave the trial number blank if doing multiple trials and the script will automatically count up for you. Or, you can manually enter a trial number. | Keep interactive mode and auto start on. Click “Save Config File” and then click “Run Experiment” to start gathering photos. | To turn off the motion capture, in the terminal that pops up, type CTRL+C. To close the main terminal, close the diel-light-pi config application (grey box that popped up when you entered “–run” or type CTRL+C. The saved images should be in “/home/pi/diel-light-pi//\", where is the output folder name you specified and is the trial number. | . Editing config files . Currently, the motion imaging system is set to save a photo within a “motion” with the greatest difference in pixels. A single motion has a maximum length of one minute, where there is continuous movement in the frame at all times. If you want to configure the file, please look at the documentation and look into the Motion Detection General Info variables. After doing this, make sure to make a copy of the motion.conf file and rename it to a preferred name. To update this to your project, double click the “Open Motion File” and double click “.conf\", where is the configuration file name that you just entered. ",
-    "url": "/docs/usage/#motion-and-diel-light-pi-repository-usage",
+    "url": "/diel-light-pi/docs/usage/#motion-and-diel-light-pi-repository-usage",
     
     "relUrl": "/docs/usage/#motion-and-diel-light-pi-repository-usage"
-  },"30": {
+  },"33": {
     "doc": "Using the Repository",
     "title": "Using the Repository",
     "content": " ",
-    "url": "/docs/usage/",
+    "url": "/diel-light-pi/docs/usage/",
     
     "relUrl": "/docs/usage/"
   }

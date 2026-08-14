@@ -50,8 +50,11 @@ jobs:
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
+        working-directory: website
         env:
           JEKYLL_ENV: production
+      - name: Debug - Check assets exist  # ← remove this after confirming it works
+        run: ls -la website/_site/assets/ || echo "NO ASSETS FOUND"
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v3
