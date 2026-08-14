@@ -47,17 +47,20 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
+      - name: Debug - Show website folder structure
+        run: find website/ -type f | head -50
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         working-directory: website
         env:
           JEKYLL_ENV: production
-      - name: Debug - Check assets exist  # ← remove this after confirming it works
-        run: ls -la website/_site/assets/ || echo "NO ASSETS FOUND"
+
+      - name: Debug - Show full _site contents
+        run: find website/_site/ -type f | head -50
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: website/_site
 
