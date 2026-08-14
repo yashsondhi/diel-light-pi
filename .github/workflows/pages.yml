@@ -49,16 +49,16 @@ jobs:
         id: pages
         uses: actions/configure-pages@v5
       - name: Debug - Show website folder structure
-        run: find website/ -type f | head -50
+        run: find . -type f | head -50    # ← use . instead of website/
+        working-directory: website         # already set by default, just use .
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         working-directory: website
         env:
           JEKYLL_ENV: production
-
       - name: Debug - Show full _site contents
-        run: find website/_site/ -type f | head -50
+        run: find _site/ -type f | head -50    # ← use _site/ not website/_site/
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v5
