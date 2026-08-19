@@ -38,6 +38,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -45,20 +46,18 @@ jobs:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
           cache-version: 2 # Increment this number if you need to re-download cached gems
           working-directory: '${{ github.workspace }}/website'
+
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
-      - name: Debug - Show website folder structure
-        run: find . -type f | head -50    # ← use . instead of website/
-        working-directory: website         # already set by default, just use .
+
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         working-directory: website
         env:
           JEKYLL_ENV: production
-      - name: Debug - Show full _site contents
-        run: find _site/ -type f | head -50    # ← use _site/ not website/_site/
+
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v5

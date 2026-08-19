@@ -9,14 +9,14 @@ nav_order: 1
 - Raspberry Pi
     <figure class="image-row">
         <div>
-            <img src="#" 
+            <img src="{{ site.baseurl }}/assets/hardware/Raspberry_Pi_Box.png" 
                 alt="Image of Raspberry Pi 5 package">
             <figcaption>
                 An unopened Raspberry Pi 5 package.
             </figcaption>
         </div>
         <div>
-            <img src="#" 
+            <img src="{{ site.baseurl }}/assets/hardware/Raspberry_Pi.png" 
                 alt="Image of Rasbperry Pi 5 Board">
             <figcaption>
                 The Raspberry Pi 5 computer.
@@ -26,7 +26,7 @@ nav_order: 1
 
 - Entire Arducam package
     <figure>
-        <img src="#" 
+        <img src="{{ site.baseurl }}/assets/hardware/Arducam_Box.png" 
             alt="Image of Arducam OV5647 package">
         <figcaption>
             An unopened Arducam OV5647 package.
@@ -35,7 +35,7 @@ nav_order: 1
 
   - OV5647 Arducam NOIR cut filter with white ribbon cable attached
     <figure>
-        <img src="#" 
+        <img src="{{ site.baseurl }}/assets/hardware/Arducam.png" 
             alt="Image of Arducam OV5647">
         <figcaption>
             The Arducam OV5647 camera.
@@ -44,7 +44,7 @@ nav_order: 1
 
   - Orange ribbon cable with two different width ends
     <figure>
-        <img src="#" 
+        <img src="{{ site.baseurl }}/assets/hardware/Orange_Ribbon_Cable.png" 
             alt="Image of Arducam OV5647 orange ribbon cable ">
         <figcaption>
             The included orange ribbon cable.
@@ -53,7 +53,7 @@ nav_order: 1
 
   - 2x heatsinks
     <figure>
-        <img src="#" 
+        <img src="{{ site.baseurl }}/assets/hardware/Included_Heatsinks.png" 
             alt="Image of included heatsinks">
         <figcaption>
             The included heatsinks.
@@ -68,7 +68,7 @@ Make sure nothing is connected to power when working with electronics. If the Ra
 2. Take out the heatsinks in the Arducam packaging.
 3. Take of the sticky protector on the heatsinks, and attach them to the backside of the Arducam IR Lights on the bronze circles.
     <figure>
-        <img src="#" 
+        <img src="{{ site.baseurl }}/assets/hardware/Heatsinks_Attached.png" 
             alt="Image of attached heatsinks">
         <figcaption>
             Heatsinks attached to the Arducam IR light pads.
@@ -78,14 +78,14 @@ Make sure nothing is connected to power when working with electronics. If the Ra
 4. With the Arducam now facing you, pull the black connection point connecting the white ribbon cable in the direction of the paper strip until the black connection point extends slightly.
     <figure class="image-row">
         <div>
-            <img src="#" 
+            <img src="{{ site.baseurl }}/assets/hardware/White_Black_Connector.png" 
                 alt="Image of black tab with white ribbon cable">
             <figcaption>
                 Black tab before lifting.
             </figcaption>
         </div>
         <div>
-            <img src="#" 
+            <img src="{{ site.baseurl }}/assets/hardware/Black_Tab_Open.png" 
                 alt="Image of black tab lifted">
             <figcaption>
                 Black tab after lifting.
@@ -97,14 +97,14 @@ Make sure nothing is connected to power when working with electronics. If the Ra
 6. With the Arducam facing you, insert the rectangular side (wider side) of the orange ribbon cable into the black connection point, so that the gold connectors and the logo are facing towards you. 
     <figure class="image-row">
         <div>
-            <img src="#" 
+            <img src="{{ site.baseurl }}/assets/hardware/Arducam_Orange_Correct.png" 
                 alt="Arducam and orange ribbon cable in correct orientation">
             <figcaption>
                 Correct orientation of the orange ribbon cable.
             </figcaption>
         </div>
         <div>
-            <img src="#" 
+            <img src="{{ site.baseurl }}/assets/hardware/Arducam_Orange_Inserted.png" 
                 alt="Orange ribbon cable inserted">
             <figcaption>
                 Cable fully inserted into the connector.
@@ -114,7 +114,7 @@ Make sure nothing is connected to power when working with electronics. If the Ra
 
 7. Close the black connection point and test the mechanical connection with a few light tugs. The orange ribbon cable should not move. 
     <figure>
-        <img src="#" 
+        <img src="{{ site.baseurl }}/assets/hardware/Black_Tab_Closed.png" 
             alt="Image of closed black connection tab with orange ribbon cable inside">
         <figcaption>
             Orange ribbon cable correctly installed in the Arducam.
@@ -124,7 +124,7 @@ Make sure nothing is connected to power when working with electronics. If the Ra
 8. Now orient the Raspberry Pi so that it is sitting flat on a surface and the USB ports are facing left. 
 9.  Locate the leftmost tan and brown connector (should look like the white and black one on the camera), and lift up the brown connection tab.
     <figure>
-        <img src="#" 
+        <img src="{{ site.baseurl }}/assets/hardware/RPi_Connector_Circled.png" 
             alt="Image of Raspberry Pi facing left with a ribbon cable connector circled">
         <figcaption>
             Location of ribbon cable connector on Raspberry Pi 5.
@@ -134,14 +134,14 @@ Make sure nothing is connected to power when working with electronics. If the Ra
 10. With the gold contacts facing left, insert the other end of the orange connector into the tan connector until it hits the bottom. It is okay if you can still see the gold connectors on the orange strip. 
     <figure class="image-row">
         <div>
-            <img src="#" 
+            <img src="{{ site.baseurl }}/assets/hardware/RPi_Orange_Correct.png" 
                 alt="Image of the orange ribbon cable facing the correct direction">
             <figcaption>
                 Correct orientation of orange ribbon cable in Raspberry Pi.
             </figcaption>
         </div>
         <div>
-            <img src="#" 
+            <img src="{{ site.baseurl }}/assets/hardware/RPi_Orange_Inserted.png" 
                 alt="Image of orange ribbon cable correctly installed in the Raspberry Pi">
             <figcaption>
                 Orange ribbon cable fully inserted into Raspberry Pi.
@@ -151,9 +151,9 @@ Make sure nothing is connected to power when working with electronics. If the Ra
 
 11. Push down on the brownish tab to close. Test the mechanical connection again with a few tugs. Once again, the orange paper strip should not move. 
 <figure>
-    <img src="#" 
+    <img src="{{ site.baseurl }}/assets/hardware/Final_Assembly.png" 
         alt="Image of Raspberry Pi and Arducam connected by orange ribbon cable">
     <figcaption>
-        Arducam attached to Raspberry Pi.
+        Completed setup of an Arducam connected to a Raspberry Pi 5.
     </figcaption>
 </figure>
