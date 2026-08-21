@@ -12,7 +12,7 @@ nav_order: 3
 - Micro HDMI to HDMI cable (or micro HDMI to HDMI adapter and then HDMI to HDMI cable) 
 
 ## Plugging in the Hardware
-Before doing changing anything physical (hardware) with the Raspberry Pi, make sure it is turned **OFF**.
+Before doing changing anything physical (hardware) with the Raspberry Pi, make sure it is turned **OFF**. Also, be careful when handling the orange ribbon cable.
 {: .warning}
 
 1. Put the micro SD card into the micro SD card reader of the Raspberry Pi, on the bottom side of the Pi. 
@@ -33,7 +33,25 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
         </div>
     </figure>
 
-2. Plug the USB C power cable into the bottom left port of the Raspberry Pi (left red box), and the micro HDMI cable into the middle metal connector (right red box). 
+2. Plug in the USB keyboard and mouse into any of the USB ports.
+    <figure class="image-row">
+        <div>
+            <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/USB_Ports.png" 
+                alt="Image of a red box around the USB ports on a Raspberry Pi 5">
+            <figcaption>
+                Plug in any USB devices here.
+            </figcaption>
+        </div>
+        <div>
+            <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/USB_Port_with_Dongle.png" 
+                alt="Image of two usb devices plugged into the Raspberry Pi 5">
+            <figcaption>
+                A USB keyboard and mouse pair plugged into the Raspberry Pi.
+            </figcaption>
+        </div>
+    </figure>
+
+3. Plug the USB C power cable into the bottom left port of the Raspberry Pi (left red box), and the micro HDMI cable into the middle metal connector (right red box). 
     <figure class="image-row">
         <div>
             <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/USBC_MicroHDMI_Connectors.png" 
@@ -51,7 +69,7 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
         </div>
     </figure>
     
-3. After plugging the Pi in, it should automatically turn on. 
+4. After plugging the Pi in, it should automatically turn on. 
     <figure>
         <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/LED_On.png" 
             alt="Image of the LED indicator on the Raspberry Pi as Green">
@@ -60,7 +78,7 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
         </figcaption>
     </figure>
     
-4. Change the country to United States, langauge to American English, and timezone to Eastern. Check the "Use English language" and "Use US keyboard" boxes and press next.
+5. Change the country to United States, langauge to American English, and timezone to Eastern. Check the "Use English language" and "Use US keyboard" boxes and press next.
     <figure>
         <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/Final_Assembly.png" 
             alt="Image of Raspberry Pi and Arducam connected by orange ribbon cable">
@@ -69,7 +87,7 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
         </figcaption>
     </figure>
     
-5. If not already created, create a user for the Pi, and enter your preferred username and password. If working in a lab, consult your PI. And press OK if there is a popup. 
+6. If not already created, create a user for the Pi, and enter your preferred username and password. If working in a lab, consult your PI. And press OK if there is a popup. 
     <figure>
         <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/Final_Assembly.png" 
             alt="Image of Raspberry Pi and Arducam connected by orange ribbon cable">
@@ -78,7 +96,7 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
         </figcaption>
     </figure>
     
-6. Skip the WiFi network selection and software update, and press restart.
+7. Skip the WiFi network selection and software update, and press restart.
     <figure>
         <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/Final_Assembly.png" 
             alt="Image of Raspberry Pi and Arducam connected by orange ribbon cable">
@@ -87,7 +105,7 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
         </figcaption>
     </figure>
     
-7. After the Pi boots up again, in the top right click on the wifi symbol (The two red x's with grey lines coming vertically from them) and click on your desired wifi connection.
+8. After the Pi boots up again, in the top right click on the wifi symbol (The two red x's with grey lines coming vertically from them) and click on your desired wifi connection.
     <figure>
         <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/hardware/Final_Assembly.png" 
             alt="Image of Raspberry Pi and Arducam connected by orange ribbon cable">
@@ -96,7 +114,7 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
         </figcaption>
     </figure>
     
-8. For univeristy networks that require a username and password, 
+9.  For univeristy networks that require a username and password, 
    1. change the Authentication to "Protected EAP (PEAP)"
    2. check the "No CA certificate is required" box
    3. enter your username and password  
