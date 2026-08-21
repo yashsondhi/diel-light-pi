@@ -1,17 +1,8 @@
-.img-small   { 
-  width: 25%; 
-}
-.img-medium  { 
-  width: 50%; 
-}
-.img-large   { 
-  width: 75%; 
-}
-.img-full    { 
-  width: 100%; 
-}
+.img-small  { width: calc(var(--img-scale) * 0.25); }
+.img-medium { width: calc(var(--img-scale) * 0.50); }
+.img-large  { width: calc(var(--img-scale) * 0.75); }
+.img-full   { width: var(--img-scale); }
 
-// Side-by-side image row
 .image-row {
   display: flex;
   gap: 1rem;
@@ -19,12 +10,12 @@
   align-items: flex-start;
 
   div {
-    flex: 1;               // each image takes equal width
+    flex: 1;
     text-align: center;
   }
 
   img {
-    width: 100%;           // fill the column
+    width: 100%;
     border-radius: 4px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   }
@@ -36,14 +27,11 @@
     margin-top: 0.3rem;
   }
 
-  // Responsive: stack on small screens
   @media (max-width: 600px) {
     flex-direction: column;
     align-items: center;
-    
-    div{
-        width: 80%;
-    }
+
+    div { width: 80%; }
   }
 }
 
@@ -59,12 +47,65 @@ figcaption {
   margin-top: 0.4rem;
 }
 
-figure img {
+:root {
+  --img-scale: 90%;
+}
+
+// ── Apply scale variable to all content images ───────────────
+.main-content img,
+.main-content figure img {
+  width: var(--img-scale);
   max-width: 100%;
   border-radius: 4px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: width 0.2s ease;
 }
 
-img {
-  width: 85%;
+// ── image-row images stay full width within their column ─────
+.main-content .image-row img {
+  width: 100%;
+  transition: none;
+}
+
+// ── Widget styles ─────────────────────────────────────────────
+#img-size-control {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: #f6f8fa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.82rem;
+  font-family: inherit;
+  color: #444;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 1.5rem;
+
+  input[type="range"] {
+    flex: 1;
+    min-width: 0;
+    cursor: pointer;
+    accent-color: #0969da;
+  }
+
+  input[type="number"] {
+    width: 3.5rem;
+    padding: 0.2rem 0.4rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.82rem;
+    text-align: center;
+    -moz-appearance: textfield;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+  }
+
+  span {
+    white-space: nowrap;
+    color: #555;
+  }
 }

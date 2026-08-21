@@ -1,0 +1,8 @@
+<script>
+  (function () {
+    var saved = localStorage.getItem("imgScale");
+    if (saved) {
+      document.documentElement.style.setProperty("--img-scale", saved + "%");
+    }
+  })();
+</script>
