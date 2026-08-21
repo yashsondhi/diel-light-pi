@@ -23,32 +23,6 @@ sudo apt update && sudo apt upgrade -y
 ```bash
 sudo apt install motion -y
 ```
-<u>If this does not work, follow the steps below. Otherwise, continue to the next section.</u>
-### 1. Download the Motion Package
-Download the `motion` package for **ARM64 Bookworm** from the official or trusted source.
-
-### 2. Install the Package with `gdebi`
-
-
-```bash
-sudo gdebi <motion-package>.deb
-```
-*Replace `<motion-package>.deb` with the actual filename.*
-
-You may need to download gedbi with apt
-and make sure you use the correct build.
-For Pi5's it is usually bookworm arm64
-
-
-### 3. Install Build Dependencies (Optional, for source builds)
-```bash
-
-sudo apt-get install autoconf automake autopoint build-essential pkgconf libtool libzip-dev libjpeg-dev git libavformat-dev libavcodec-dev libavutil-dev libswscale-dev libavdevice-dev libwebp-dev gettext libmicrohttpd-dev libcamera-tools libcamera-dev libcamera-v4l2
-
-Double check the motion page (https://motion-project.github.io/motion_build.html)
-
-```
-Adjust the list based on your build requirements.
 
 ---
 

@@ -31,11 +31,13 @@ Or [read the scientific paper][paper] describing the system and its validation!
 
 ![A Raspberry Pi camera-based pLAM setup monitoring a moth in a cage](#)
 
-## Usage 
+# Set it Up Yourself!
 
-If you want a guide to using Raspberry Pi's to measure diel activity, just follow this website from top to bottom. 
+This documentation will walk you through everything you need to source, install, configure, and run your own pLAM setup on a Raspberry Pi.
 
-[Requirements for Raspberry Pi diel measuring system](docs/requirements/requirements)
+[Get started setting up diel-light-pi!][building]
+
+After following these guides, you should be able to deploy your own activity monitors and begin collecting diel data for your study animals!
 
 ## Why Study Diel Activity?
 
@@ -66,16 +68,6 @@ Once your experiment is complete, the built-in analysis pipeline extracts all mo
 
 ![Example actogram output from the diel-light-pi analysis pipeline](#)
 
-
-# Set it Up Yourself!
-
-This documentation will walk you through everything you need to source, install, configure, and run your own pLAM setup on a Raspberry Pi.
-
-[Get started setting up diel-light-pi!][building]
-
-After following these guides, you should be able to deploy your own activity monitors and begin collecting diel data for your study animals!
-
-
 # pLAM in the Field
 
 The pLAM was field-tested in Monteverde, Costa Rica, where six units ran simultaneously over two weeks at a biological station, collecting activity data for approximately 15 species over 10 nights despite fluctuating power, wind, and an abundance of moths.
@@ -88,4 +80,4 @@ The system has also been validated against a commercial $4,000 infrared beam-bas
 [blog]: https://methodsblog.com/2022/03/03/how-do-you-measure-the-movement-of-tiny-insects/
 [paper]: https://doi.org/10.1111/2041-210X.13809
 [motion]: https://motion-project.github.io/
-[building]: docs/raspberry_pi_setup/setup.md
+[building]: docs/requirements/requirements/

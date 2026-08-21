@@ -9,19 +9,29 @@ nav_order: 2
 - a desktop environment
 - a micro SD card
     <figure>
-        <img src="{{ site.baseurl }}/assets/software/" 
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/software/MicroSD.png" 
             alt="Image of a micro SD card">
         <figcaption>
-            Heatsinks attached to the Arducam IR light pads.
+            The front and back side of a micro SD card.
         </figcaption>
     </figure>
 
 - a micro SD to usb adapter
     <figure>
-        <img src="{{ site.baseurl }}/assets/software/" 
-            alt="Image of ">
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/software/MicroSD-USB_Adapter.png" 
+            alt="Image of a micro SD to usb adapter">
         <figcaption>
-            Heatsinks attached to the Arducam IR light pads.
+            This allows you to access the SD card through USB.
+        </figcaption>
+    </figure>
+
+Optional:
+- a micro SD to SD adapter
+    <figure>
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/software/MicroSD-SD_Adapter.png" 
+            alt="Image of a micro SD adapter without the micro SD card">
+        <figcaption>
+            A micro SD adapter without the micro SD card.
         </figcaption>
     </figure>
 
@@ -31,7 +41,7 @@ nav_order: 2
 
 2. Install the downloaded software (follow the instructions and say yes/accept agreement) and press next for each step. You can choose to make a desktop shortcut, but it isn't necessary. It just creates an icon on your homescreen.
     <figure>
-        <img src="{{ site.baseurl }}/assets/software/Accept_Installer_Agreement.png" 
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/software/Accept_Installer_Agreement.png" 
             alt="Image of the License Agreement page on the Raspberry Pi installer with the I Accept the Agreement checkbox checked">
         <figcaption>
             Click "I accept the agreement" to continue the installation.
@@ -40,7 +50,7 @@ nav_order: 2
 
 3. After installing check the "Launch Raspberry Pi Imager" box after installing and press finish. 
     <figure>
-        <img src="{{ site.baseurl }}/assets/software/Raspberry_Pi_Installer_Checkbox.png" 
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/software/Raspberry_Pi_Installer_Checkbox.png" 
             alt="Image of the completion screen of the Raspberry Pi Imager with the Launch Raspberry Pi Imager checkbox checked">
         <figcaption>
             Make sure to launch the Raspberry Pi imager after installation.
@@ -53,7 +63,7 @@ Make sure the Raspberry Pi is turned off when plugging in and out the micro SD c
 
 1. Double click Raspberry Pi 5.
     <figure>
-        <img src="{{ site.baseurl }}/assets/software/Select_Raspberry_Pi_5.png" 
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/software/Select_Raspberry_Pi_5.png" 
             alt="Image of a red box around Raspberry Pi 5">
         <figcaption>
             Select the option at the top of the menu.
@@ -62,7 +72,7 @@ Make sure the Raspberry Pi is turned off when plugging in and out the micro SD c
 
 2. Scroll down and click on "Raspberry Pi OS (other)"
     <figure>
-        <img src="{{ site.baseurl }}/assets/software/Select_Other_OS.png" 
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/software/Select_Other_OS.png" 
             alt="Image of a red box around Raspberry Pi OS (other)">
         <figcaption>
             Scroll down to find this option.
@@ -71,7 +81,7 @@ Make sure the Raspberry Pi is turned off when plugging in and out the micro SD c
     
 3. Scroll down and click on Raspberry Pi OS (Legacy, 64-bit) with a description that says "A port of Debian Bookworm..." and press next.
     <figure>
-        <img src="{{ site.baseurl }}/assets/software/Select_Debian_x64.png" 
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/software/Select_Debian_x64.png" 
             alt="Image of a red box around Debian Bookworm 64-bit version">
         <figcaption>
             You might have to scroll a little to find this.
@@ -80,16 +90,16 @@ Make sure the Raspberry Pi is turned off when plugging in and out the micro SD c
 
 4. Make sure your SD card is inserted, click on it, and press next. It's okay if it has a little less storage than the stated amount on the micro SD card.
     <figure>
-        <img src="{{ site.baseurl }}/assets/software/Select_Storage_Drive.png" 
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/software/Select_Storage_Drive.png" 
             alt="Image of a red box around a removable storage drive">
         <figcaption>
             Make sure to select the correct SD card. It can help to rename the micro SD card in your preferred file system.
         </figcaption>
     </figure>
 
-5. Enter the preferred name for the Raspberry Pi. 
+5. Enter the preferred name for the Raspberry Pi. You can only enter letters, numbers, and hyphens.
     <figure>
-        <img src="{{ site.baseurl }}/assets/software/Choose_Hostname.png" 
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/software/Choose_Hostname.png" 
             alt="Image of a red box around a removable storage drive">
         <figcaption>
             Make sure to select the correct SD card. It can help to rename the micro SD card in your preferred file system.
@@ -98,102 +108,61 @@ Make sure the Raspberry Pi is turned off when plugging in and out the micro SD c
     
 6. Choose your country's capital city and your timezone, and ensure the keyboard layout is "us".
     <figure>
-        <img src="{{ site.baseurl }}/assets/software/Customize_Location.png" 
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/software/Customize_Location.png" 
             alt="Image of a red box around a removable storage drive">
         <figcaption>
             Make sure to select the correct SD card. It can help to rename the micro SD card in your preferred file system.
         </figcaption>
     </figure>
     
-7. Enter a username and password if needed. 
+7. Enter a username and password if needed. The username must be lowercase and contain only letters, numbers, underscores, and hyphens.
     <figure>
-        <img src="{{ site.baseurl }}/assets/software/Choose_Login.png" 
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/software/Choose_Login.png" 
             alt="Image of a red box around a removable storage drive">
         <figcaption>
             Make sure to select the correct SD card. It can help to rename the micro SD card in your preferred file system.
         </figcaption>
     </figure>
     
-8. Press next on the WiFi screen, and enable SSH if you want to remote access the Raspberry Pi. Leave the checkbox on "Use Password Authentication". 
-    <figure class="image-row">
-        <div>
-            <img src="#" 
-                alt="Image of Raspberry Pi 5 package">
-            <figcaption>
-                An unopened Raspberry Pi 5 package.
-            </figcaption>
-        </div>
-        <div>
-            <img src="#" 
-                alt="Image of Rasbperry Pi 5 Board">
-            <figcaption>
-                The Raspberry Pi 5 computer.
-            </figcaption>
-        </div>
-    </figure>
-    
-9.  
-    <figure class="image-row">
-        <div>
-            <img src="#" 
-                alt="Image of Raspberry Pi 5 package">
-            <figcaption>
-                An unopened Raspberry Pi 5 package.
-            </figcaption>
-        </div>
-        <div>
-            <img src="#" 
-                alt="Image of Rasbperry Pi 5 Board">
-            <figcaption>
-                The Raspberry Pi 5 computer.
-            </figcaption>
-        </div>
-    </figure>
-    
-10. Wait for the download to finish, and press Finish.
+8. Press next on the WiFi screen, make sure SSH is disabled. If you want to enable remote access or just want to learn more, click [here][SSH Page].
     <figure>
-        <img src="{{ site.baseurl }}/assets/software/" 
-            alt="Image of a red box around a removable storage drive">
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/software/SSH_Option.png" 
+            alt="Image of Raspberry Pi 5 package">
         <figcaption>
-            Make sure to select the correct SD card. It can help to rename the micro SD card in your preferred file system.
+            An unopened Raspberry Pi 5 package.
         </figcaption>
     </figure>
     
-11. Take out the SD card.
+9.  Press "WRITE", and make sure that all the data that you want to save from the drive is saved elsewhere. This will delete everything on the SD card.
     <figure>
-        <img src="{{ site.baseurl }}/assets/software/" 
-            alt="Image of a red box around a removable storage drive">
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/software/Write_OS.png" 
+            alt="Image of a red box around the write button">
         <figcaption>
-            If you can't pull out the micro SD card, you need to push it in and release. The micro SD card will then pop out for you to grab. Otherwise, just pull it out. 
+            Press this to start the installation process.
+        </figcaption>
+    </figure>
+
+10. After moving your files off the drive, press "I UNDERSTAND, ERASE AND WRITE"
+    <figure>
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/software/Wipe_Drive.png" 
+            alt="Image of a red box around the I understand, erase and write button">
+        <figcaption>
+            Press this to allow the installation to continue.
         </figcaption>
     </figure>
     
+11. Wait for the download to finish. When the button on the bottom right says "FINISH", press it and unplug the SD card.
+    <figure>
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/software/Finish.png" 
+            alt="Image of a red box around the finish button">
+        <figcaption>
+            You've now installed the Raspberry Pi operating system onto your micro SD card.
+        </figcaption>
+    </figure>
+     
 ---
-## Setting Up the Raspberry Pi Imaging System
 
-**BEFORE YOU DO ANYTHING WITH THE CAMERA WIRING, MAKE SURE THE RASPBERRY PI IS TURNED OFF AND UNPLUGGED**
+Continue to the [Booting Up][Boot] page to continue setting up the pLAM.
 
-1. Put the SD card into the SD card reader of the Raspberry Pi (with the Pi logo facing toward you, you should see the black side of the SD card).
-
-2. Plug the HDMI and power cable into the Pi. 
-
-3. After plugging the Pi in, it should automatically turn on. 
-
-4. Change the country to United States, langauge to American English, and timezone to Eastern. Check the "Use English language" and "Use US keyboard" boxes and press next.
-
-5. If not already created, create a user for the Pi, and enter your preferred username and password. If working in a lab, consult your PI. And press OK if there is a popup. 
-
-6. Skip the WiFi network selection and software update, and press restart.
-
-7. After the Pi boots up again, in the top right click on the wifi symbol (The two red x's with grey lines coming vertically from them) and click on your desired wifi connection.
-
-8. For univeristy networks that require a username and password, 
-   1. change the Authentication to "Protected EAP (PEAP)"
-   2. check the "No CA certificate is required" box
-   3. enter your username and password  
-   4. press enter
-    - To confirm: a grey box should pop up in the top right saying that you've connected to (insert WiFi name). If not, repeat this step and ensure that you've entered your credentials correctly.
-
----
-Continue to the [software installation page](https://github.com/yashsondhi/diel-light-pi/wiki/Software-installation-(includes-motion)) to continue setting up diel-light-pi.
-
+[SSH Page]: /docs/raspberry_pi_setup/software/ssh/ 
+[Boot]: /docs/raspberry_pi_setup/boot/ 

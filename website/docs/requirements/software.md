@@ -8,7 +8,7 @@ nav_order: 2
 - A laptop that can install and run the [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
 
 OS          |   Requirement
-:------------|:--------------
+:-----------|:--------------
 Windows     |   Windows 10 or above
 Mac         |   Any modern macOS
 Linux       |   None, can be installed in terminal
