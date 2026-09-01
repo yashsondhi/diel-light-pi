@@ -38,8 +38,6 @@ if __name__ == '__main__':
 
     # -- hardware setup -------------------------------------------------------
     strip_pins = prompt_strips(AVAILABLE_PINS)
-    if not strip_pins:
-        sys.exit("No strips configured -- exiting.")
 
     lights = [Light(pin=pin, num_lights=cfg.num_lights) for pin in strip_pins]
     print(f"{len(lights)} strip(s) initialised.")
