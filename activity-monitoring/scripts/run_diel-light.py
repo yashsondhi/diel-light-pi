@@ -26,15 +26,18 @@ for line in os_release.splitlines():
 
 def get_args():
     """Parse command-line arguments"""
+
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
     parser = argparse.ArgumentParser(usage='%(prog)s [options]', description="Run an diel activity monitoring experiment")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--time', default=False, action="store_true", help='Force system time update')
     mode.add_argument('--setup', default=False, action="store_true",help='Update project update')
     mode.add_argument('--run',default=False,action="store_true", help='Runs the activity detector')
     parser.add_argument('--out',default=False, help='Specify output directory')
-    parser.add_argument('--logfile', default='logs/log_running_time.txt', help='Write experiment start times to Log')
-    parser.add_argument('--motionconf',nargs='?',default=False,const="configs/motion.conf",help='Config file to open')
-    parser.add_argument('--projectconf',default='configs/project.conf', help='Input project config parameters')
+    parser.add_argument('--logfile', default=os.path.join(SCRIPT_DIR, 'logs/log_running_time.txt'), help='Write experiment start times to Log')
+    parser.add_argument('--motionconf',nargs='?',default=False,const=os.path.join(SCRIPT_DIR, 'configs/motion.conf'),help='Config file to open')
+    parser.add_argument('--projectconf',default=os.path.join(SCRIPT_DIR, 'configs/project.conf'), help='Input project config parameters')
     parser.add_argument('--project',help="Input name of project")
     parser.add_argument('--autorun',default=False, action="store_true",help ="starts automatically on reboot")
     parser.add_argument('--silent',default=False, action="store_true",help ="starts in non interactive mode")
@@ -156,9 +159,10 @@ def main():
             sys.exit("Run with the --autorun tab or change --autorun to True in the config file")
         # call scripts that saves pi running time save_pi_time file
         #Gets base path
-        base_path=os.getcwd()
+        base_path = os.path.dirname(os.path.abspath(__file__))
         #tells pi where save_run time script is to save pi data every minute
-        home_path=base_path+"/scripts/"
+        home_path = os.path.join(SCRIPT_DIR, "scripts/")
+
         call_pi="python3 "+home_path+"save_run_time.py"+ "&"
         os.system(call_pi) # tells pi to save data
         log=args.logfile
