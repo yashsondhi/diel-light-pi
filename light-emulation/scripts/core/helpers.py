@@ -172,14 +172,14 @@ def prompt_sensor(cfg: LightSystemConfig):
                 "current conditions.\n"
                 "WARNING: This is an approximate baseline. For best results "
                 "calibrate at the darkest point of your diel cycle or use "
-                "min-max normalisation in visualize.py instead."
+                "min-max normalisation in lux_data_visualizer.py instead."
             )
             sensor.calibrate_dark(n_samples=cfg.dark_calibration_samples)
     else:
         print(
             "Skipping dark calibration -- lux_corrected will equal lux_raw.\n"
             "You can normalise post-hoc using lux_raw and dark_offset_lux "
-            "in visualize.py."
+            "in lux_data_visualizer.py."
         )
 
     # -- log file setup -------------------------------------------------------
@@ -205,18 +205,18 @@ def prompt_sensor(cfg: LightSystemConfig):
 
 def launch_visualizer(log_filepath: str) -> None:
     """
-    Optionally launch visualize.py after the run, passing the log file
-    as a command-line argument. Does nothing if visualize.py is not found.
+    Optionally launch lux_data_visualizer.py after the run, passing the log file
+    as a command-line argument. Does nothing if lux_data_visualizer.py is not found.
 
     Args:
         log_filepath: absolute path to the CSV log file.
     """
     if not os.path.exists(VISUALIZE_SCRIPT):
-        print(f"visualize.py not found at {VISUALIZE_SCRIPT} -- skipping.")
+        print(f"lux_data_visualizer.py not found at {VISUALIZE_SCRIPT} -- skipping.")
         return
 
     ans = input(
-        "Open visualize.py to view the data? (y/n, default n): "
+        "Open lux_data_visualizer.py to view the data? (y/n, default n): "
     ).strip().lower()
     if ans != 'y':
         return
