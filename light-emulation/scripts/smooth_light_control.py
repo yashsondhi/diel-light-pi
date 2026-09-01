@@ -92,7 +92,7 @@ if __name__ == '__main__':
 
             if logging_enabled:
                 lux_raw, vis, ir = read_sensor(sensor)
-                lux_corr = (
+                lux_corrected = (
                     sensor.corrected_lux(lux_raw)
                     if isinstance(sensor, AutoRangingSensor)
                     else lux_raw
@@ -107,16 +107,16 @@ if __name__ == '__main__':
                     if isinstance(sensor, AutoRangingSensor)
                     else 0.0
                 )
-                writer.writerow([
-                    now.isoformat(),
-                    val,
-                    lux_raw,
-                    lux_corr,
-                    vis,
-                    ir,
-                    settings,
-                    dark_offset,
-                ])
+                writer.writerow({
+                    'timestamp':      now.isoformat(),
+                    'set_val':        val,
+                    'lux_raw':        lux_raw,
+                    'lux_corrected':  lux_corrected,
+                    'visible':        vis,
+                    'ir':             ir,
+                    'sensor_settings': settings,
+                    'dark_offset_lux': dark_offset,
+                })
                 log_file.flush()
 
     except KeyboardInterrupt:

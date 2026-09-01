@@ -23,8 +23,8 @@ fig, ax1 = plt.subplots(figsize=(12, 5))
 
 ax1.set_xlabel('Time')
 ax1.set_ylabel('Lux', color='tab:blue')
-ax1.plot(df['timestamp'], df['top_lux'], label='Top Lux', color='tab:blue')
-ax1.plot(df['timestamp'], df['bottom_lux'], label='Bottom Lux', color='tab:cyan')
+ax1.plot(df['timestamp'], df['lux_raw'],       label='Raw Lux',       color='tab:blue')
+ax1.plot(df['timestamp'], df['lux_corrected'], label='Corrected Lux', color='tab:cyan')
 ax1.tick_params(axis='y', labelcolor='tab:blue')
 
 ax2 = ax1.twinx()

@@ -38,7 +38,7 @@ CSV_HEADER = [
 
 VISUALIZE_SCRIPT = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "visualize.py"
+    "lux_data_visualizer.py"
 )
 
 
@@ -196,8 +196,8 @@ def prompt_sensor(cfg: LightSystemConfig):
     log_filename = get_unique_filepath(log_dir, base_name)
 
     log_file = open(log_filename, 'w', newline='')
-    writer   = csv.writer(log_file)
-    writer.writerow(CSV_HEADER)
+    writer = csv.DictWriter(log_file, fieldnames=CSV_HEADER)
+    writer.writeheader()
     print(f"Logging to: {log_filename}")
 
     return sensor, True, log_file, writer
