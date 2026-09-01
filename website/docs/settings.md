@@ -12,14 +12,16 @@ Adjust how large images appear across all pages.
 
 <div id="img-size-control">
   🖼️ Image Size:
-  <input type="range"  id="img-scale-slider" min="1" max="100" step="1" value="90" />
-  <input type="number" id="img-scale-input"  min="1" max="100" step="1" value="90" />
+  <input type="range"  id="img-scale-slider" min="1" max="100" step="1" value="75" />
+  <input type="number" id="img-scale-input"  min="1" max="100" step="1" value="75" />
   <span>%</span>
 </div>
 
 <script>
   var STORAGE_KEY = "imgScale";
-  var DEFAULT     = 90;
+  var MIN         = 1;
+  var MAX         = 100;
+  var DEFAULT     = 75;
 
   var slider = document.getElementById("img-scale-slider");
   var input  = document.getElementById("img-scale-input");
@@ -27,6 +29,8 @@ Adjust how large images appear across all pages.
   function applyImgScale(value) {
     value = parseInt(value);
     if (isNaN(value)) value = DEFAULT;
+    if (value < MIN)  value = MIN;
+    if (value > MAX)  value = MAX;
     document.documentElement.style.setProperty("--img-scale", value + "%");
     slider.value = value;
     input.value  = value;

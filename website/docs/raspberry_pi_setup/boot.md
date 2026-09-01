@@ -69,7 +69,7 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
         </div>
     </figure>
     
-4. After plugging the Pi in, it should automatically turn on. 
+4. After plugging the Pi in, the LED should first be red briefly, and then turn to green. It is okay if the green light flickers.  
     <figure>
         <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/LED_On.png" 
             alt="Image of the LED indicator on the Raspberry Pi as Green">

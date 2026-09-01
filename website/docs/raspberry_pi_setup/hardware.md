@@ -24,7 +24,7 @@ nav_order: 1
         </div>
     </figure>
 
-- Entire Arducam package
+- Entire Arducam package with:
     <figure>
         <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/hardware/Arducam_Box.png" 
             alt="Image of Arducam OV5647 package">
@@ -162,4 +162,4 @@ Make sure nothing is connected to power when working with electronics. If the Ra
 
 Continue to the [Software Setup page][software setup] to continue setting up your pLAM.
 
-[software setup]: /docs/raspberry_pi_setup/software/software/ 
+[software setup]: ../software/ 

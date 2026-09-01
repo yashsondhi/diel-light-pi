@@ -164,5 +164,5 @@ Make sure the Raspberry Pi is turned off when plugging in and out the micro SD c
 
 Continue to the [Booting Up][Boot] page to continue setting up the pLAM.
 
-[SSH Page]: /docs/raspberry_pi_setup/software/ssh/ 
-[Boot]: /docs/raspberry_pi_setup/boot/ 
+[SSH Page]: ../../ssh/ 
+[Boot]: ../boot/ 
