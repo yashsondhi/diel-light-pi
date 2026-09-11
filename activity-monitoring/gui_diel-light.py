@@ -3,9 +3,13 @@ from tkinter import filedialog
 import yaml
 import subprocess
 import sys
+import os
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 config = {}  # Global dictionary to store the configuration options
-project_conf_path = "configs/project.conf"  # Default project configuration file path
+project_conf_path = os.path.join(SCRIPT_DIR, "configs/project.conf") 
+DEFAULT_MOTION_PATH = os.path.join(SCRIPT_DIR, "configs/motion_best.conf") 
 
 def open_config_file():
     file_path = filedialog.askopenfilename(filetypes=[("Conf Files", "*.conf")])
@@ -20,7 +24,7 @@ def open_motion_file():
         config["MOTIONPATH"] = file_path
         motion_file_label.config(text=file_path)
     global project_conf_path
-    project_conf_path=file_path
+    project_conf_path = file_path
 
 def save_config_file():
     file_path = filedialog.asksaveasfilename(filetypes=[("Conf Files", "*.conf")])
@@ -37,14 +41,14 @@ def save_config_file():
             "TRIALNUM": trial_num_entry.get(),
             "INTERACTIVE": interactive_var.get(),
             "AUTOSTART": auto_start_var.get(),
-            "MOTIONPATH": config.get("MOTIONPATH", "configs/motion_best.conf"),  # Save the motion path to the config file
-            # Add other configuration options and their values here
+            "MOTIONPATH": config.get("MOTIONPATH", DEFAULT_MOTION_PATH),  # ✅ Fixed
         })
 
         with open(file_path, "w") as file:
             yaml.dump(config, file)
     global project_conf_path
-    project_conf_path=file_path
+    project_conf_path = file_path
+
 def run_experiment():
     # Retrieve the values from the GUI elements and run the experiment
     experimenter_name = experimenter_entry.get()
@@ -53,13 +57,13 @@ def run_experiment():
     location = location_entry.get()
     organism = organism_entry.get()
     trial_name = trial_name_entry.get()
-    trial_num =trial_num_entry.get()
+    trial_num = trial_num_entry.get()
     output_path = output_entry.get()
     interactive_mode = interactive_var.get()
     auto_start = auto_start_var.get()
-    
-    # Generate the Python command
-    command = f"python3 run_diel-light.py --run --projectconf {project_conf_path} --motionconf {config.get('MOTIONPATH', 'configs/motion_best.conf')}"
+
+    main_script = os.path.join(SCRIPT_DIR, "run_diel-light.py")
+    command = f"python3 {main_script} --run --projectconf {project_conf_path} --motionconf {config.get('MOTIONPATH', DEFAULT_MOTION_PATH)}"
 
     # Open a terminal window and execute the command
     if sys.platform.startswith("win"):  # For Windows
@@ -85,21 +89,20 @@ def update_gui_elements():
 
     organism_entry.delete(0, tk.END)
     organism_entry.insert(tk.END, config.get("ORGANISM", ""))
-    
+
     trial_name_entry.delete(0, tk.END)
     trial_name_entry.insert(tk.END, config.get("TRIALNAME", ""))
-    
+
     trial_num_entry.delete(0, tk.END)
     trial_num_entry.insert(tk.END, config.get("TRIALNUM", ""))
-    
-    
+
     output_entry.delete(0, tk.END)
     output_entry.insert(tk.END, config.get("OUTPATH", ""))
 
-    interactive_var.set(config.get("INTERACTIVE", True)) # by defult is set to True, turn off to enable auto start
+    interactive_var.set(config.get("INTERACTIVE", True))
     auto_start_var.set(config.get("AUTOSTART", True))
 
-    motion_file_label.config(text=config.get("MOTIONPATH", "configs/motion_best.conf"))
+    motion_file_label.config(text=config.get("MOTIONPATH", DEFAULT_MOTION_PATH))
 
 # Create the main window
 window = tk.Tk()
@@ -109,19 +112,17 @@ window.title("Activity Monitoring Experiment")
 open_button = tk.Button(window, text="Open Config File", command=open_config_file)
 open_button.pack()
 
-# Create Config File Label
-project_file_label = tk.Label(window, text="Open example file at diel-light-pi/"+project_conf_path)
+# Create Config File Label 
+project_file_label = tk.Label(window, text="Open example file at: " + project_conf_path)
 project_file_label.pack()
-
 
 # Create Open Motion File button
 motion_button = tk.Button(window, text="Open Motion File", command=open_motion_file)
 motion_button.pack()
 
-# Create Motion File Label
-motion_file_label = tk.Label(window, text=config.get("MOTIONPATH", "configs/motion_best.conf"))
+# Create Motion File Label 
+motion_file_label = tk.Label(window, text=config.get("MOTIONPATH", DEFAULT_MOTION_PATH))
 motion_file_label.pack()
-
 
 # Create Experimenter Name label and entry
 experimenter_label = tk.Label(window, text="Experimenter Name:")
@@ -172,21 +173,17 @@ trial_name_label.pack()
 trial_name_entry = tk.Entry(window)
 trial_name_entry.pack()
 
-
+# Create Trial Number entry
 trial_num_label = tk.Label(window, text="Trial Num:")
 trial_num_label.pack()
 
 trial_num_entry = tk.Entry(window)
 trial_num_entry.pack()
 
-
-#Create Trial number entry
-
 # Create Interactive Mode checkbox
 interactive_var = tk.BooleanVar()
 interactive_checkbox = tk.Checkbutton(window, text="Interactive Mode", variable=interactive_var)
 interactive_checkbox.pack()
-
 
 # Create Auto Start checkbox
 auto_start_var = tk.BooleanVar()
@@ -196,8 +193,6 @@ auto_start_checkbox.pack()
 # Create Save Config File button
 save_button = tk.Button(window, text="Save Config File", command=save_config_file)
 save_button.pack()
-
-
 
 # Create Run Experiment button
 run_button = tk.Button(window, text="Run Experiment", command=run_experiment)
