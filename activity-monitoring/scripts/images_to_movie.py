@@ -13,7 +13,7 @@ img_array = []
 path=input("choose path:")
 count=0
 
-file_limit=10000 # cahnge file limit if you want many files, but takes longer
+file_limit=10000 # change file limit if you want many files, but takes longer
 
 for filename in sorted(glob.glob(path+"/*.jpg"),key =os.path.basename):
     if(count<file_limit):
