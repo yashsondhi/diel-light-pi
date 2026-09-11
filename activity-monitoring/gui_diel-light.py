@@ -17,25 +17,58 @@ DEFAULT_PROJECT_CONF = os.path.join(SCRIPT_DIR, 'project-configs', 'project.conf
 MAIN_SCRIPT          = os.path.join(SCRIPT_DIR, 'run_diel-light.py')
 
 project_conf_path = DEFAULT_PROJECT_CONF  # updated when user opens/saves a config
+config_dirty = False
+run_button = None
+
+
+def gui_text(value):
+    if value is None:
+        return ""
+    return str(value)
+
+
+def mark_config_dirty():
+    global config_dirty
+    config_dirty = True
+    if run_button is not None:
+        run_button.config(state=tk.DISABLED)
+
+
+def mark_config_saved():
+    global config_dirty
+    config_dirty = False
+    if run_button is not None:
+        run_button.config(state=tk.NORMAL)
 
 
 def open_config_file():
-    file_path = filedialog.askopenfilename(filetypes=[("Conf Files", "*.conf")])
+    file_path = filedialog.askopenfilename(
+        filetypes=[("Conf Files", "*.conf")],
+        initialdir=os.path.join(SCRIPT_DIR, 'project-configs'),
+    )
     if file_path:
         with open(file_path, "r") as file:
             config.update(yaml.safe_load(file))
             update_gui_elements()
+            mark_config_saved()
 
 def open_motion_file():
-    file_path = filedialog.askopenfilename(filetypes=[("Conf Files", "*.conf")])
+    file_path = filedialog.askopenfilename(
+        filetypes=[("Conf Files", "*.conf")],
+        initialdir=os.path.join(SCRIPT_DIR, 'motion-configs'),
+    )
     if file_path:
         config["MOTIONPATH"] = file_path
         motion_file_label.config(text=file_path)
         global project_conf_path
         project_conf_path = file_path  # ✅ Fixed: moved inside if block
+        mark_config_dirty()
 
 def save_config_file():
-    file_path = filedialog.asksaveasfilename(filetypes=[("Conf Files", "*.conf")])
+    file_path = filedialog.asksaveasfilename(
+        filetypes=[("Conf Files", "*.conf")],
+        initialdir=os.path.join(SCRIPT_DIR, 'project-configs'),
+    )
     if file_path:
         config.update({
             "USER":        experimenter_entry.get(),
@@ -54,6 +87,7 @@ def save_config_file():
             yaml.dump(config, file)
         global project_conf_path
         project_conf_path = file_path
+        mark_config_saved()
 
 def run_experiment():
     motion_path = config.get("MOTIONPATH", DEFAULT_MOTION_PATH)  # ✅ Fixed
@@ -71,33 +105,33 @@ def run_experiment():
 
 def update_gui_elements():
     experimenter_entry.delete(0, tk.END)
-    experimenter_entry.insert(tk.END, config.get("USER", ""))
+    experimenter_entry.insert(tk.END, gui_text(config.get("USER", "")))
 
     initials_entry.delete(0, tk.END)
-    initials_entry.insert(tk.END, config.get("INITIALS", ""))
+    initials_entry.insert(tk.END, gui_text(config.get("INITIALS", "")))
 
     project_entry.delete(0, tk.END)
-    project_entry.insert(tk.END, config.get("PROJECT", ""))
+    project_entry.insert(tk.END, gui_text(config.get("PROJECT", "")))
 
     location_entry.delete(0, tk.END)
-    location_entry.insert(tk.END, config.get("LOCATION", ""))
+    location_entry.insert(tk.END, gui_text(config.get("LOCATION", "")))
 
     organism_entry.delete(0, tk.END)
-    organism_entry.insert(tk.END, config.get("ORGANISM", ""))
+    organism_entry.insert(tk.END, gui_text(config.get("ORGANISM", "")))
 
     trial_name_entry.delete(0, tk.END)
-    trial_name_entry.insert(tk.END, config.get("TRIALNAME", ""))
+    trial_name_entry.insert(tk.END, gui_text(config.get("TRIALNAME", "")))
 
     trial_num_entry.delete(0, tk.END)
-    trial_num_entry.insert(tk.END, config.get("TRIALNUM", ""))
+    trial_num_entry.insert(tk.END, gui_text(config.get("TRIALNUM", "")))
 
     output_entry.delete(0, tk.END)
-    output_entry.insert(tk.END, config.get("OUTPATH", ""))
+    output_entry.insert(tk.END, gui_text(config.get("OUTPATH", "")))
 
     interactive_var.set(config.get("INTERACTIVE", True))
     auto_start_var.set(config.get("AUTOSTART", True))
 
-    motion_file_label.config(text=config.get("MOTIONPATH", DEFAULT_MOTION_PATH))  # ✅ Fixed
+    motion_file_label.config(text=gui_text(config.get("MOTIONPATH", DEFAULT_MOTION_PATH)))  # ✅ Fixed
 
 
 # ── Build the GUI ────────────────────────────────────────────────────────────
@@ -106,7 +140,7 @@ window = tk.Tk()
 window.title("Activity Monitoring Experiment")
 
 # Open Config File
-open_button = tk.Button(window, text="Open Config File", command=open_config_file)
+open_button = tk.Button(window, text="Open Project File", command=open_config_file)
 open_button.pack()
 
 # ✅ Fixed: label now shows the correct absolute default path
@@ -122,73 +156,82 @@ motion_file_label = tk.Label(window, text=DEFAULT_MOTION_PATH)
 motion_file_label.pack()
 
 # Experimenter Name
-experimenter_label = tk.Label(window, text="Experimenter Name:")
+experimenter_label = tk.Label(window, text="Experimenter Name*:")
 experimenter_label.pack()
 experimenter_entry = tk.Entry(window)
 experimenter_entry.pack()
+experimenter_entry.bind("<KeyRelease>", lambda event: mark_config_dirty())
 
 # Experimenter Initials
-initials_label = tk.Label(window, text="Experimenter Initials:")
+initials_label = tk.Label(window, text="Experimenter Initials*:")
 initials_label.pack()
 initials_entry = tk.Entry(window)
 initials_entry.pack()
+initials_entry.bind("<KeyRelease>", lambda event: mark_config_dirty())
 
 # Project Name
-project_label = tk.Label(window, text="Project Name:")
+project_label = tk.Label(window, text="Project Name*:")
 project_label.pack()
 project_entry = tk.Entry(window)
 project_entry.pack()
+project_entry.bind("<KeyRelease>", lambda event: mark_config_dirty())
 
 # Location
-location_label = tk.Label(window, text="Location:")
+location_label = tk.Label(window, text="Location*:")
 location_label.pack()
 location_entry = tk.Entry(window)
 location_entry.pack()
+location_entry.bind("<KeyRelease>", lambda event: mark_config_dirty())
 
 # Organism
-organism_label = tk.Label(window, text="Organism:")
+organism_label = tk.Label(window, text="Organism*:")
 organism_label.pack()
 organism_entry = tk.Entry(window)
 organism_entry.pack()
+organism_entry.bind("<KeyRelease>", lambda event: mark_config_dirty())
 
 # Output Path
-output_label = tk.Label(window, text="Output Folder Name:")
+output_label = tk.Label(window, text="Output Folder Name*:")
 output_label.pack()
 output_entry = tk.Entry(window)
 output_entry.pack()
+output_entry.bind("<KeyRelease>", lambda event: mark_config_dirty())
 
 # Trial Name
-trial_name_label = tk.Label(window, text="Trial Name:")
+trial_name_label = tk.Label(window, text="Trial Name*:")
 trial_name_label.pack()
 trial_name_entry = tk.Entry(window)
 trial_name_entry.pack()
+trial_name_entry.bind("<KeyRelease>", lambda event: mark_config_dirty())
 
 # Trial Number
-trial_num_label = tk.Label(window, text="Trial Num:")
+trial_num_label = tk.Label(window, text="Trial Num*:")
 trial_num_label.pack()
 trial_num_entry = tk.Entry(window)
 trial_num_entry.pack()
+trial_num_entry.bind("<KeyRelease>", lambda event: mark_config_dirty())
 
 # Interactive Mode
 interactive_var = tk.BooleanVar()
-interactive_checkbox = tk.Checkbutton(window, text="Interactive Mode", variable=interactive_var)
+interactive_checkbox = tk.Checkbutton(window, text="Interactive Mode", variable=interactive_var, command=mark_config_dirty)
 interactive_checkbox.pack()
 
 # Auto Start
 auto_start_var = tk.BooleanVar()
-auto_start_checkbox = tk.Checkbutton(window, text="Auto Start", variable=auto_start_var)
+auto_start_checkbox = tk.Checkbutton(window, text="Auto Start", variable=auto_start_var, command=mark_config_dirty)
 auto_start_checkbox.pack()
 
 # Save Config File
-save_button = tk.Button(window, text="Save Config File", command=save_config_file)
+save_button = tk.Button(window, text="Save Project File", command=save_config_file)
 save_button.pack()
 
 # Run Experiment
-run_button = tk.Button(window, text="Run Experiment", command=run_experiment)
+run_button = tk.Button(window, text="Run Experiment", command=run_experiment, state=tk.DISABLED)
 run_button.pack()
 
 # Populate GUI with defaults
 update_gui_elements()
+mark_config_saved()
 
 # Start event loop
 window.mainloop()

@@ -155,7 +155,6 @@ def main():
         if start_on_boot is False:
             sys.exit("Run with the --autorun flag or set AUTOSTART to True in the config file")
 
-        # ✅ Fixed: use SCRIPT_DIR to find save_run_time.py in scripts/
         scripts_path = os.path.join(SCRIPT_DIR, "scripts")
         call_pi      = "python3 " + os.path.join(scripts_path, "save_run_time.py") + " &"
         os.system(call_pi)
@@ -217,7 +216,6 @@ def main():
         os.chdir(trial_dir)
 
         # -- Motion config path -----------------------------------------------
-        # ✅ Fixed: resolve motion config relative to SCRIPT_DIR
         if args.motionconf:
             motion_path_abs = args.motionconf if os.path.isabs(args.motionconf) \
                               else os.path.join(SCRIPT_DIR, args.motionconf)
@@ -242,7 +240,7 @@ def main():
 
         print("Location at", os.getcwd())
         os.system(command)
-        os.chdir(SCRIPT_DIR)  # ✅ Fixed: return to SCRIPT_DIR instead of os.getcwd()
+        os.chdir(SCRIPT_DIR)
 
 
 if __name__ == '__main__':

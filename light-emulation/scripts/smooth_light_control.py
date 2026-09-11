@@ -13,6 +13,7 @@
 import signal
 import sys
 import board
+import time
 from datetime import datetime
 
 from light_core import (
@@ -42,7 +43,7 @@ if __name__ == '__main__':
     lights = [Light(pin=pin, num_lights=cfg.num_lights) for pin in strip_pins]
     print(f"{len(lights)} strip(s) initialised.")
 
-    sensor, logging_enabled, log_file, writer = prompt_sensor(cfg)
+    sensor, logging_enabled, log_file, writer = prompt_sensor(cfg, len(lights))
     log_filepath = log_file.name if log_file else None
 
     # -- signal handler -------------------------------------------------------
@@ -83,6 +84,7 @@ if __name__ == '__main__':
     # -- main loop ------------------------------------------------------------
     try:
         while True:
+            time.sleep(.5)
             now   = datetime.now()
             now_h = now.hour + now.minute / 60 + now.second / 3600
             val   = current_light_val(now_h, cfg)
@@ -107,16 +109,21 @@ if __name__ == '__main__':
                     if isinstance(sensor, AutoRangingSensor)
                     else 0.0
                 )
-                writer.writerow({
+
+                # Only emit a set_val column when the controller is indeed
+                # driving the light strips. This keeps the CSV shape honest.
+                row = {
                     'timestamp':      now.isoformat(),
-                    'set_val':        val,
                     'lux_raw':        lux_raw,
                     'lux_corrected':  lux_corrected,
                     'visible':        vis,
                     'ir':             ir,
                     'sensor_settings': settings,
                     'dark_offset_lux': dark_offset,
-                })
+                }
+                if lights:
+                    row['set_val'] = val
+                writer.writerow(row)
                 log_file.flush()
 
     except KeyboardInterrupt:

@@ -53,6 +53,7 @@ sudo apt-get install -y \
     python3-pip \
     python3-venv \
     python3-setuptools \
+    python3-tk \
     i2c-tools \
     libgpiod-dev \
     python3-libgpiod
@@ -112,6 +113,11 @@ success "pip confirmed inside venv."
 info "Upgrading pip and setuptools..."
 "$VENV_PIP" install --upgrade pip setuptools
 success "pip and setuptools upgraded."
+
+# ── 5a. YAML support for project and motion config parsing ─────
+info "Installing PyYAML for config file parsing..."
+"$VENV_PIP" install --upgrade-strategy only-if-needed pyyaml
+success "PyYAML installed."
 
 # ══════════════════════════════════════════════════════════════
 #  LIGHT CONTROL SCRIPT DEPENDENCIES
@@ -218,6 +224,8 @@ required = {
     "matplotlib.dates": "matplotlib",
     "cv2":              "opencv-python",
     "RPi.GPIO":         "rpi-lgpio",
+    "yaml":             "pyyaml",
+    "tkinter":          "python3-tk",
 }
 optional = {
     "adafruit_tsl2591": "adafruit-circuitpython-tsl2591",

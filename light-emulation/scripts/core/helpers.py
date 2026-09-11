@@ -19,8 +19,18 @@ import csv
 import sys
 import subprocess
 import argparse
-import board
 from typing import Optional, Tuple
+
+try:
+    import board
+except ImportError:
+    class _BoardFallback:
+        D12 = 12
+        D18 = 18
+        D21 = 21
+        D10 = 10
+
+    board = _BoardFallback()
 
 from core.sensor import AutoRangingSensor, TSL2591_AVAILABLE
 from core.config import LightSystemConfig
@@ -36,10 +46,23 @@ CSV_HEADER = [
     'dark_offset_lux',
 ]
 
+CSV_HEADER_NO_SET_VAL = [
+    field for field in CSV_HEADER if field != 'set_val'
+]
+
 VISUALIZE_SCRIPT = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
     "lux_data_visualizer.py"
 )
+
+
+def get_default_log_dir() -> str:
+    """Return the repository's light-emulation raw-data log directory."""
+    return os.path.join(
+        os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+        "data",
+        "raw",
+    )
 
 
 def read_sensor(sensor) -> Tuple[Optional[float], Optional[float], Optional[float]]:
@@ -109,7 +132,7 @@ def prompt_strips(available_pins: list) -> list:
     return available_pins[:n]
 
 
-def prompt_sensor(cfg: LightSystemConfig):
+def prompt_sensor(cfg: LightSystemConfig, num_lights: int = 0):
     """
     Interactively initialise an AutoRangingSensor, optionally run dark
     calibration, and optionally enable CSV logging.
@@ -124,6 +147,8 @@ def prompt_sensor(cfg: LightSystemConfig):
 
     Args:
         cfg: LightSystemConfig providing dark_calibration_samples.
+        num_lights: Number of strips currently configured. If zero,
+            omit the set_val column from the emitted CSV schema.
 
     Returns:
         (sensor, logging_enabled, log_file, writer)
@@ -183,9 +208,7 @@ def prompt_sensor(cfg: LightSystemConfig):
         )
 
     # -- log file setup -------------------------------------------------------
-    log_dir = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data"
-    )
+    log_dir = get_default_log_dir()
     os.makedirs(log_dir, exist_ok=True)
 
     default_name = "sensor_log"
@@ -195,8 +218,9 @@ def prompt_sensor(cfg: LightSystemConfig):
     )
     log_filename = get_unique_filepath(log_dir, base_name)
 
+    fieldnames = CSV_HEADER if num_lights else CSV_HEADER_NO_SET_VAL
     log_file = open(log_filename, 'w', newline='')
-    writer = csv.DictWriter(log_file, fieldnames=CSV_HEADER)
+    writer = csv.DictWriter(log_file, fieldnames=fieldnames)
     writer.writeheader()
     print(f"Logging to: {log_filename}")
 

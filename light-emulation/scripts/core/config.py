@@ -5,7 +5,17 @@
 
 from dataclasses import dataclass, field
 from typing import Optional
-import board
+
+try:
+    import board
+except ImportError:
+    class _BoardFallback:
+        D12 = 12
+        D18 = 18
+        D21 = 21
+        D10 = 10
+
+    board = _BoardFallback()
 
 
 @dataclass
