@@ -326,7 +326,7 @@ def get_args() -> argparse.Namespace:
         help='Print and confirm light cycle parameters'
     )
     default_config = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
         'light_config.txt',
     )
     parser.add_argument(

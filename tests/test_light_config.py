@@ -6,6 +6,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'light-emulation' / 'scripts'))
 
 from core.config import LightSystemConfig
+from core.helpers import get_args
 
 
 def test_light_config_loads_supported_settings(tmp_path):
@@ -29,6 +30,15 @@ def test_light_config_loads_supported_settings(tmp_path):
     assert config.min_val == 0.01
     assert config.max_val == 0.3
     assert config.num_lights == 60
+
+
+def test_default_light_config_path_is_above_scripts_directory(monkeypatch):
+    monkeypatch.setattr(sys, 'argv', ['smooth_light_control.py'])
+
+    args = get_args()
+
+    expected = Path(__file__).resolve().parents[1] / 'light-emulation' / 'light_config.txt'
+    assert Path(args.config) == expected
 
 
 @pytest.mark.parametrize('setting', ['strip_pins', 'sensor', 'logging_enabled'])

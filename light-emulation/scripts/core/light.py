@@ -84,7 +84,7 @@ class Light:
 
     def abs_val(self) -> int:
         """Return the current absolute brightness value."""
-        return self.curr_val[0] * 60 + self.curr_val[1]
+        return self.curr_val[0] * self.num_lights + self.curr_val[1]
 
     def off(self) -> None:
         """Turn off all pixels immediately."""
