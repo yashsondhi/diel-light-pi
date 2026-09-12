@@ -48,7 +48,7 @@ if __name__ == '__main__':
     measurement_interval = (
         prompt_sample_interval()
         if logging_enabled
-        else 2.0
+        else 0.0
     )
     log_filepath = log_file.name if log_file else None
 
