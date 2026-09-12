@@ -29,15 +29,8 @@ class AutoRangingSensor:
     (less sensitive) depending on whether the reading was too low, too high,
     or comfortably in range.
 
-    Ladder (least to most sensitive):
-      Step 0  LOW  / 100ms  --  bright sunlight
-      Step 1  LOW  / 200ms
-      Step 2  MED  / 100ms  --  default start (indoor / moderate)
-      Step 3  MED  / 200ms
-      Step 4  HIGH / 100ms
-      Step 5  HIGH / 300ms
-      Step 6  MAX  / 100ms
-      Step 7  MAX  / 600ms  --  near darkness / moonlight
+        Ladder (least to most sensitive):
+            LOW, MED, HIGH, and MAX gain, each at 100, 200, 400, and 600ms.
     """
 
     COUNT_MIN = 100
@@ -50,17 +43,25 @@ class AutoRangingSensor:
 
         self.sensor        = adafruit_tsl2591.TSL2591(i2c)
         self.name          = name
-        self.step          = 2
+        self.step          = 0
         self._dark_offset: float = 0.0
 
         self._ladder = [
             (adafruit_tsl2591.GAIN_LOW,  adafruit_tsl2591.INTEGRATIONTIME_100MS, "LOW  / 100ms"),
             (adafruit_tsl2591.GAIN_LOW,  adafruit_tsl2591.INTEGRATIONTIME_200MS, "LOW  / 200ms"),
+            (adafruit_tsl2591.GAIN_LOW,  adafruit_tsl2591.INTEGRATIONTIME_400MS, "LOW  / 400ms"),
+            (adafruit_tsl2591.GAIN_LOW,  adafruit_tsl2591.INTEGRATIONTIME_600MS, "LOW  / 600ms"),
             (adafruit_tsl2591.GAIN_MED,  adafruit_tsl2591.INTEGRATIONTIME_100MS, "MED  / 100ms"),
             (adafruit_tsl2591.GAIN_MED,  adafruit_tsl2591.INTEGRATIONTIME_200MS, "MED  / 200ms"),
+            (adafruit_tsl2591.GAIN_MED,  adafruit_tsl2591.INTEGRATIONTIME_400MS, "MED  / 400ms"),
+            (adafruit_tsl2591.GAIN_MED,  adafruit_tsl2591.INTEGRATIONTIME_600MS, "MED  / 600ms"),
             (adafruit_tsl2591.GAIN_HIGH, adafruit_tsl2591.INTEGRATIONTIME_100MS, "HIGH / 100ms"),
-            (adafruit_tsl2591.GAIN_HIGH, adafruit_tsl2591.INTEGRATIONTIME_300MS, "HIGH / 300ms"),
+            (adafruit_tsl2591.GAIN_HIGH, adafruit_tsl2591.INTEGRATIONTIME_200MS, "HIGH / 200ms"),
+            (adafruit_tsl2591.GAIN_HIGH, adafruit_tsl2591.INTEGRATIONTIME_400MS, "HIGH / 400ms"),
+            (adafruit_tsl2591.GAIN_HIGH, adafruit_tsl2591.INTEGRATIONTIME_600MS, "HIGH / 600ms"),
             (adafruit_tsl2591.GAIN_MAX,  adafruit_tsl2591.INTEGRATIONTIME_100MS, "MAX  / 100ms"),
+            (adafruit_tsl2591.GAIN_MAX,  adafruit_tsl2591.INTEGRATIONTIME_200MS, "MAX  / 200ms"),
+            (adafruit_tsl2591.GAIN_MAX,  adafruit_tsl2591.INTEGRATIONTIME_400MS, "MAX  / 400ms"),
             (adafruit_tsl2591.GAIN_MAX,  adafruit_tsl2591.INTEGRATIONTIME_600MS, "MAX  / 600ms"),
         ]
 
@@ -130,8 +131,7 @@ class AutoRangingSensor:
         Read the sensor with auto-ranging.
 
         After each raw read:
-        full >= ABS_MAX  -> hard saturation -> step down, return None tuple
-                            (no settle — result is discarded, next call settles)
+        full >= ABS_MAX  -> hard saturation -> step down, settle, re-read
         full > COUNT_MAX -> near saturation -> step down, settle, re-read
         full < COUNT_MIN -> signal too weak -> step up,   settle, re-read
         otherwise        -> in range        -> return (lux, visible, ir)
@@ -140,28 +140,33 @@ class AutoRangingSensor:
             (lux_raw, visible, ir) or (None, None, None) on error/saturation.
         """
         try:
-            full, ir = self.sensor.raw_luminosity
+            # A setting change invalidates the current conversion. Retry at
+            # most once per ladder entry so a faulty sensor cannot loop forever.
+            for _ in range(len(self._ladder)):
+                full, ir = self.sensor.raw_luminosity
 
-            # Hard saturation — sensor is pegged, step down and bail.
-            # No settle here: the result will be discarded and the next
-            # call to read() will trigger a fresh settle if needed.
-            if full >= self.ABS_MAX or ir >= self.ABS_MAX:
-                self._step_down()
-                return None, None, None
-
-            # Near saturation — step down and re-read after settling.
-            if full > self.COUNT_MAX:
-                previous_step = self.step
-                if self._step_down():
+                if full >= self.ABS_MAX or ir >= self.ABS_MAX:
+                    previous_step = self.step
+                    if not self._step_down():
+                        return None, None, None
                     self._settle(previous_step)
+                    continue
 
-            # Signal too weak — step up and re-read after settling.
-            elif full < self.COUNT_MIN:
-                previous_step = self.step
-                if self._step_up():
-                    self._settle(previous_step)
+                if full > self.COUNT_MAX:
+                    previous_step = self.step
+                    if self._step_down():
+                        self._settle(previous_step)
+                        continue
 
-            return self.sensor.lux, self.sensor.visible, self.sensor.infrared
+                elif full < self.COUNT_MIN:
+                    previous_step = self.step
+                    if self._step_up():
+                        self._settle(previous_step)
+                        continue
+
+                return self.sensor.lux, self.sensor.visible, self.sensor.infrared
+
+            return None, None, None
 
         except Exception as e:
             print(f"  [{self.name}] read error: {e}")

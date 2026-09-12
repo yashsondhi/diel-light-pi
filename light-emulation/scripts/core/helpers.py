@@ -132,6 +132,27 @@ def prompt_strips(available_pins: list) -> list:
     return available_pins[:n]
 
 
+def prompt_sample_interval() -> float:
+    """Ask how often sensor measurements should be taken and logged."""
+    recommendation = (
+        "For more detail, use 1-2 seconds; for a week-long trial, 8 seconds is a reasonable compromise. The lights will still update every 0.5 seconds. As reference, a 3 day trial with a 0.5 second measurement spacing resulted in a 3 GB csv file."
+    )
+    print(f"\n{recommendation}")
+    while True:
+        answer = input(
+            "Sensor measurement interval in seconds [2.0]: "
+        ).strip()
+        if not answer:
+            return 2.0
+        try:
+            interval = float(answer)
+            if interval > 0:
+                return interval
+        except ValueError:
+            pass
+        print("  Please enter a number greater than zero.")
+
+
 def prompt_sensor(cfg: LightSystemConfig, num_lights: int = 0):
     """
     Interactively initialise an AutoRangingSensor, optionally run dark
@@ -286,6 +307,7 @@ def get_args() -> argparse.Namespace:
         --test:  run sine wave brightness test on all strips then exit.
         --setup: print current LightSystemConfig values and confirm before
                  starting the main loop.
+        --config: path to the text file containing light-system settings.
 
     Returns:
         argparse.Namespace with attributes test and setup.
@@ -302,6 +324,14 @@ def get_args() -> argparse.Namespace:
     mode.add_argument(
         '--setup', default=False, action="store_true",
         help='Print and confirm light cycle parameters'
+    )
+    default_config = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        'light_config.txt',
+    )
+    parser.add_argument(
+        '--config', default=default_config,
+        help=f'Path to light configuration file (default: {default_config})',
     )
     return parser.parse_args()
 

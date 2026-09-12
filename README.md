@@ -40,6 +40,16 @@ Bootable scripts
 4. Save time every minute to the pi : save_run_time.py
 5. Send IP address on boot : boot_email.py
 
+### Light controller configuration
+The light controller reads its cycle settings from
+`light-emulation/light_config.txt` by default. Use `--config path/to/file.txt`
+to select another file. Strip count, sensor use, logging, and measurement
+interval are selected through terminal prompts. Lights continue updating every
+0.5 seconds regardless of the measurement interval.
+
+For more detail, use a 2-second measurement interval. For a week-long trial,
+8 seconds is a reasonable compromise that greatly reduces CSV size.
+
 ## Auto booting Instructions: 
 Load these commands in /etc/rc.local to boot from startup : python PATH_TO:smooth_light_control.py
  

@@ -22,6 +22,7 @@ from light_core import (
     AutoRangingSensor,
     get_args,
     prompt_strips,
+    prompt_sample_interval,
     prompt_sensor,
     current_light_val,
     read_sensor,
@@ -32,7 +33,7 @@ from light_core import (
 if __name__ == '__main__':
 
     args = get_args()
-    cfg  = LightSystemConfig()
+    cfg  = LightSystemConfig.from_file(args.config)
 
     # -- available pins (edit to match your wiring) ---------------------------
     AVAILABLE_PINS = [board.D12, board.D18, board.D21, board.D10]
@@ -44,6 +45,11 @@ if __name__ == '__main__':
     print(f"{len(lights)} strip(s) initialised.")
 
     sensor, logging_enabled, log_file, writer = prompt_sensor(cfg, len(lights))
+    measurement_interval = (
+        prompt_sample_interval()
+        if logging_enabled
+        else 2.0
+    )
     log_filepath = log_file.name if log_file else None
 
     # -- signal handler -------------------------------------------------------
@@ -67,7 +73,7 @@ if __name__ == '__main__':
             print(f"  dark offset:       {sensor.dark_offset:.4f} lux")
         print(f"{'--' * 20}")
         if input("Are these values correct? (y/n): ").strip().lower() == 'n':
-            sys.exit("Update parameters in LightSystemConfig and rerun.")
+            sys.exit("Update the config file and rerun.")
 
     # -- test mode ------------------------------------------------------------
     if args.test:
@@ -83,8 +89,9 @@ if __name__ == '__main__':
 
     # -- main loop ------------------------------------------------------------
     try:
+        next_measurement = time.monotonic()
         while True:
-            time.sleep(.5)
+            time.sleep(0.5)
             now   = datetime.now()
             now_h = now.hour + now.minute / 60 + now.second / 3600
             val   = current_light_val(now_h, cfg)
@@ -92,7 +99,8 @@ if __name__ == '__main__':
             for light in lights:
                 light.set_val(val)
 
-            if logging_enabled:
+            if logging_enabled and time.monotonic() >= next_measurement:
+                next_measurement = time.monotonic() + measurement_interval
                 lux_raw, vis, ir = read_sensor(sensor)
                 lux_corrected = (
                     sensor.corrected_lux(lux_raw)

@@ -1,0 +1,10 @@
+# Light-cycle settings for smooth_light_control.py
+# Strip count, sensor use, logging, and measurement interval are selected in
+# the terminal.
+
+start_sunrise = 7.0
+start_sunset = 19.0
+twilight_duration = 1.5
+min_val = 0.0
+max_val = 0.2
+num_lights = 50
