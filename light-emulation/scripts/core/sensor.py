@@ -144,16 +144,6 @@ class AutoRangingSensor:
         for _ in range(len(self._ladder)):
             try:
                 full, ir = self.sensor.raw_luminosity
-            except Exception as error:
-                if 'overflow' in str(error).lower():
-                    previous_step = self.step
-                    if self._step_down():
-                        self._settle(previous_step)
-                        continue
-                print(f"  [{self.name}] read error: {error}")
-                return None, None, None
-
-            try:
                 if full >= self.ABS_MAX or ir >= self.ABS_MAX:
                     previous_step = self.step
                     if not self._step_down():
@@ -175,6 +165,11 @@ class AutoRangingSensor:
 
                 return self.sensor.lux, self.sensor.visible, self.sensor.infrared
             except Exception as error:
+                if 'overflow' in str(error).lower():
+                    previous_step = self.step
+                    if self._step_down():
+                        self._settle(previous_step)
+                        continue
                 print(f"  [{self.name}] read error: {error}")
                 return None, None, None
 
