@@ -124,6 +124,22 @@ class AutoRangingSensor:
             return True
         return False
 
+    def _lux_from_channels(self, full: int, ir: int) -> float:
+        """Calculate lux from one synchronized full-spectrum/IR sample."""
+        gain, integration, _ = self._ladder[self.step]
+        gain_multiplier = {
+            adafruit_tsl2591.GAIN_LOW: 1.0,
+            adafruit_tsl2591.GAIN_MED: 25.0,
+            adafruit_tsl2591.GAIN_HIGH: 428.0,
+            adafruit_tsl2591.GAIN_MAX: 9876.0,
+        }[gain]
+        integration_ms = 100.0 * (integration + 1)
+        counts_per_lux = (integration_ms * gain_multiplier) / 408.0
+
+        lux_channel_1 = (full - (1.64 * ir)) / counts_per_lux
+        lux_channel_2 = ((0.59 * full) - (0.86 * ir)) / counts_per_lux
+        return max(lux_channel_1, lux_channel_2)
+
     # -- public methods -------------------------------------------------------
 
     def read(self) -> Tuple[Optional[float], Optional[float], Optional[float]]:
@@ -163,7 +179,8 @@ class AutoRangingSensor:
                         self._settle(previous_step)
                         continue
 
-                return self.sensor.lux, self.sensor.visible, self.sensor.infrared
+                lux = self._lux_from_channels(full, ir)
+                return lux, full - ir, ir
             except Exception as error:
                 if 'overflow' in str(error).lower():
                     previous_step = self.step

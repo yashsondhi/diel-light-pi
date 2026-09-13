@@ -94,6 +94,27 @@ def resolve_lux_plot_columns(df):
     }
 
 
+def resolve_sensor_plot_columns(df, sensor_name):
+    """Return plotting columns for a current or legacy visible/IR sensor."""
+    if sensor_name in df.columns:
+        return {
+            'series': [sensor_name],
+            'labels': [sensor_name.title()],
+        }
+
+    legacy_series = [f'top_{sensor_name}', f'bottom_{sensor_name}']
+    if set(legacy_series).issubset(df.columns):
+        return {
+            'series': legacy_series,
+            'labels': [f'Top {sensor_name.title()}', f'Bottom {sensor_name.title()}'],
+        }
+
+    return {
+        'series': [],
+        'labels': [],
+    }
+
+
 def main():
     os.makedirs(RAW_DIR, exist_ok=True)
     os.makedirs(CHART_DIR, exist_ok=True)
@@ -127,7 +148,9 @@ def main():
     if not has_set_val:
         print("Warning: no 'set_val' column found, skipping set value plot")
 
-    fig, ax1 = plt.subplots(figsize=(12, 5))
+    fig, (ax1, ax_visible) = plt.subplots(
+        2, 1, figsize=(12, 8), sharex=True
+    )
 
     if 'timestamp' in df.columns:
         timestamp_format = choose_timestamp_axis_format(df['timestamp'])
@@ -159,7 +182,38 @@ def main():
     lines1, labels1 = ax1.get_legend_handles_labels()
     ax1.legend(lines1 + lines2, labels1 + labels2, loc='lower right')
 
-    plt.title(f'Light Set Value vs Sensor Lux — {os.path.basename(filename)}')
+    visible_columns = resolve_sensor_plot_columns(df, 'visible')
+    for series_name, label in zip(visible_columns['series'], visible_columns['labels']):
+        ax_visible.plot(
+            df['timestamp'],
+            df[series_name],
+            label=label,
+            color='tab:green',
+        )
+    ax_visible.set_ylabel('Visible', color='tab:green')
+    ax_visible.tick_params(axis='y', labelcolor='tab:green')
+
+    ax_ir = ax_visible.twinx()
+    ir_columns = resolve_sensor_plot_columns(df, 'ir')
+    for series_name, label in zip(ir_columns['series'], ir_columns['labels']):
+        ax_ir.plot(
+            df['timestamp'],
+            df[series_name],
+            label=label,
+            color='tab:red',
+        )
+    ax_ir.set_ylabel('IR', color='tab:red')
+    ax_ir.tick_params(axis='y', labelcolor='tab:red')
+
+    visible_lines, visible_labels = ax_visible.get_legend_handles_labels()
+    ir_lines, ir_labels = ax_ir.get_legend_handles_labels()
+    ax_visible.legend(
+        visible_lines + ir_lines,
+        visible_labels + ir_labels,
+        loc='lower right',
+    )
+
+    fig.suptitle(f'Light Set Value vs Sensor Data — {os.path.basename(filename)}')
     plt.tight_layout()
     save_path = build_chart_output_path(filename)
     plt.savefig(save_path)

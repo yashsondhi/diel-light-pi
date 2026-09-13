@@ -53,9 +53,12 @@ For more detail, use a 2-second measurement interval. For a week-long trial,
 ## Auto booting Instructions: 
 Load these commands in /etc/rc.local to boot from startup : python PATH_TO:smooth_light_control.py
  
-For boot_email.py and auto start put the commands in example/crontab_files.files.txt in your own cronfile.
-Use crontab -e and add the lines of code, taking care to use the directory where your files are loaded. 
-If you have not installed diel-light-pi in the home directory, then change the cd command in @reboot sleep 60 && cd diel-light-pi && python3 run_diel-light_2.py --run
+For `boot_email.py` and activity-monitoring auto start, add the commands from
+`examples/crontab_files.txt` to the Raspberry Pi user's crontab with `crontab -e`.
+Update `/home/pi/diel-light-pi` in those commands if the repository is elsewhere.
+The activity-monitoring command includes `--silent` because cron has no terminal
+to answer the interactive confirmation prompt. It starts only when
+`AUTOSTART: true` is set in `project-configs/project.conf`.
 
 ## Citation: 
 Sondhi, Y., Jo, N. J., Alpizar, B., Markee, A., Dansby, H. E., Currea, J. P., Fabian, S. T., Ruiz, C., Barredo, E., Allen, P., DeGennaro, M., Kawahara, A. Y. & Theobald, J. C. (2022). Portable locomotion activity monitor (pLAM): A cost-effective setup for robust activity tracking in small animals. Methods in Ecology and Evolution, 13, 805–812. https://doi.org/10.1111/2041-210X.13809
