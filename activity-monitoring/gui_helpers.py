@@ -362,8 +362,8 @@ def run_experiment(ctx: AppContext, main_script: str, default_motion_path: str):
         hold_terminal = (
             f"{quoted_command}; "
             "status=$?; "
-            "printf '\\nRunner exited with status %s. Press Enter to close.\\n' \"$status\"; "
-            "read -r"
+            "printf '\\nRunner exited with status %s. Close this terminal when finished.\\n' \"$status\"; "
+            "exec bash"
         )
         subprocess.Popen([
             "x-terminal-emulator",
@@ -399,6 +399,7 @@ def update_gui_elements(ctx: AppContext, default_motion_path: str = "", script_d
     ctx.auto_start_var.set(ctx.config.get("AUTOSTART", True))
     ctx.auto_number_var.set(ctx.config.get("AUTONUMBER", ctx.config.get("AUTOSTART", True)))
     update_trial_number_preview(ctx, script_dir or os.path.dirname(os.path.abspath(__file__)))
+    ctx.motion_config_selected = bool(gui_text(ctx.config.get("MOTIONPATH", "")).strip())
     ctx.motion_file_label.config(
         text=config_path_text(ctx.config.get("MOTIONPATH", default_motion_path), "motion")
     )
