@@ -32,6 +32,8 @@ class AppContext:
         self.config: dict = {}
         self.config_dirty: bool = False
         self.project_conf_path: str = ""
+        self.project_config_selected: bool = False
+        self.motion_config_selected: bool = False
 
         # Widget references — assigned after the GUI is built
         self.run_button        = None
@@ -114,6 +116,32 @@ def update_wrap_lengths(form_frame, intro_label, allowed_characters_label, descr
         label.configure(wraplength=max(label.winfo_width(), 1))
 
 
+def scroll_form(event, form_canvas):
+    """Scroll the form when the pointer is anywhere inside its canvas."""
+    canvas_x = form_canvas.winfo_pointerx() - form_canvas.winfo_rootx()
+    canvas_y = form_canvas.winfo_pointery() - form_canvas.winfo_rooty()
+    if 0 <= canvas_x <= form_canvas.winfo_width() and 0 <= canvas_y <= form_canvas.winfo_height():
+        form_canvas.yview_scroll(-1 * (event.delta // 120), "units")
+
+
+def add_field(form_frame, ctx, script_dir, row, col, label, attr, folder_name=False):
+    """Create a labeled form field, wire its edit handler, and store it on ctx."""
+    ttk.Label(form_frame, text=label, style="Body.TLabel").grid(
+        row=row, column=col, sticky="w", padx=(0, 8), pady=7
+    )
+    entry = ttk.Entry(form_frame, width=6)
+    entry.grid(row=row, column=col + 1, sticky="ew",
+               padx=(0, 18 if col == 0 else 0), pady=7)
+    entry.bind(
+        "<KeyRelease>",
+        lambda event, e=entry, fn=folder_name: (
+            handle_entry_change(event, e, ctx, fn),
+            update_trial_number_preview(ctx, script_dir),
+        ),
+    )
+    setattr(ctx, attr, entry)
+
+
 def get_next_trial_number(output_path):
     """Return the next number using the runner's existing trial-directory rule."""
     if not os.path.isdir(output_path):
@@ -171,13 +199,18 @@ def mark_config_dirty(ctx: AppContext):
         ctx.status_label.configure(style="Unsaved.Status.TLabel")
 
 
+def configs_selected(ctx: AppContext):
+    """Return whether both configuration files were explicitly selected."""
+    return ctx.project_config_selected and ctx.motion_config_selected
+
+
 def mark_config_saved(ctx: AppContext):
-    """Mark the form as saved and allow the experiment to run."""
+    """Mark the form as saved and allow running only with both configs selected."""
     ctx.config_dirty = False
     if ctx.run_button is not None:
-        ctx.run_button.config(state=tk.NORMAL)
+        ctx.run_button.config(state=tk.NORMAL if configs_selected(ctx) else tk.DISABLED)
     if ctx.status_var is not None:
-        ctx.status_var.set("Ready to run")
+        ctx.status_var.set("Ready to run" if configs_selected(ctx) else "Select project and motion config files")
     if ctx.status_label is not None:
         ctx.status_label.configure(style="Ready.Status.TLabel")
 
@@ -215,6 +248,8 @@ def open_config_file(ctx: AppContext, script_dir: str):
     if file_path:
         with open(file_path, "r") as fh:
             ctx.config.update(yaml.safe_load(fh) or {})
+        ctx.project_conf_path = file_path
+        ctx.project_config_selected = True
         if ctx.project_file_label is not None:
             ctx.project_file_label.config(text=config_path_text(file_path, "project"))
         update_gui_elements(ctx)
@@ -230,8 +265,8 @@ def open_motion_file(ctx: AppContext, script_dir: str, default_motion_path: str)
     )
     if file_path:
         ctx.config["MOTIONPATH"] = file_path
+        ctx.motion_config_selected = True
         ctx.motion_file_label.config(text=config_path_text(file_path, "motion"))
-        ctx.project_conf_path = file_path
         mark_config_dirty(ctx)
 
 
@@ -264,6 +299,7 @@ def save_config_file(ctx: AppContext, script_dir: str, default_motion_path: str)
         with open(file_path, "w") as fh:
             yaml.dump(ctx.config, fh, Dumper=QuotedStringDumper, sort_keys=False)
         ctx.project_conf_path = file_path
+        ctx.project_config_selected = True
         ctx.window.after_idle(lambda: finish_save(ctx))
 
 
@@ -271,6 +307,8 @@ def save_config_file(ctx: AppContext, script_dir: str, default_motion_path: str)
 
 def run_experiment(ctx: AppContext, main_script: str, default_motion_path: str):
     """Launch the experiment runner in a platform-appropriate terminal."""
+    if ctx.config_dirty or not configs_selected(ctx):
+        return
     motion_path = ctx.config.get("MOTIONPATH", default_motion_path)
     command = (
         f"python3 {main_script} --run "
@@ -283,7 +321,17 @@ def run_experiment(ctx: AppContext, main_script: str, default_motion_path: str):
         subprocess.Popen(["/usr/bin/open", "-n", "-F", "-a",
                           "/Applications/Utilities/Terminal.app", command])
     elif sys.platform.startswith("linux"):
-        subprocess.Popen(["x-terminal-emulator", "-e", command])
+        subprocess.Popen([
+            "x-terminal-emulator",
+            "-e",
+            "python3",
+            main_script,
+            "--run",
+            "--projectconf",
+            ctx.project_conf_path,
+            "--motionconf",
+            motion_path,
+        ])
 
 
 # ── GUI refresh ──────────────────────────────────────────────────────────────

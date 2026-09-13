@@ -4,6 +4,7 @@ from tkinter import ttk
 
 from gui_helpers import (
     AppContext,
+    add_field,
     config_path_text,
     handle_entry_change,
     load_default_config,
@@ -13,6 +14,7 @@ from gui_helpers import (
     open_motion_file,
     run_experiment,
     save_config_file,
+    scroll_form,
     update_wrap_lengths,
     update_trial_number_preview,
     update_gui_elements,
@@ -107,16 +109,7 @@ form_canvas.bind(
     lambda event: form_canvas.itemconfigure(form_window, width=event.width),
 )
 
-
-def scroll_form(event):
-    """Scroll the form when the pointer is anywhere inside its canvas."""
-    canvas_x = form_canvas.winfo_pointerx() - form_canvas.winfo_rootx()
-    canvas_y = form_canvas.winfo_pointery() - form_canvas.winfo_rooty()
-    if 0 <= canvas_x <= form_canvas.winfo_width() and 0 <= canvas_y <= form_canvas.winfo_height():
-        form_canvas.yview_scroll(-1 * (event.delta // 120), "units")
-
-
-window.bind_all("<MouseWheel>", scroll_form)
+window.bind_all("<MouseWheel>", lambda event: scroll_form(event, form_canvas))
 
 form_frame = ttk.LabelFrame(scroll_frame, text="Experiment details", style="Section.TLabelframe", padding=14)
 form_frame.grid(row=0, column=0, sticky="ew")
@@ -132,31 +125,13 @@ intro_label = ttk.Label(
 intro_label.grid(row=0, column=0, columnspan=4, sticky="w", pady=(0, 8))
 
 
-def add_field(row, col, label, attr, folder_name=False):
-    """Create a labeled form field, wire its edit handler, and store it on ctx."""
-    ttk.Label(form_frame, text=label, style="Body.TLabel").grid(
-        row=row, column=col, sticky="w", padx=(0, 8), pady=7
-    )
-    entry = ttk.Entry(form_frame, width=6)
-    entry.grid(row=row, column=col + 1, sticky="ew",
-               padx=(0, 18 if col == 0 else 0), pady=7)
-    entry.bind(
-        "<KeyRelease>",
-        lambda event, e=entry, fn=folder_name: (
-            handle_entry_change(event, e, ctx, fn),
-            update_trial_number_preview(ctx, SCRIPT_DIR),
-        ),
-    )
-    setattr(ctx, attr, entry)
-
-
-add_field(1, 0, "Experimenter name *", "experimenter_entry")
-add_field(1, 2, "Initials *",          "initials_entry")
-add_field(2, 0, "Project name *",      "project_entry")
-add_field(2, 2, "Location *",          "location_entry")
-add_field(3, 0, "Organism *",          "organism_entry")
-add_field(3, 2, "Output folder *",     "output_entry",    folder_name=True)
-add_field(4, 0, "Trial name *",        "trial_name_entry", folder_name=True)
+add_field(form_frame, ctx, SCRIPT_DIR, 1, 0, "Experimenter name *", "experimenter_entry")
+add_field(form_frame, ctx, SCRIPT_DIR, 1, 2, "Initials *",          "initials_entry")
+add_field(form_frame, ctx, SCRIPT_DIR, 2, 0, "Project name *",      "project_entry")
+add_field(form_frame, ctx, SCRIPT_DIR, 2, 2, "Location *",          "location_entry")
+add_field(form_frame, ctx, SCRIPT_DIR, 3, 0, "Organism *",          "organism_entry")
+add_field(form_frame, ctx, SCRIPT_DIR, 3, 2, "Output folder *",     "output_entry",    folder_name=True)
+add_field(form_frame, ctx, SCRIPT_DIR, 4, 0, "Trial name *",        "trial_name_entry", folder_name=True)
 ctx.trial_num_label = ttk.Label(form_frame, text="Trial number", style="Body.TLabel")
 ctx.trial_num_label.grid(row=4, column=2, sticky="w", padx=(0, 8), pady=7)
 ctx.trial_num_entry = ttk.Entry(form_frame, width=6)
@@ -257,6 +232,8 @@ ctx.project_conf_path = load_default_config(ctx, DEFAULT_PROJECT_CONF, TEMPLATE_
 project_file_label.config(text=config_path_text(ctx.project_conf_path, "project"))
 update_gui_elements(ctx, DEFAULT_MOTION_PATH, SCRIPT_DIR)
 mark_config_saved(ctx)
+window.update_idletasks()
+window.minsize(480, 540)
 
 # ── Event loop ────────────────────────────────────────────────────────────────
 window.mainloop()
