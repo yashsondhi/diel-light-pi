@@ -55,7 +55,7 @@ def get_last_trial(path):
     """Count direct trial directories to determine the next trial number."""
     trial_pattern = re.compile(r"_trial\d+$")
     return sum(
-        os.path.isdir(os.path.join(path, name)) and trial_pattern.search(name)
+        bool(os.path.isdir(os.path.join(path, name)) and trial_pattern.search(name))
         for name in os.listdir(path)
     )
 

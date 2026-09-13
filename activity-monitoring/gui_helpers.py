@@ -164,7 +164,7 @@ def update_trial_number_preview(ctx: AppContext, script_dir: str):
         output_path = os.path.join(script_dir, output_path)
 
     if ctx.auto_number_var.get():
-        trial_number = str(get_next_trial_number(output_path))
+        trial_number = str(get_next_trial_number(output_path)).zfill(2)
         ctx.trial_num_entry.config(state=tk.NORMAL)
         ctx.trial_num_entry.delete(0, tk.END)
         ctx.trial_num_entry.insert(0, trial_number)
