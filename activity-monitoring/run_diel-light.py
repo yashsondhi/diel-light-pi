@@ -128,7 +128,9 @@ def main():
             sys.exit("Run with the --autorun flag or set AUTOSTART to True in the config file")
 
         scripts_path = os.path.join(SCRIPT_DIR, "scripts")
-        subprocess.Popen([sys.executable, os.path.join(scripts_path, "save_run_time.py")])
+        runtime_logger = os.path.join(scripts_path, "save_run_time.py")
+        subprocess.run(["pkill", "-f", runtime_logger], check=False)
+        subprocess.Popen([sys.executable, runtime_logger])
 
         out_path = resolve_path(out_path, SCRIPT_DIR)
         print("Output will be written to: ", out_path)
