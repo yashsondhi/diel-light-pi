@@ -4,3 +4,4 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"   # Options: "daily", "weekly", "monthly"
+    target-branch: "website-documentation" 
