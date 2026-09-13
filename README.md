@@ -57,8 +57,10 @@ For `boot_email.py` and activity-monitoring auto start, add the commands from
 `examples/crontab_files.txt` to the Raspberry Pi user's crontab with `crontab -e`.
 Update `/home/pi/diel-light-pi` in those commands if the repository is elsewhere.
 The activity-monitoring command includes `--silent` because cron has no terminal
-to answer the interactive confirmation prompt. It starts only when
-`AUTOSTART: true` is set in `project-configs/project.conf`.
+to answer the interactive confirmation prompt, and `--boot` so it starts only
+when `AUTOSTART: true` is set in `project-configs/project.conf`. Manual runs do
+not require `AUTOSTART`; with interactive mode enabled, answering `y` starts
+the experiment using the configured trial number.
 
 ## Citation: 
 Sondhi, Y., Jo, N. J., Alpizar, B., Markee, A., Dansby, H. E., Currea, J. P., Fabian, S. T., Ruiz, C., Barredo, E., Allen, P., DeGennaro, M., Kawahara, A. Y. & Theobald, J. C. (2022). Portable locomotion activity monitor (pLAM): A cost-effective setup for robust activity tracking in small animals. Methods in Ecology and Evolution, 13, 805–812. https://doi.org/10.1111/2041-210X.13809
