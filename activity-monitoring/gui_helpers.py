@@ -1,6 +1,7 @@
 # gui_helpers.py
 import os
 import re
+import shlex
 import subprocess
 import sys
 import tkinter as tk
@@ -192,6 +193,7 @@ def manual_trial_conflicts(ctx: AppContext, script_dir: str):
 def mark_config_dirty(ctx: AppContext):
     """Disable running until the current form values have been saved."""
     ctx.config_dirty = True
+    update_config_file_status(ctx)
     if ctx.run_button is not None:
         ctx.run_button.config(state=tk.DISABLED)
     if ctx.status_var is not None:
@@ -205,15 +207,40 @@ def configs_selected(ctx: AppContext):
     return ctx.project_config_selected and ctx.motion_config_selected
 
 
+def update_config_file_status(ctx: AppContext):
+    """Update missing-file highlighting and the selection status message."""
+    missing_project = not ctx.project_config_selected
+    missing_motion = not ctx.motion_config_selected
+
+    if ctx.project_file_label is not None:
+        ctx.project_file_label.configure(
+            style="Missing.Path.TLabel" if missing_project else "Path.TLabel"
+        )
+    if ctx.motion_file_label is not None:
+        ctx.motion_file_label.configure(
+            style="Missing.Path.TLabel" if missing_motion else "Path.TLabel"
+        )
+
+    missing_count = int(missing_project) + int(missing_motion)
+    if missing_count == 2:
+        return "Select project and motion config files"
+    if missing_count == 1:
+        return "Select a config file"
+    return "Ready to run"
+
+
 def mark_config_saved(ctx: AppContext):
     """Mark the form as saved and allow running only with both configs selected."""
     ctx.config_dirty = False
+    selection_status = update_config_file_status(ctx)
     if ctx.run_button is not None:
         ctx.run_button.config(state=tk.NORMAL if configs_selected(ctx) else tk.DISABLED)
     if ctx.status_var is not None:
-        ctx.status_var.set("Ready to run" if configs_selected(ctx) else "Select project and motion config files")
+        ctx.status_var.set(selection_status)
     if ctx.status_label is not None:
-        ctx.status_label.configure(style="Ready.Status.TLabel")
+        ctx.status_label.configure(
+            style="Ready.Status.TLabel" if configs_selected(ctx) else "Missing.Status.TLabel"
+        )
 
 
 def finish_save(ctx: AppContext):
@@ -322,9 +349,7 @@ def run_experiment(ctx: AppContext, main_script: str, default_motion_path: str):
         subprocess.Popen(["/usr/bin/open", "-n", "-F", "-a",
                           "/Applications/Utilities/Terminal.app", command])
     elif sys.platform.startswith("linux"):
-        subprocess.Popen([
-            "x-terminal-emulator",
-            "-e",
+        runner_command = [
             "python3",
             main_script,
             "--run",
@@ -332,6 +357,20 @@ def run_experiment(ctx: AppContext, main_script: str, default_motion_path: str):
             ctx.project_conf_path,
             "--motionconf",
             motion_path,
+        ]
+        quoted_command = " ".join(shlex.quote(argument) for argument in runner_command)
+        hold_terminal = (
+            f"{quoted_command}; "
+            "status=$?; "
+            "printf '\\nRunner exited with status %s. Press Enter to close.\\n' \"$status\"; "
+            "read -r"
+        )
+        subprocess.Popen([
+            "x-terminal-emulator",
+            "-e",
+            "sh",
+            "-c",
+            hold_terminal,
         ])
 
 
