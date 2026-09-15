@@ -77,8 +77,8 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
             A green light here means that the Raspberry Pi succesfully turned on.
         </figcaption>
     </figure>
-    
-5. Change the country to United States, langauge to American English, and timezone to Eastern. Check the "Use English language" and "Use US keyboard" boxes and press next.
+
+5. You should see a "Welcome to the Raspberry Pi Desktop" screen, and it should automatically jump into the desktop screen. 
     <figure>
         <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/Final_Assembly.png" 
             alt="Image of Raspberry Pi and Arducam connected by orange ribbon cable">
