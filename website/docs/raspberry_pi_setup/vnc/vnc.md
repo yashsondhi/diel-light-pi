@@ -1,7 +1,7 @@
 ---
 title: Setting Up VNC 
 parent: Booting Up
-last_modified_date:
+last_modified_date: 2015
 nav_order: 1
 ---
 # Setting Up VNC on Raspberry Pi

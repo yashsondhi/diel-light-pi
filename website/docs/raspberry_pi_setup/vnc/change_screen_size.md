@@ -1,7 +1,7 @@
 ---
 title: Change Screen Size
 parent: Booting Up
-last_modified_date:
+last_modified_date: 2015
 nav_order: 2
 ---
 # Change the Raspberry Pi Screen Size
