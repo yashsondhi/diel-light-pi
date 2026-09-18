@@ -1,7 +1,7 @@
 ---
 title: Booting Up 
 parent: Raspberry Pi Setup
-last_modified_date: 2026-09-15 16:50:52 +0000
+last_modified_date: 2026-09-18 19:03:48 +0000
 nav_order: 3
 ---
 # Booting Up the Raspberry Pi 5
