@@ -124,7 +124,7 @@ Make sure the Raspberry Pi is turned off when plugging in and out the micro SD c
         </figcaption>
     </figure>
     
-8. Press next on the WiFi screen, make sure SSH is disabled. If you want to enable remote access or just want to learn more, click [here][SSH Page].
+8. Press next on the WiFi screen, make sure SSH is disabled.
     <figure>
         <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/software/SSH_Option.png" 
             alt="Image of Raspberry Pi 5 package">
@@ -164,5 +164,4 @@ Make sure the Raspberry Pi is turned off when plugging in and out the micro SD c
 
 Continue to the [Booting Up][Boot] page to continue setting up the pLAM.
 
-[SSH Page]: ../../ssh/ 
 [Boot]: ../boot/ 

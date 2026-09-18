@@ -18,14 +18,14 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
 1. Put the micro SD card into the micro SD card reader of the Raspberry Pi, on the bottom side of the Pi. 
     <figure class="image-row">
         <div>
-            <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/RPi_MicroSD.png" 
+            <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/hardware/RPi_MicroSD.png" 
                 alt="Image of the micro SD slot on the Raspberry Pi">
             <figcaption>
                 The micro SD slot on a Raspberry Pi. The Raspberry Pi runs off the micro SD card that is inserted here.
             </figcaption>
         </div>
         <div>
-            <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/MicroSD_Inserted.png" 
+            <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/hardware/MicroSD_Inserted.png" 
                 alt="Image of the micro SD card inserted in the Raspberry Pi">
             <figcaption>
                 A micro SD card correctly and fully inserted into the Raspberry Pi.
@@ -36,14 +36,14 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
 2. Plug in the USB keyboard and mouse into any of the USB ports.
     <figure class="image-row">
         <div>
-            <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/USB_Ports.png" 
+            <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/hardware/USB_Ports.png" 
                 alt="Image of a red box around the USB ports on a Raspberry Pi 5">
             <figcaption>
                 Plug in any USB devices here.
             </figcaption>
         </div>
         <div>
-            <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/USB_Port_with_Dongle.png" 
+            <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/hardware/USB_Port_with_Dongle.png" 
                 alt="Image of two usb devices plugged into the Raspberry Pi 5">
             <figcaption>
                 A USB keyboard and mouse pair plugged into the Raspberry Pi.
@@ -54,14 +54,14 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
 3. Plug the USB C power cable into the bottom left port of the Raspberry Pi (left red box), and the micro HDMI cable into the middle metal connector (right red box). 
     <figure class="image-row">
         <div>
-            <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/USBC_MicroHDMI_Connectors.png" 
+            <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/hardware/USBC_MicroHDMI_Connectors.png" 
                 alt="Image of a red box around the USBC and micro HDMI connectors on the Raspbery Pi">
             <figcaption>
                 TThe Raspberry Pi gets its power from the USB C port. The Raspbery Pi outputs a display through the micro HDMI port. 
             </figcaption>
         </div>
         <div>
-            <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/Plugged.png" 
+            <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/hardware/Plugged.png" 
                 alt="Image of a USB C and micro HDMI cable plugged into the Raspberry Pi">
             <figcaption>
                 The power and display cables properly plugged in.
@@ -71,14 +71,14 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
     
 4. After plugging the Pi in, the LED should first be red briefly, and then turn to green. It is okay if the green light flickers.  
     <figure>
-        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/LED_On.png" 
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/hardware/LED_On.png" 
             alt="Image of the LED indicator on the Raspberry Pi as Green">
         <figcaption>
             A green light here means that the Raspberry Pi succesfully turned on.
         </figcaption>
     </figure>
 
-5. You should see a "Welcome to the Raspberry Pi Desktop" screen, and it should automatically jump into the desktop screen. 
+5. You should see a "Welcome to the Raspberry Pi Desktop" screen, and it should automatically jump into the desktop screen.
     <figure>
         <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/Final_Assembly.png" 
             alt="Image of Raspberry Pi and Arducam connected by orange ribbon cable">
@@ -87,7 +87,11 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
         </figcaption>
     </figure>
     
-6. If not already created, create a user for the Pi, and enter your preferred username and password. If working in a lab, consult your PI. And press OK if there is a popup. 
+## Setting Up the Raspberry Pi
+If you would like to control the Raspberry Pi without a separate monitor from your own computer, go to [Using VNC][vnc page] and then come back here to continue setting up the Raspberry Pi.
+{: .note}
+
+1. If not already created, create a user for the Pi, and enter your preferred username and password. If working in a lab, consult your PI. And press OK if there is a popup. 
     <figure>
         <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/Final_Assembly.png" 
             alt="Image of Raspberry Pi and Arducam connected by orange ribbon cable">
@@ -96,7 +100,7 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
         </figcaption>
     </figure>
     
-7. Skip the WiFi network selection and software update, and press restart.
+2. Skip the WiFi network selection and software update, and press restart.
     <figure>
         <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/Final_Assembly.png" 
             alt="Image of Raspberry Pi and Arducam connected by orange ribbon cable">
@@ -105,7 +109,7 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
         </figcaption>
     </figure>
     
-8. After the Pi boots up again, in the top right click on the wifi symbol (The two red x's with grey lines coming vertically from them) and click on your desired wifi connection.
+3. After the Pi boots up again, in the top right click on the wifi symbol (The two red x's with grey lines coming vertically from them) and click on your desired wifi connection.
     <figure>
         <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/hardware/Final_Assembly.png" 
             alt="Image of Raspberry Pi and Arducam connected by orange ribbon cable">
@@ -128,3 +132,4 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
         </figcaption>
     </figure>
     
+[vnc page]: ../vnc/vnc
