@@ -1,7 +1,7 @@
 ---
 title: Setting Up VNC
 parent: Booting Up
-last_modified_date: 2026-09-18 19:11:50 +0000
+last_modified_date: 2026-10-10 07:42:26 +0000
 nav_order: 1
 ---
 # Setting Up VNC 

@@ -1,7 +1,7 @@
 ---
 title: Set Up VNC on Mac/Linux
 parent: Setting Up VNC
-last_modified_date: 
+last_modified_date: 2026-10-10 07:42:26 +0000
 nav_order: 2
 ---
 # Setting Up VNC Viewer on Mac

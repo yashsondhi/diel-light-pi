@@ -1,6 +1,6 @@
 ---
 title: Install Software
-last_modified_date: 
+last_modified_date: 2026-10-10 07:42:26 +0000
 nav_order: 4
 ---
 # Setting Up the Software Libraries
