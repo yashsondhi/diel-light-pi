@@ -21,7 +21,7 @@ Adjust how large images appear across all pages.
   var STORAGE_KEY = "imgScale";
   var MIN         = 1;
   var MAX         = 100;
-  var DEFAULT     = 75;
+  var DEFAULT     = 90;
 
   var slider = document.getElementById("img-scale-slider");
   var input  = document.getElementById("img-scale-input");

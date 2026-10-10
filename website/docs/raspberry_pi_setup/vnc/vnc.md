@@ -1,13 +1,15 @@
 ---
-title: Setting Up VNC 
+title: Setting Up VNC
 parent: Booting Up
 last_modified_date: 2026-09-18 19:11:50 +0000
 nav_order: 1
 ---
-# Setting Up VNC on Raspberry Pi
+# Setting Up VNC 
 If you need to change your screen size, go to [Changing the Raspberry Pi Screen Size][change screen size]. 
 
 This method only works if the Raspberry Pi and your computer are on the same WiFi network. If you would like an easy way to access your Raspberry Pi from different networks, follow the [guide from Raspberry Pi][pi connect guide].
+
+## Setting Up VNC On Raspberry Pi
 
 1. Open the Terminal by clicking the icon.
     <figure>
@@ -90,6 +92,10 @@ This method only works if the Raspberry Pi and your computer are on the same WiF
     This IP changes for every WiFi network that you join. For example, this IP address only applies to the university internet. If you want to do this at home, you have to get the Raspberry Pi's IP address on that network. 
     {: .warning}
 
+## Setting Up VNC On Your Computer
+
+If you have a Windows computer click [here][windows vnc], and if you have a Mac/Linux click [here][apple vnc].
+
 Follow [this][change screen size] guide to change the size of your icons.
 
 Return to the bootup guide [here][boot].
@@ -97,3 +103,5 @@ Return to the bootup guide [here][boot].
 [change screen size]: ../change_screen_size
 [pi connect guide]: https://www.raspberrypi.com/software/connect/
 [boot]: ../../boot/#setting-up-the-raspberry-pi
+[windows vnc]: ../vnc_laptop/vnc_windows/
+[apple vnc]: ../vnc_laptop/vnc_mac/

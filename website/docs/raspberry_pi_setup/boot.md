@@ -80,7 +80,7 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
 
 5. You should see a "Welcome to the Raspberry Pi Desktop" screen, and it should automatically jump into the desktop screen.
     <figure>
-        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/Final_Assembly.png" 
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/raspberry_pi/Loading.png" 
             alt="Image of Raspberry Pi and Arducam connected by orange ribbon cable">
         <figcaption>
             Completed setup of an Arducam connected to a Raspberry Pi 5.
@@ -91,45 +91,67 @@ Before doing changing anything physical (hardware) with the Raspberry Pi, make s
 If you would like to control the Raspberry Pi without a separate monitor from your own computer, go to [Using VNC][vnc page] and then come back here to continue setting up the Raspberry Pi.
 {: .note}
 
-1. If not already created, create a user for the Pi, and enter your preferred username and password. If working in a lab, consult your PI. And press OK if there is a popup. 
+1. If the system gives you a welcome screen to set up the Raspberry Pi, make sure you didn't press "skip customization" in the Raspberry Pi Imager. Create the image on the SD card again. [Software Setup][software page]
     <figure>
-        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/Final_Assembly.png" 
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/raspberry_pi/Welcome.png" 
             alt="Image of Raspberry Pi and Arducam connected by orange ribbon cable">
         <figcaption>
-            Completed setup of an Arducam connected to a Raspberry Pi 5.
+            You don't want to see this page. This means you skipped the customizations instead of continuing to press next/continue.
         </figcaption>
     </figure>
     
-2. Skip the WiFi network selection and software update, and press restart.
+2. After the Pi boots up again, in the top right click on the wifi symbol.
     <figure>
-        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/Final_Assembly.png" 
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/raspberry_pi/wifi/Select_No_WiFi_Icon.png" 
             alt="Image of Raspberry Pi and Arducam connected by orange ribbon cable">
         <figcaption>
-            Completed setup of an Arducam connected to a Raspberry Pi 5.
+            Click here to see the WiFi menu.
+        </figcaption>
+    </figure>
+
+3. Select the option to turn on the WiFi.
+    <figure>
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/raspberry_pi/wifi/Turn_On_WiFi.png" 
+            alt="Image of Raspberry Pi and Arducam connected by orange ribbon cable">
+        <figcaption>
+            Click on this to turn on the WiFi.
+        </figcaption>
+    </figure>
+
+4. Select your preferred network address.
+    <figure>
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/raspberry_pi/wifi/Select_WiFi_Network.png" 
+            alt="Image of Raspberry Pi and Arducam connected by orange ribbon cable">
+        <figcaption>
+            Select the wifi connection that you want to connect to.
         </figcaption>
     </figure>
     
-3. After the Pi boots up again, in the top right click on the wifi symbol (The two red x's with grey lines coming vertically from them) and click on your desired wifi connection.
+5. For univeristy networks that require a username and password, 
+    - Change the Authentication to "Protected EAP (PEAP)"
+    - Check the "No CA certificate is required" box
+    - Enter your username and password  
+    - Press enter
     <figure>
-        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/hardware/Final_Assembly.png" 
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/raspberry_pi/wifi/WiFi_Settings.png" 
             alt="Image of Raspberry Pi and Arducam connected by orange ribbon cable">
         <figcaption>
-            Completed setup of an Arducam connected to a Raspberry Pi 5.
+            The boxes that you need to change/fill out are highlighted.
         </figcaption>
     </figure>
-    
-9.  For univeristy networks that require a username and password, 
-   1. change the Authentication to "Protected EAP (PEAP)"
-   2. check the "No CA certificate is required" box
-   3. enter your username and password  
-   4. press enter
-    - To confirm: a grey box should pop up in the top right saying that you've connected to (insert WiFi name). If not, repeat this step and ensure that you've entered your credentials correctly.
+
+6. A grey box should pop up confirming that you connected to the network.
     <figure>
-        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/hardware/Final_Assembly.png" 
+        <img src="{{ site.baseurl }}/assets/raspberry_pi_setup/boot/raspberry_pi/wifi/WiFi_Confirmation.png" 
             alt="Image of Raspberry Pi and Arducam connected by orange ribbon cable">
         <figcaption>
-            Completed setup of an Arducam connected to a Raspberry Pi 5.
+            The confirmation message that the Pi gives after the connection succeeds.
         </figcaption>
     </figure>
+
+
+You've now set up the Raspberry Pi! Continue to the [software installation page][install software] to continue setting up the Raspberry Pi.
     
 [vnc page]: ../vnc/vnc
+[software page]: ../boot/
+[install software]: ../../software_installation/

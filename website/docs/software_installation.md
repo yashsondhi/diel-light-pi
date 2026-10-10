@@ -1,95 +1,57 @@
 ---
-title: Installing Software
-last_modified_date: 2026-08-12 02:38:05 +0000
+title: Install Software
+last_modified_date: 
 nav_order: 4
 ---
-# Motion & diel-light-pi Setup on Debian (ARM64 Bookworm)
+# Setting Up the Software Libraries
 
-This guide walks you through setting up **Motion** and the **diel-light-pi** repository on a Debian-based ARM64 system (e.g., Raspberry Pi running Bookworm) and is recommended for Pi5 and up. 
+## Cloning the Diel-Light-Pi Repository
+In order to access the code that we've created, you need to "clone" all the files that we've stored online through GitHub. 
 
----
+1. Clone the repository using this command:
+    ```bash
+    git clone https://github.com/yashsondhi/diel-light-pi.git
+    cd diel-light-pi
+    ```
+    <figure>
+        <img src="{{ site.baseurl }}/assets/github_setup/Clone.png" 
+            alt="Image of a red box around the finish button">
+        <figcaption>
+            Use this command to clone the GitHub repository.
+        </figcaption>
+    </figure>
 
-## Update the System
-Update and upgrade all installed packages:
-```bash
-sudo apt update && sudo apt upgrade -y 
-```
+2. This is what the terminal will say after successfully cloning the repository.
+    <figure>
+        <img src="{{ site.baseurl }}/assets/github_setup/Success.png" 
+            alt="Image of a red box around the finish button">
+        <figcaption>
+            The terminal text after successfully cloning the repository.
+        </figcaption>
+    </figure>
 
----
+## Install Required Libraries
+1. Enter the following command to install Motion and YAML libraries to use the repository.
+    ```bash
+    sudo apt-get install python3-yaml && sudo apt install motion
+    ```
+    <figure>
+        <img src="{{ site.baseurl }}/assets/github_setup/Install_Yaml.png" 
+            alt="Image of a red box around the finish button">
+        <figcaption>
+            Use this command to install the Motion and YAML libraries.
+        </figcaption>
+    </figure>
 
-##  Install Motion
+2. The terminal will look like this when it's done. 
+    <figure>
+        <img src="{{ site.baseurl }}/assets/github_setup/Installed_Yaml.png" 
+            alt="Image of a red box around the finish button">
+        <figcaption>
+            Successful terminal installation of Motion and YAML libraries looks like this.
+        </figcaption>
+    </figure>
 
-### Install Motion Package
-```bash
-sudo apt install motion -y
-```
+Continue to the [usage page][usage] to continue the guide.
 
----
-
-## 🔍 Verify the Camera
-### Ensure the USB or CSI camera is connected.
-```bash
-rpicam-still --list-camera
-```
-- If no camera is detected, unplug and reconnect it.
-- MAKE SURE TO TURN OFF THE PI BEFORE DISCONNECTING AND RECONNECTING
-
-### Test camera with `rpicam`
-```bash
-rpicam-still -t 0
-```
-- Confirm the camera feed is visible.
-- To stop, go back to the terminal and press CTRL+C to quit
-
-### Take an image with a 5 second preview
-```bash
-rpicam-still -t 5000 -o test.jpg
-```
-
----
-
-## Set Up `diel-light-pi`
-
-### 1. Clone the Repository
-```bash
-git clone https://github.com/yashsondhi/diel-light-pi.git
-cd diel-light-pi
-```
-
-### 2. Install YAML Support
-```bash
-sudo apt-get install python3-yaml
-```
-
-> `pip install pyyaml` may not work on this platform, so use `apt`.
-
----
-
-### 3. Verify installation
-Go back to the terminal and make sure that you're in the "diel-light-pi" folder. If not, type
-```bash
-cd ..
-```
-until the text before the cursor is
-```bash 
-pi@raspberrypi:/
-```
-Then type 
-```bash
-cd home
-cd pi
-cd diel-light-pi
-ls
-```
-If nothing shows up underneath the command, try to redownload the library.
-
-**You're Done!**
-- Motion is installed and tested.
-- `diel-light-pi` is cloned.
-- YAML dependencies are in place.
-
-You can now begin configuring and using the diel-light-pi scripts for light tracking and automation.
-
----
-
-🛠 *Need help?* Open an issue on the GitHub repository or post to the relevant community forums.
+[usage]: ../usage/
