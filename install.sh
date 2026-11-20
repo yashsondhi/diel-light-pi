@@ -103,7 +103,6 @@ fi
 # This guarantees installs go into venv regardless of whether
 # the shell has the venv activated or not.
 VENV_PYTHON="$VENV_DIR/bin/python3"
-VENV_PIP="$VENV_DIR/bin/pip"
 
 # Quick sanity check — confirm pip resolves inside the venv
 info "Confirming pip is inside the venv..."
@@ -116,12 +115,12 @@ success "pip confirmed inside venv."
 
 # ── 5. Upgrade pip & setuptools ──────────────────────────────
 info "Upgrading pip and setuptools..."
-"$VENV_PIP" install --upgrade pip setuptools
+"$VENV_PYTHON" -m pip install --upgrade pip setuptools
 success "pip and setuptools upgraded."
 
 # ── 5a. YAML support for project and motion config parsing ─────
 info "Installing PyYAML for config file parsing..."
-"$VENV_PIP" install --upgrade-strategy only-if-needed pyyaml
+"$VENV_PYTHON" -m pip install --upgrade-strategy only-if-needed pyyaml
 success "PyYAML installed."
 
 # ══════════════════════════════════════════════════════════════
@@ -130,17 +129,17 @@ success "PyYAML installed."
 
 # ── 6. Adafruit Blinka ────────────────────────────────────────
 info "Installing Adafruit-Blinka (provides 'board', 'busio', etc.)..."
-"$VENV_PIP" install --upgrade-strategy only-if-needed adafruit-blinka adafruit-platformdetect
+"$VENV_PYTHON" -m pip install --upgrade-strategy only-if-needed adafruit-blinka adafruit-platformdetect
 success "Adafruit-Blinka installed."
 
 # Blinka's Raspberry Pi backend imports the pip gpiod bindings.
 info "Installing Python gpiod bindings..."
-"$VENV_PIP" install --upgrade-strategy only-if-needed "gpiod>=2.2.2,<3"
+"$VENV_PYTHON" -m pip install --upgrade-strategy only-if-needed "gpiod>=2.2.2,<3"
 success "Python gpiod bindings installed."
 
 # Raspberry Pi 5 uses a separate NeoPixel backend.
 info "Installing Raspberry Pi 5 NeoPixel backend..."
-"$VENV_PIP" install --upgrade-strategy only-if-needed Adafruit-Blinka-Raspberry-Pi5-Neopixel
+"$VENV_PYTHON" -m pip install --upgrade-strategy only-if-needed Adafruit-Blinka-Raspberry-Pi5-Neopixel
 success "Raspberry Pi 5 NeoPixel backend installed."
 
 # ── 6a. Configure Blinka for Raspberry Pi ────────────────────
@@ -163,17 +162,17 @@ success "Blinka configured."
 
 # ── 7. NeoPixel library ───────────────────────────────────────
 info "Installing adafruit-circuitpython-neopixel..."
-"$VENV_PIP" install --upgrade-strategy only-if-needed adafruit-circuitpython-neopixel
+"$VENV_PYTHON" -m pip install --upgrade-strategy only-if-needed adafruit-circuitpython-neopixel
 success "NeoPixel library installed."
 
 # ── 8. TSL2591 sensor library ────────────────────────────────
 info "Installing adafruit-circuitpython-tsl2591 (optional sensor)..."
-"$VENV_PIP" install --upgrade-strategy only-if-needed adafruit-circuitpython-tsl2591
+"$VENV_PYTHON" -m pip install --upgrade-strategy only-if-needed adafruit-circuitpython-tsl2591
 success "TSL2591 library installed."
 
 # ── 9. NumPy ─────────────────────────────────────────────────
 info "Installing numpy..."
-"$VENV_PIP" install --upgrade-strategy only-if-needed numpy
+"$VENV_PYTHON" -m pip install --upgrade-strategy only-if-needed numpy
 success "NumPy installed."
 
 # ══════════════════════════════════════════════════════════════
@@ -182,12 +181,13 @@ success "NumPy installed."
 
 # ── 10. Pandas ───────────────────────────────────────────────
 info "Installing pandas..."
-"$VENV_PIP" install --upgrade-strategy only-if-needed pandas
+"$VENV_PYTHON" -m pip install --upgrade-strategy only-if-needed pandas
 success "Pandas installed."
 
 # ── 11. Matplotlib ───────────────────────────────────────────
 info "Installing matplotlib..."
-"$VENV_PIP" install --upgrade matplotlib
+"$VENV_PYTHON" -m pip install --upgrade matplotlib
+"$VENV_PYTHON" -c "import matplotlib; print(f'Matplotlib {matplotlib.__version__} import verified')"
 success "Matplotlib installed."
 
 # ══════════════════════════════════════════════════════════════
@@ -198,8 +198,8 @@ success "Matplotlib installed."
 # RPi.GPIO does not work on Raspberry Pi 5 (RP1 I/O chip).
 # rpi-lgpio provides the exact same API so no code changes needed.
 info "Removing RPi.GPIO if present and installing rpi-lgpio..."
-"$VENV_PIP" uninstall -y RPi.GPIO 2>/dev/null || true
-"$VENV_PIP" install --upgrade-strategy only-if-needed rpi-lgpio
+"$VENV_PYTHON" -m pip uninstall -y RPi.GPIO 2>/dev/null || true
+"$VENV_PYTHON" -m pip install --upgrade-strategy only-if-needed rpi-lgpio
 success "rpi-lgpio installed (RPi.GPIO drop-in replacement)."
 
 # ── 13. Adafruit CircuitPython DHT (replaces legacy Adafruit_DHT) ──
@@ -208,7 +208,7 @@ success "rpi-lgpio installed (RPi.GPIO drop-in replacement)."
 # Note: your scripts using 'import Adafruit_DHT' will need updating
 # to 'import adafruit_dht' with the new API.
 info "Installing adafruit-circuitpython-dht (replaces Adafruit_DHT)..."
-"$VENV_PIP" install --upgrade-strategy only-if-needed adafruit-circuitpython-dht
+"$VENV_PYTHON" -m pip install --upgrade-strategy only-if-needed adafruit-circuitpython-dht
 success "CircuitPython DHT installed."
 
 # ══════════════════════════════════════════════════════════════
@@ -217,7 +217,7 @@ success "CircuitPython DHT installed."
 
 # ── 14. OpenCV ───────────────────────────────────────────────
 info "Installing OpenCV (cv2)..."
-"$VENV_PIP" install --upgrade-strategy only-if-needed opencv-python
+"$VENV_PYTHON" -m pip install --upgrade-strategy only-if-needed opencv-python
 success "OpenCV installed."
 
 # ══════════════════════════════════════════════════════════════
