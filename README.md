@@ -47,12 +47,31 @@ to select another file. Strip count, sensor use, logging, and measurement
 interval are selected through terminal prompts. Lights continue updating every
 0.5 seconds regardless of the measurement interval.
 
+At startup, the script asks separately whether to use addressable white
+NeoPixel strips, external UV lighting, and light sensing. The UV option accepts
+a BCM GPIO pin and rejects pins already assigned to a NeoPixel strip. Any
+combination of white lights, UV lights, and sensing can be used; the remaining
+outputs stay off.
+
 An external GPIO PWM load can be synchronized with the NeoPixel brightness.
-Set `external_pwm_enabled = true` in `light-emulation/light_config.txt`, then
-choose `external_pwm_gpio`, `external_pwm_chip`, `external_pwm_frequency`, and
-`external_pwm_max_duty`. The PWM duty follows the configured diel `min_val`,
-`max_val`, and twilight transitions. Raspberry Pi 5 GPIO 18 is line 18 on
-gpiochip15 in the default setup.
+Choose UV use and GPIO pin through the startup terminal prompts. The resolved
+NeoPixel pins, UV settings, sensor choice, and logging choice are saved to
+a dated `light-emulation/configs/experiment_YYYY-MM-DD_HH-MM-SS.txt` file.
+The PWM duty follows the configured diel `min_val`, `max_val`, and twilight
+transitions. Raspberry Pi 5
+GPIO 18 is line 18 on gpiochip15 in the default setup. PWM frequency and
+dedicated PWM minimum/maximum brightness are read from `light_config.txt`;
+brightness values use the same `0.0-1.0` scale as NeoPixels. UV enable and
+GPIO pin remain terminal selections.
+
+Each run writes a complete experiment record to
+`light-emulation/configs/experiment_YYYY-MM-DD_HH-MM-SS.txt`. The records
+include the light-cycle settings, NeoPixel and UV selections, sensor and
+logging options, sensor interval/calibration values, source config file, and
+Each dated record includes `experiment_started_at` and is updated when the
+experiment stops with `experiment_stopped_at`, `experiment_status`,
+`log_file`, and `data_location`. When logging is disabled, the data location
+is recorded as `none`.
 
 For more detail, use a 2-second measurement interval. For a week-long trial,
 8 seconds is a reasonable compromise that greatly reduces CSV size.

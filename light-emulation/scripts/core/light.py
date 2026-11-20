@@ -3,6 +3,7 @@
 #  NeoPixel LED strip controller.
 # ============================================================
 
+import math
 import time
 import numpy as np
 import board
@@ -26,6 +27,7 @@ class ExternalPwmLight:
         gpio: int = 18,
         chip: int = 15,
         frequency: float = 1000.0,
+        min_duty: float = 0.0,
         max_duty: float = 100.0,
     ):
         if lgpio is None:
@@ -39,12 +41,17 @@ class ExternalPwmLight:
             raise ValueError("chip must be zero or greater")
         if frequency <= 0:
             raise ValueError("frequency must be greater than zero")
-        if not 0 < max_duty <= 100:
-            raise ValueError("max_duty must be greater than zero and no more than 100")
+        if not 0 <= min_duty <= 100:
+            raise ValueError("min_duty must be between zero and 100")
+        if not 0 <= max_duty <= 100:
+            raise ValueError("max_duty must be between zero and 100")
+        if min_duty > max_duty:
+            raise ValueError("min_duty must not exceed max_duty")
 
         self.gpio = gpio
         self.chip_number = chip
         self.frequency = frequency
+        self.min_duty = min_duty
         self.max_duty = max_duty
         lgpio_error = getattr(lgpio, "error", RuntimeError)
         try:
@@ -59,11 +66,29 @@ class ExternalPwmLight:
             ) from error
         self._closed = False
 
-    def set_val(self, prop_val: float = 0) -> None:
-        """Set external PWM duty to match a proportional [0, 1] value."""
+    def set_val(
+        self,
+        prop_val: float = 0,
+        min_prop: float = 0,
+        max_prop: float = 1,
+    ) -> None:
+        """Map a proportional light value onto the configured PWM duty range."""
         if not 0 <= prop_val <= 1:
             raise ValueError("prop_val must be in [0.0, 1.0]")
-        duty_cycle = prop_val * self.max_duty
+        if not 0 <= min_prop <= 1:
+            raise ValueError("min_prop must be in [0.0, 1.0]")
+        if not 0 <= max_prop <= 1:
+            raise ValueError("max_prop must be in [0.0, 1.0]")
+        if min_prop > max_prop:
+            raise ValueError("min_prop must not exceed max_prop")
+        if max_prop == min_prop:
+            normalized = 0.0
+        else:
+            normalized = (prop_val - min_prop) / (max_prop - min_prop)
+        normalized = max(0.0, min(1.0, normalized))
+        duty_cycle = self.min_duty + (
+            (self.max_duty - self.min_duty) * normalized
+        )
         lgpio.tx_pwm(
             self.chip,
             self.gpio,
@@ -79,6 +104,15 @@ class ExternalPwmLight:
         lgpio.gpio_write(self.chip, self.gpio, 0)
         lgpio.gpiochip_close(self.chip)
         self._closed = True
+
+    def test_sine(self, steps: int = 1000, step_seconds: float = 0.01) -> None:
+        """Run a sine brightness sweep without closing the PWM channel."""
+        for i in range(steps):
+            angle = 5 * math.pi * i / (steps - 1)
+            normalized = (math.sin(angle) + 1) / 2
+            self.set_val(normalized)
+            time.sleep(step_seconds)
+        self.set_val(0)
 
 
 class Light:

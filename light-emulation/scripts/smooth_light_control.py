@@ -14,7 +14,6 @@ import signal
 import sys
 import board
 import time
-import re
 from datetime import datetime
 
 from light_core import (
@@ -23,22 +22,17 @@ from light_core import (
     ExternalPwmLight,
     AutoRangingSensor,
     get_args,
+    get_bcm_pin_number,
+    save_experiment_config,
+    finalize_experiment_config,
     prompt_strips,
+    prompt_uv,
     prompt_sample_interval,
     prompt_sensor,
     current_light_val,
     read_sensor,
     shutdown,
 )
-
-
-def get_bcm_pin_number(pin) -> int:
-    """Return the BCM number for a CircuitPython board pin."""
-    pin_name = getattr(pin, "id", str(pin))
-    match = re.search(r'(\d+)$', str(pin_name))
-    if match:
-        return int(match.group(1))
-    raise ValueError(f"Could not determine BCM pin number for {pin_name}")
 
 
 if __name__ == '__main__':
@@ -56,8 +50,15 @@ if __name__ == '__main__':
     print(f"{len(lights)} strip(s) initialised.")
 
     external_pwm = None
+    neopixel_pins = {get_bcm_pin_number(pin) for pin in strip_pins}
+    cfg.external_pwm_enabled = False
+    cfg.external_pwm_gpio = 18
+    cfg.external_pwm_chip = 15
+    uv_enabled, uv_gpio = prompt_uv(cfg, sorted(neopixel_pins))
+    cfg.external_pwm_enabled = uv_enabled
+    cfg.external_pwm_gpio = uv_gpio
+
     if cfg.external_pwm_enabled:
-        neopixel_pins = {get_bcm_pin_number(pin) for pin in strip_pins}
         if cfg.external_pwm_gpio in neopixel_pins:
             conflicting_pins = ", ".join(
                 str(pin) for pin in sorted(neopixel_pins)
@@ -73,7 +74,8 @@ if __name__ == '__main__':
                 gpio=cfg.external_pwm_gpio,
                 chip=cfg.external_pwm_chip,
                 frequency=cfg.external_pwm_frequency,
-                max_duty=cfg.external_pwm_max_duty,
+                min_duty=cfg.external_pwm_min_brightness * 100,
+                max_duty=cfg.external_pwm_max_brightness * 100,
             )
             print(
                 f"External PWM initialised on chip {cfg.external_pwm_chip}, "
@@ -91,16 +93,45 @@ if __name__ == '__main__':
         else 0.0
     )
     log_filepath = log_file.name if log_file else None
+    experiment_config_path = save_experiment_config(
+        cfg=cfg,
+        light_config_file=args.config,
+        external_pwm_enabled=cfg.external_pwm_enabled,
+        external_pwm_gpio=cfg.external_pwm_gpio,
+        external_pwm_chip=cfg.external_pwm_chip,
+        external_pwm_frequency=cfg.external_pwm_frequency,
+        external_pwm_min_brightness=cfg.external_pwm_min_brightness,
+        external_pwm_max_brightness=cfg.external_pwm_max_brightness,
+        neopixel_pins=sorted(neopixel_pins),
+        sensor_enabled=sensor is not None,
+        logging_enabled=logging_enabled,
+        sensor_measurement_interval=measurement_interval,
+        sensor_dark_offset=(
+            sensor.dark_offset
+            if sensor is not None
+            and isinstance(sensor, AutoRangingSensor)
+            else None
+        ),
+        log_file_path=log_filepath,
+    )
 
     # -- signal handler -------------------------------------------------------
     signal.signal(
         signal.SIGTERM,
-        lambda sig, frame: shutdown(
-            lights,
-            log_file,
-            log_filepath,
-            external_pwm,
-        ) or sys.exit(0)
+        lambda sig, frame: (
+            finalize_experiment_config(
+                experiment_config_path,
+                status='stopped_by_sigterm',
+                log_file_path=log_filepath,
+            ),
+            shutdown(
+                lights,
+                log_file,
+                log_filepath,
+                external_pwm,
+            ),
+            sys.exit(0),
+        )
     )
 
     # -- setup mode -----------------------------------------------------------
@@ -112,34 +143,50 @@ if __name__ == '__main__':
         print(f"  min light value:   {cfg.min_val}")
         print(f"  max light value:   {cfg.max_val}")
         print(f"  strips:            {len(lights)}")
+        print(f"  experiment config:  {experiment_config_path}")
         print(f"  external PWM:        {'enabled' if cfg.external_pwm_enabled else 'disabled'}")
         if cfg.external_pwm_enabled:
             print(f"  PWM chip/GPIO:       {cfg.external_pwm_chip}/{cfg.external_pwm_gpio}")
             print(f"  PWM frequency:      {cfg.external_pwm_frequency:g} Hz")
-            print(f"  PWM max duty:       {cfg.external_pwm_max_duty:g}%")
+            print(f"  PWM min brightness: {cfg.external_pwm_min_brightness:g}")
+            print(f"  PWM max brightness: {cfg.external_pwm_max_brightness:g}")
         print(f"  sensor:              {'yes' if sensor else 'no'}")
         print(f"  logging:           {'yes' if logging_enabled else 'no'}")
         if sensor and isinstance(sensor, AutoRangingSensor):
             print(f"  dark offset:       {sensor.dark_offset:.4f} lux")
         print(f"{'--' * 20}")
         if input("Are these values correct? (y/n): ").strip().lower() == 'n':
+            finalize_experiment_config(
+                experiment_config_path,
+                status='cancelled_in_setup',
+                log_file_path=log_filepath,
+            )
             shutdown(lights, log_file, log_filepath, external_pwm)
             sys.exit("Update the config file and rerun.")
 
     # -- test mode ------------------------------------------------------------
     if args.test:
         try:
-            for i, light in enumerate(lights):
-                print(f"\nTesting strip {i + 1} of {len(lights)}...")
-                light.test(
-                    sensor=sensor,
-                    writer=writer,
-                    log_file=log_file,
-                    external_pwm=external_pwm,
-                )
+            if lights:
+                for i, light in enumerate(lights):
+                    print(f"\nTesting strip {i + 1} of {len(lights)}...")
+                    light.test(
+                        sensor=sensor,
+                        writer=writer,
+                        log_file=log_file,
+                        external_pwm=external_pwm,
+                    )
+            elif external_pwm is not None:
+                print("Testing external UV PWM...")
+                external_pwm.test_sine()
         except KeyboardInterrupt:
             pass
         finally:
+            finalize_experiment_config(
+                experiment_config_path,
+                status='test_completed',
+                log_file_path=log_filepath,
+            )
             shutdown(lights, log_file, log_filepath, external_pwm)
         sys.exit(0)
 
@@ -155,7 +202,7 @@ if __name__ == '__main__':
             for light in lights:
                 light.set_val(val)
             if external_pwm is not None:
-                external_pwm.set_val(val)
+                external_pwm.set_val(val, cfg.min_val, cfg.max_val)
 
             if logging_enabled and time.monotonic() >= next_measurement:
                 next_measurement = time.monotonic() + measurement_interval
@@ -187,7 +234,7 @@ if __name__ == '__main__':
                     'sensor_settings': settings,
                     'dark_offset_lux': dark_offset,
                 }
-                if lights:
+                if lights or external_pwm is not None:
                     row['set_val'] = val
                 writer.writerow(row)
                 log_file.flush()
@@ -196,4 +243,9 @@ if __name__ == '__main__':
         pass
 
     finally:
+        finalize_experiment_config(
+            experiment_config_path,
+            status='stopped_by_user',
+            log_file_path=log_filepath,
+        )
         shutdown(lights, log_file, log_filepath, external_pwm)

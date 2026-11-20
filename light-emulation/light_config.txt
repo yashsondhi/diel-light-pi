@@ -1,18 +1,50 @@
-# Light-cycle settings for smooth_light_control.py
+# Light-cycle settings for smooth_light_control.py.
 # Strip count, sensor use, logging, and measurement interval are selected in
-# the terminal.
+# the terminal. UV enable/disable and GPIO pin are also selected in the terminal.
 
+# Decimal hour when the sunrise twilight period begins
+# (hours on a 24-hour clock; for example, 7.5 = 7:30 AM).
+# Valid range: 0.0-24.0.
 start_sunrise = 7.0
+
+# Decimal hour when the sunset twilight period begins
+# (hours on a 24-hour clock; for example, 19.5 = 7:30 PM).
+# Valid range: 0.0-24.0.
 start_sunset = 19.0
+
+# Length of both the sunrise and sunset twilight periods (hours).
+# Must be greater than zero.
 twilight_duration = 1.5
+
+# Minimum normalized NeoPixel brightness at night (0.0-1.0, unitless).
+# Valid range: 0.0-1.0.
 min_val = 0.0
+
+# Maximum normalized NeoPixel brightness during the day
+# (0.0-1.0, unitless).
+# Valid range: 0.0-1.0 and must be greater than or equal to min_val.
 max_val = 0.2
+
+# Number of addressable pixels in each selected NeoPixel strip (pixel count).
+# Must be greater than zero.
 num_lights = 50
 
-# Optional external PWM output, synchronized with the NeoPixel brightness.
-# GPIO is the BCM pin number. On this Pi 5 setup, GPIO18 is on gpiochip15.
-external_pwm_enabled = false
-external_pwm_gpio = 18
-external_pwm_chip = 15
+# External UV PWM settings. UV enable/disable and GPIO pin are selected
+# interactively in the terminal and are saved in the dated experiment file.
+
+# PWM switching frequency for the external UV load (Hz).
+# Must be greater than zero. A lower frequency such as 1000 Hz is a safe
+# starting point for the Raspberry Pi 5 RP1 GPIO PWM implementation.
 external_pwm_frequency = 1000
-external_pwm_max_duty = 100
+
+# Minimum normalized UV brightness at the darkest point
+# (0.0-1.0, unitless).
+# Valid range: 0.0-1.0. This is converted internally to PWM duty percentage.
+external_pwm_min_brightness = 0.0
+
+# Maximum normalized UV brightness at the brightest point
+# (0.0-1.0, unitless).
+# Valid range: 0.0-1.0 and must be greater than or equal to
+# external_pwm_min_brightness. This is converted internally to PWM duty
+# percentage, so 1.0 means 100 percent duty.
+external_pwm_max_brightness = 1.0

@@ -57,3 +57,19 @@ def test_external_pwm_maps_diel_value_and_turns_off(monkeypatch):
     assert ('pwm', 123, 18, 1000, 20.0) in fake_lgpio.calls
     assert ('write', 123, 18, 0) in fake_lgpio.calls
     assert ('close', 123) in fake_lgpio.calls
+
+
+def test_external_pwm_maps_separate_diel_range(monkeypatch):
+    fake_lgpio = FakeLgpio()
+    monkeypatch.setattr(light, 'lgpio', fake_lgpio)
+
+    pwm = light.ExternalPwmLight(
+        gpio=18,
+        chip=15,
+        frequency=1000,
+        min_duty=10,
+        max_duty=80,
+    )
+    pwm.set_val(0.1, 0.0, 0.2)
+
+    assert ('pwm', 123, 18, 1000, 45.0) in fake_lgpio.calls

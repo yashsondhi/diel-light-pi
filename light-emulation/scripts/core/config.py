@@ -25,12 +25,15 @@ class LightSystemConfig:
     # hardware -- number of pixels on each interactively selected strip
     num_lights: int  = 50
 
-    # optional GPIO PWM output
+    # terminal hardware defaults; enable and GPIO are persisted separately
     external_pwm_enabled: bool = False
     external_pwm_gpio: int = 18
     external_pwm_chip: int = 15
+
+    # external UV PWM cycle settings
     external_pwm_frequency: float = 1000.0
-    external_pwm_max_duty: float = 100.0
+    external_pwm_min_brightness: float = 0.0
+    external_pwm_max_brightness: float = 1.0
 
     # calibration
     dark_calibration_samples: int = 30
@@ -46,11 +49,9 @@ class LightSystemConfig:
             'min_val': float,
             'max_val': float,
             'num_lights': int,
-            'external_pwm_enabled': lambda value: cls._parse_bool(value),
-            'external_pwm_gpio': int,
-            'external_pwm_chip': int,
             'external_pwm_frequency': float,
-            'external_pwm_max_duty': float,
+            'external_pwm_min_brightness': float,
+            'external_pwm_max_brightness': float,
         }
 
         if not os.path.isfile(path):
@@ -89,24 +90,21 @@ class LightSystemConfig:
             raise ValueError('max_val must be between zero and one')
         if config.min_val > config.max_val:
             raise ValueError('min_val must not exceed max_val')
-        if config.external_pwm_gpio < 0:
-            raise ValueError('external_pwm_gpio must be zero or greater')
-        if config.external_pwm_chip < 0:
-            raise ValueError('external_pwm_chip must be zero or greater')
         if config.external_pwm_frequency <= 0:
-            raise ValueError('external_pwm_frequency must be greater than zero')
-        if not 0 < config.external_pwm_max_duty <= 100:
             raise ValueError(
-                'external_pwm_max_duty must be greater than zero '
-                'and no more than 100'
+                'external_pwm_frequency must be greater than zero'
+            )
+        if not 0 <= config.external_pwm_min_brightness <= 1:
+            raise ValueError(
+                'external_pwm_min_brightness must be between zero and one'
+            )
+        if not 0 <= config.external_pwm_max_brightness <= 1:
+            raise ValueError(
+                'external_pwm_max_brightness must be between zero and one'
+            )
+        if config.external_pwm_min_brightness > config.external_pwm_max_brightness:
+            raise ValueError(
+                'external_pwm_min_brightness must not exceed '
+                'external_pwm_max_brightness'
             )
         return config
-
-    @staticmethod
-    def _parse_bool(value: str) -> bool:
-        normalized = value.strip().lower()
-        if normalized in ('true', 'yes', 'y', '1', 'on', 'enabled'):
-            return True
-        if normalized in ('false', 'no', 'n', '0', 'off', 'disabled'):
-            return False
-        raise ValueError('expected a boolean value')
