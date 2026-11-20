@@ -143,6 +143,11 @@ if __name__ == '__main__':
         print(f"  min light value:   {cfg.min_val}")
         print(f"  max light value:   {cfg.max_val}")
         print(f"  strips:            {len(lights)}")
+        if lights:
+            print(
+                "  strip pins:        "
+                + ", ".join(str(get_bcm_pin_number(pin)) for pin in strip_pins)
+            )
         print(f"  experiment config:  {experiment_config_path}")
         print(f"  external PWM:        {'enabled' if cfg.external_pwm_enabled else 'disabled'}")
         if cfg.external_pwm_enabled:

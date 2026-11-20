@@ -246,7 +246,10 @@ def prompt_strips(available_pins: list) -> list:
     Returns:
         Subset of available_pins selected by the user.
     """
-    print("\nAvailable pins:", [str(p) for p in available_pins])
+    print("\nAvailable smooth-light pins:")
+    for index, pin in enumerate(available_pins, start=1):
+        print(f"  {index}. {str(pin)} (BCM {get_bcm_pin_number(pin)})")
+
     while True:
         try:
             n = int(
@@ -257,7 +260,45 @@ def prompt_strips(available_pins: list) -> list:
             print(f"  Please enter a number between 0 and {len(available_pins)}.")
         except ValueError:
             print("  Please enter a valid integer.")
-    return available_pins[:n]
+
+    if n == 0:
+        return []
+
+    selected_pins = []
+    while len(selected_pins) < n:
+        strip_number = len(selected_pins) + 1
+        answer = input(
+            f"Pin for smooth-light strip {strip_number}: "
+        ).strip()
+        try:
+            selection = int(answer)
+        except ValueError:
+            print("  Please enter a menu number or BCM GPIO number.")
+            continue
+
+        if 1 <= selection <= len(available_pins):
+            pin = available_pins[selection - 1]
+        else:
+            matching_pins = [
+                pin for pin in available_pins
+                if get_bcm_pin_number(pin) == selection
+            ]
+            pin = matching_pins[0] if matching_pins else None
+
+        if pin is None:
+            print("  Please choose one of the available pins.")
+            continue
+        if pin in selected_pins:
+            print("  That pin is already assigned to a smooth-light strip.")
+            continue
+
+        selected_pins.append(pin)
+        print(
+            f"  Strip {strip_number} assigned to "
+            f"{str(pin)} (BCM {get_bcm_pin_number(pin)})."
+        )
+
+    return selected_pins
 
 
 def prompt_uv(cfg: LightSystemConfig, neopixel_pins: list) -> tuple:

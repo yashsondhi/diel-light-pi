@@ -8,6 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'light-emulation' /
 from core.config import LightSystemConfig
 from core.helpers import (
     get_args,
+    prompt_strips,
     prompt_uv,
     save_experiment_config,
     finalize_experiment_config,
@@ -107,6 +108,32 @@ def test_prompt_uv_accepts_available_gpio(monkeypatch):
 
     assert enabled is True
     assert gpio == 21
+
+
+def test_prompt_strips_accepts_individual_pin_choices(monkeypatch):
+    available_pins = [12, 18, 21, 10]
+    answers = iter(['2', '21', '10'])
+    monkeypatch.setattr(
+        'builtins.input',
+        lambda prompt='': next(answers),
+    )
+
+    selected = prompt_strips(available_pins)
+
+    assert selected == [21, 10]
+
+
+def test_prompt_strips_rejects_duplicate_and_allows_reselection(monkeypatch):
+    available_pins = [12, 18, 21, 10]
+    answers = iter(['2', '1', '12', '21'])
+    monkeypatch.setattr(
+        'builtins.input',
+        lambda prompt='': next(answers),
+    )
+
+    selected = prompt_strips(available_pins)
+
+    assert selected == [12, 21]
 
 
 def test_save_experiment_config_creates_dated_full_record(tmp_path, monkeypatch):
