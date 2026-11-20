@@ -128,6 +128,11 @@ info "Installing Adafruit-Blinka (provides 'board', 'busio', etc.)..."
 "$VENV_PIP" install --upgrade-strategy only-if-needed adafruit-blinka adafruit-platformdetect
 success "Adafruit-Blinka installed."
 
+# Raspberry Pi 5 uses a separate NeoPixel backend.
+info "Installing Raspberry Pi 5 NeoPixel backend..."
+"$VENV_PIP" install --upgrade-strategy only-if-needed Adafruit-Blinka-Raspberry-Pi5-Neopixel
+success "Raspberry Pi 5 NeoPixel backend installed."
+
 # ── 6a. Configure Blinka for Raspberry Pi ────────────────────
 info "Configuring Blinka for Raspberry Pi..."
 if "$VENV_PYTHON" -c "import adafruit_platformdetect; d = adafruit_platformdetect.Detector(); print(d.board.id)" 2>/dev/null | grep -q "RASPBERRY"; then
