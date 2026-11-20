@@ -88,10 +88,15 @@ success "Hardware interfaces enabled."
 # ── 4. Virtual environment setup ─────────────────────────────
 if [ ! -d "$VENV_DIR" ]; then
     info "Creating virtual environment at $VENV_DIR ..."
-    python3 -m venv "$VENV_DIR" --system-site-packages
+    # Keep distro packages out of the venv. Debian's Matplotlib and SciPy
+    # may be compiled against NumPy 1.x while pip installs NumPy 2.x.
+    python3 -m venv "$VENV_DIR"
     success "Virtual environment created."
 else
     warn "Virtual environment already exists at $VENV_DIR — skipping creation."
+    if grep -q "^include-system-site-packages = true" "$VENV_DIR/pyvenv.cfg" 2>/dev/null; then
+        error "Existing venv includes system packages. Remove $VENV_DIR and rerun ./install.sh."
+    fi
 fi
 
 # ── Use the venv's binaries explicitly from here on ──────────
@@ -177,7 +182,7 @@ success "Pandas installed."
 
 # ── 11. Matplotlib ───────────────────────────────────────────
 info "Installing matplotlib..."
-"$VENV_PIP" install --upgrade-strategy only-if-needed matplotlib
+"$VENV_PIP" install --upgrade matplotlib
 success "Matplotlib installed."
 
 # ══════════════════════════════════════════════════════════════
