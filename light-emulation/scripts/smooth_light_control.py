@@ -14,6 +14,7 @@ import signal
 import sys
 import board
 import time
+import re
 from datetime import datetime
 
 from light_core import (
@@ -29,6 +30,15 @@ from light_core import (
     read_sensor,
     shutdown,
 )
+
+
+def get_bcm_pin_number(pin) -> int:
+    """Return the BCM number for a CircuitPython board pin."""
+    pin_name = getattr(pin, "id", str(pin))
+    match = re.search(r'(\d+)$', str(pin_name))
+    if match:
+        return int(match.group(1))
+    raise ValueError(f"Could not determine BCM pin number for {pin_name}")
 
 
 if __name__ == '__main__':
@@ -47,6 +57,17 @@ if __name__ == '__main__':
 
     external_pwm = None
     if cfg.external_pwm_enabled:
+        neopixel_pins = {get_bcm_pin_number(pin) for pin in strip_pins}
+        if cfg.external_pwm_gpio in neopixel_pins:
+            conflicting_pins = ", ".join(
+                str(pin) for pin in sorted(neopixel_pins)
+                if pin == cfg.external_pwm_gpio
+            )
+            shutdown(lights, log_file=None, log_filepath=None)
+            sys.exit(
+                f"External PWM GPIO {cfg.external_pwm_gpio} conflicts with "
+                f"selected NeoPixel GPIO(s): {conflicting_pins}"
+            )
         try:
             external_pwm = ExternalPwmLight(
                 gpio=cfg.external_pwm_gpio,
