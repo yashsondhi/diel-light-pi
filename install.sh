@@ -133,6 +133,11 @@ info "Installing Adafruit-Blinka (provides 'board', 'busio', etc.)..."
 "$VENV_PIP" install --upgrade-strategy only-if-needed adafruit-blinka adafruit-platformdetect
 success "Adafruit-Blinka installed."
 
+# Blinka's Raspberry Pi backend imports the pip gpiod bindings.
+info "Installing Python gpiod bindings..."
+"$VENV_PIP" install --upgrade-strategy only-if-needed "gpiod>=2.2.2,<3"
+success "Python gpiod bindings installed."
+
 # Raspberry Pi 5 uses a separate NeoPixel backend.
 info "Installing Raspberry Pi 5 NeoPixel backend..."
 "$VENV_PIP" install --upgrade-strategy only-if-needed Adafruit-Blinka-Raspberry-Pi5-Neopixel
@@ -227,6 +232,7 @@ import importlib, sys
 required = {
     "board":            "adafruit-blinka",
     "busio":            "adafruit-blinka",
+    "gpiod":            "gpiod>=2.2.2,<3",
     "neopixel":         "adafruit-circuitpython-neopixel",
     "numpy":            "numpy",
     "pandas":           "pandas",
