@@ -6,19 +6,19 @@ import pandas as pd
 
 
 def test_gui_dialog_initial_directories_point_at_config_folders():
-    gui_path = Path(__file__).resolve().parents[1] / 'activity-monitoring' / 'gui_diel-light.py'
+    gui_path = Path(__file__).resolve().parents[1] / 'activity-monitoring' / 'gui_helpers.py'
     gui_source = gui_path.read_text()
 
-    assert "initialdir=os.path.join(SCRIPT_DIR, 'project-configs')" in gui_source
-    assert "initialdir=os.path.join(SCRIPT_DIR, 'motion-configs')" in gui_source
+    assert 'initialdir=os.path.join(script_dir, "project-configs")' in gui_source
+    assert 'initialdir=os.path.join(script_dir, "motion-configs")' in gui_source
 
 
 def test_gui_update_elements_normalizes_yaml_none_into_empty_text():
-    gui_path = Path(__file__).resolve().parents[1] / 'activity-monitoring' / 'gui_diel-light.py'
+    gui_path = Path(__file__).resolve().parents[1] / 'activity-monitoring' / 'gui_helpers.py'
     gui_source = gui_path.read_text()
 
     assert "def gui_text" in gui_source
-    assert 'trial_name_entry.insert(tk.END, gui_text(config.get("TRIALNAME", "")))' in gui_source
+    assert 'ctx.trial_name_entry.insert(tk.END, gui_text(ctx.config.get("TRIALNAME", "")))' in gui_source
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'light-emulation' / 'scripts'))
 

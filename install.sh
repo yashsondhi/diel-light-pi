@@ -132,6 +132,11 @@ info "Installing Adafruit-Blinka (provides 'board', 'busio', etc.)..."
 "$VENV_PYTHON" -m pip install --upgrade-strategy only-if-needed adafruit-blinka adafruit-platformdetect
 success "Adafruit-Blinka installed."
 
+# Standard Raspberry Pi PWM support.
+info "Installing Raspberry Pi PWM backend..."
+"$VENV_PYTHON" -m pip install --upgrade-strategy only-if-needed "Adafruit-Blinka-Raspberry-Pi-PWM>=1.0.2"
+success "Raspberry Pi PWM backend installed."
+
 # Blinka's Raspberry Pi backend imports the pip gpiod bindings.
 info "Installing Python gpiod bindings..."
 "$VENV_PYTHON" -m pip install --upgrade-strategy only-if-needed "gpiod>=2.2.2,<3"
