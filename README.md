@@ -47,6 +47,13 @@ to select another file. Strip count, sensor use, logging, and measurement
 interval are selected through terminal prompts. Lights continue updating every
 0.5 seconds regardless of the measurement interval.
 
+An external GPIO PWM load can be synchronized with the NeoPixel brightness.
+Set `external_pwm_enabled = true` in `light-emulation/light_config.txt`, then
+choose `external_pwm_gpio`, `external_pwm_chip`, `external_pwm_frequency`, and
+`external_pwm_max_duty`. The PWM duty follows the configured diel `min_val`,
+`max_val`, and twilight transitions. Raspberry Pi 5 GPIO 18 is line 18 on
+gpiochip15 in the default setup.
+
 For more detail, use a 2-second measurement interval. For a week-long trial,
 8 seconds is a reasonable compromise that greatly reduces CSV size.
 
@@ -64,4 +71,3 @@ the experiment using the configured trial number.
 
 ## Citation: 
 Sondhi, Y., Jo, N. J., Alpizar, B., Markee, A., Dansby, H. E., Currea, J. P., Fabian, S. T., Ruiz, C., Barredo, E., Allen, P., DeGennaro, M., Kawahara, A. Y. & Theobald, J. C. (2022). Portable locomotion activity monitor (pLAM): A cost-effective setup for robust activity tracking in small animals. Methods in Ecology and Evolution, 13, 805–812. https://doi.org/10.1111/2041-210X.13809
-

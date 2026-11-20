@@ -12,6 +12,74 @@ from typing import Optional
 
 from core.sensor import AutoRangingSensor
 
+try:
+    import lgpio
+except ImportError:
+    lgpio = None
+
+
+class ExternalPwmLight:
+    """Controls one external load through an lgpio PWM output."""
+
+    def __init__(
+        self,
+        gpio: int = 18,
+        chip: int = 15,
+        frequency: float = 1000.0,
+        max_duty: float = 100.0,
+    ):
+        if lgpio is None:
+            raise ImportError(
+                "lgpio is required for external PWM; install python3-lgpio "
+                "and run with the matching Python environment"
+            )
+        if gpio < 0:
+            raise ValueError("gpio must be zero or greater")
+        if chip < 0:
+            raise ValueError("chip must be zero or greater")
+        if frequency <= 0:
+            raise ValueError("frequency must be greater than zero")
+        if not 0 < max_duty <= 100:
+            raise ValueError("max_duty must be greater than zero and no more than 100")
+
+        self.gpio = gpio
+        self.chip_number = chip
+        self.frequency = frequency
+        self.max_duty = max_duty
+        lgpio_error = getattr(lgpio, "error", RuntimeError)
+        try:
+            self.chip = lgpio.gpiochip_open(chip)
+            lgpio.gpio_claim_output(self.chip, gpio)
+            lgpio.tx_pwm(self.chip, gpio, frequency, 0)
+        except (OSError, lgpio_error) as error:
+            if 'self.chip' in locals():
+                lgpio.gpiochip_close(self.chip)
+            raise RuntimeError(
+                f"unable to initialise PWM on chip {chip}, GPIO {gpio}: {error}"
+            ) from error
+        self._closed = False
+
+    def set_val(self, prop_val: float = 0) -> None:
+        """Set external PWM duty to match a proportional [0, 1] value."""
+        if not 0 <= prop_val <= 1:
+            raise ValueError("prop_val must be in [0.0, 1.0]")
+        duty_cycle = prop_val * self.max_duty
+        lgpio.tx_pwm(
+            self.chip,
+            self.gpio,
+            self.frequency,
+            duty_cycle,
+        )
+
+    def off(self) -> None:
+        """Stop PWM and drive the GPIO low."""
+        if self._closed:
+            return
+        lgpio.tx_pwm(self.chip, self.gpio, self.frequency, 0)
+        lgpio.gpio_write(self.chip, self.gpio, 0)
+        lgpio.gpiochip_close(self.chip)
+        self._closed = True
+
 
 class Light:
     """
@@ -96,6 +164,7 @@ class Light:
         sensor=None,
         writer=None,
         log_file=None,
+        external_pwm=None,
     ) -> None:
         """
         Run a sine wave brightness sweep across the strip.
@@ -105,6 +174,7 @@ class Light:
             sensor:   AutoRangingSensor instance or None.
             writer:   csv.writer instance or None.
             log_file: open file object for flushing, or None.
+            external_pwm: ExternalPwmLight instance or None.
         """
         from core.helpers import read_sensor
 
@@ -115,6 +185,8 @@ class Light:
 
         for i, val in enumerate(vals):
             self.set_val(val)
+            if external_pwm is not None:
+                external_pwm.set_val(val)
 
             if sensor is not None:
                 lux_raw, vis, ir = read_sensor(sensor)

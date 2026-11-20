@@ -12,7 +12,7 @@
 
 from core.config  import LightSystemConfig
 from core.sensor  import AutoRangingSensor, TSL2591_AVAILABLE
-from core.light   import Light
+from core.light   import Light, ExternalPwmLight
 from core.helpers import (
     read_sensor,
     get_unique_filepath,
@@ -32,6 +32,7 @@ __all__ = [
     "AutoRangingSensor",
     "TSL2591_AVAILABLE",
     "Light",
+    "ExternalPwmLight",
     "read_sensor",
     "get_unique_filepath",
     "prompt_strips",

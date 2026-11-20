@@ -19,6 +19,7 @@ from datetime import datetime
 from light_core import (
     LightSystemConfig,
     Light,
+    ExternalPwmLight,
     AutoRangingSensor,
     get_args,
     prompt_strips,
@@ -44,6 +45,24 @@ if __name__ == '__main__':
     lights = [Light(pin=pin, num_lights=cfg.num_lights) for pin in strip_pins]
     print(f"{len(lights)} strip(s) initialised.")
 
+    external_pwm = None
+    if cfg.external_pwm_enabled:
+        try:
+            external_pwm = ExternalPwmLight(
+                gpio=cfg.external_pwm_gpio,
+                chip=cfg.external_pwm_chip,
+                frequency=cfg.external_pwm_frequency,
+                max_duty=cfg.external_pwm_max_duty,
+            )
+            print(
+                f"External PWM initialised on chip {cfg.external_pwm_chip}, "
+                f"GPIO {cfg.external_pwm_gpio}."
+            )
+        except (ImportError, OSError, RuntimeError, ValueError) as error:
+            print(f"External PWM initialisation failed: {error}")
+            shutdown(lights, log_file=None, log_filepath=None)
+            sys.exit(1)
+
     sensor, logging_enabled, log_file, writer = prompt_sensor(cfg, len(lights))
     measurement_interval = (
         prompt_sample_interval()
@@ -55,7 +74,12 @@ if __name__ == '__main__':
     # -- signal handler -------------------------------------------------------
     signal.signal(
         signal.SIGTERM,
-        lambda sig, frame: shutdown(lights, log_file, log_filepath) or sys.exit(0)
+        lambda sig, frame: shutdown(
+            lights,
+            log_file,
+            log_filepath,
+            external_pwm,
+        ) or sys.exit(0)
     )
 
     # -- setup mode -----------------------------------------------------------
@@ -67,12 +91,18 @@ if __name__ == '__main__':
         print(f"  min light value:   {cfg.min_val}")
         print(f"  max light value:   {cfg.max_val}")
         print(f"  strips:            {len(lights)}")
-        print(f"  sensor:            {'yes' if sensor else 'no'}")
+        print(f"  external PWM:        {'enabled' if cfg.external_pwm_enabled else 'disabled'}")
+        if cfg.external_pwm_enabled:
+            print(f"  PWM chip/GPIO:       {cfg.external_pwm_chip}/{cfg.external_pwm_gpio}")
+            print(f"  PWM frequency:      {cfg.external_pwm_frequency:g} Hz")
+            print(f"  PWM max duty:       {cfg.external_pwm_max_duty:g}%")
+        print(f"  sensor:              {'yes' if sensor else 'no'}")
         print(f"  logging:           {'yes' if logging_enabled else 'no'}")
         if sensor and isinstance(sensor, AutoRangingSensor):
             print(f"  dark offset:       {sensor.dark_offset:.4f} lux")
         print(f"{'--' * 20}")
         if input("Are these values correct? (y/n): ").strip().lower() == 'n':
+            shutdown(lights, log_file, log_filepath, external_pwm)
             sys.exit("Update the config file and rerun.")
 
     # -- test mode ------------------------------------------------------------
@@ -80,11 +110,16 @@ if __name__ == '__main__':
         try:
             for i, light in enumerate(lights):
                 print(f"\nTesting strip {i + 1} of {len(lights)}...")
-                light.test(sensor=sensor, writer=writer, log_file=log_file)
+                light.test(
+                    sensor=sensor,
+                    writer=writer,
+                    log_file=log_file,
+                    external_pwm=external_pwm,
+                )
         except KeyboardInterrupt:
             pass
         finally:
-            shutdown(lights, log_file, log_filepath)
+            shutdown(lights, log_file, log_filepath, external_pwm)
         sys.exit(0)
 
     # -- main loop ------------------------------------------------------------
@@ -98,6 +133,8 @@ if __name__ == '__main__':
 
             for light in lights:
                 light.set_val(val)
+            if external_pwm is not None:
+                external_pwm.set_val(val)
 
             if logging_enabled and time.monotonic() >= next_measurement:
                 next_measurement = time.monotonic() + measurement_interval
@@ -138,4 +175,4 @@ if __name__ == '__main__':
         pass
 
     finally:
-        shutdown(lights, log_file, log_filepath)
+        shutdown(lights, log_file, log_filepath, external_pwm)

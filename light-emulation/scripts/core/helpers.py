@@ -274,6 +274,7 @@ def shutdown(
     lights: list,
     log_file=None,
     log_filepath: Optional[str] = None,
+    external_pwm=None,
 ) -> None:
     """
     Central cleanup routine. Always called on exit regardless of how
@@ -286,10 +287,13 @@ def shutdown(
         lights:       list of Light instances to turn off.
         log_file:     open log file to close, or None.
         log_filepath: path to the log file for the visualizer, or None.
+        external_pwm: optional ExternalPwmLight to turn off.
     """
     print("\nShutting down...")
     for light in lights:
         light.off()
+    if external_pwm is not None:
+        external_pwm.off()
     print(f"{len(lights)} strip(s) turned off.")
     if log_file and not log_file.closed:
         log_file.close()

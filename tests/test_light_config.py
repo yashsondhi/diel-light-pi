@@ -48,3 +48,23 @@ def test_light_config_rejects_interactive_settings(tmp_path, setting):
 
     with pytest.raises(ValueError, match='unsupported setting'):
         LightSystemConfig.from_file(str(config_path))
+
+
+def test_light_config_loads_external_pwm_settings(tmp_path):
+    config_path = tmp_path / 'light_config.txt'
+    config_path.write_text(
+        'external_pwm_enabled = true\n'
+        'external_pwm_gpio = 18\n'
+        'external_pwm_chip = 15\n'
+        'external_pwm_frequency = 1000\n'
+        'external_pwm_max_duty = 80\n',
+        encoding='utf-8',
+    )
+
+    config = LightSystemConfig.from_file(str(config_path))
+
+    assert config.external_pwm_enabled is True
+    assert config.external_pwm_gpio == 18
+    assert config.external_pwm_chip == 15
+    assert config.external_pwm_frequency == 1000.0
+    assert config.external_pwm_max_duty == 80.0

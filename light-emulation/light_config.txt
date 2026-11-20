@@ -8,3 +8,11 @@ twilight_duration = 1.5
 min_val = 0.0
 max_val = 0.2
 num_lights = 50
+
+# Optional external PWM output, synchronized with the NeoPixel brightness.
+# GPIO is the BCM pin number. On this Pi 5 setup, GPIO18 is on gpiochip15.
+external_pwm_enabled = false
+external_pwm_gpio = 18
+external_pwm_chip = 15
+external_pwm_frequency = 1000
+external_pwm_max_duty = 100
